@@ -23,3 +23,11 @@ export class InvalidExpectationError extends TestError {
     );
   }
 }
+
+export class InvalidMessageError extends TestError {
+  constructor(got: string) {
+    super(
+      `Provided item must be a valid domain message: Command or Event, got ${got}`
+    );
+  }
+}
