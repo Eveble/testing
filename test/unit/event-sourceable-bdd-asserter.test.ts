@@ -73,9 +73,6 @@ describe(`EventSourceableBDDAsserter`, function() {
     injector = new Injector();
     log = stubInterface<EvebleTypes.Logger>();
 
-    injector
-      .bind<EvebleTypes.Injector>(BINDINGS.Injector)
-      .toConstantValue(injector);
     injector.bind<EvebleTypes.Logger>(BINDINGS.log).toConstantValue(log);
   };
 
@@ -286,14 +283,14 @@ describe(`EventSourceableBDDAsserter`, function() {
     });
 
     it(`adds a single Event to the CommitStore as a Commit`, async () => {
-      commitStore.generateCommitId.returns(new Guid().toString());
+      commitStore.generateId.returns(new Guid().toString());
       const event = new MyEvent({
         sourceId: new Guid(),
       });
 
       await asserter.given([event]);
-      expect(commitStore.generateCommitId).to.be.calledOnce;
-      expect(commitStore.addCommit).to.be.calledOnce;
+      expect(commitStore.generateId).to.be.calledOnce;
+      expect(commitStore.save).to.be.calledOnce;
     });
 
     it(`adds an array of Events to the CommitStore as a single Commit`, async () => {
@@ -308,8 +305,8 @@ describe(`EventSourceableBDDAsserter`, function() {
       ];
 
       await asserter.given(events);
-      expect(commitStore.generateCommitId).to.be.calledOnce;
-      expect(commitStore.addCommit).to.be.calledOnce;
+      expect(commitStore.generateId).to.be.calledOnce;
+      expect(commitStore.save).to.be.calledOnce;
     });
 
     it(`ensures correct data on created Commit from single Event`, async () => {
@@ -331,11 +328,9 @@ describe(`EventSourceableBDDAsserter`, function() {
         id: commitId,
         sourceId: eventSourceableId.toString(),
         version: 1,
-        changes: {
-          eventSourceableType: 'EventSourceableBDDAsserter.MyEventSourceable',
-          events: [versionedEvent],
-          commands: [],
-        },
+        eventSourceableType: 'EventSourceableBDDAsserter.MyEventSourceable',
+        events: [versionedEvent],
+        commands: [],
         insertedAt: now,
         sentBy: appId,
         receivers: [
@@ -347,12 +342,12 @@ describe(`EventSourceableBDDAsserter`, function() {
         ],
       });
 
-      commitStore.generateCommitId.resolves(commitId);
+      commitStore.generateId.resolves(commitId);
 
       await asserter.given([event]);
-      expect(commitStore.generateCommitId).to.be.calledOnce;
-      expect(commitStore.addCommit).to.be.calledOnce;
-      expect(commitStore.addCommit).to.be.calledWithMatch(expectedCommit);
+      expect(commitStore.generateId).to.be.calledOnce;
+      expect(commitStore.save).to.be.calledOnce;
+      expect(commitStore.save).to.be.calledWithMatch(expectedCommit);
 
       clock.restore();
     });
@@ -383,11 +378,9 @@ describe(`EventSourceableBDDAsserter`, function() {
         id: commitId,
         sourceId: eventSourceableId.toString(),
         version: 1,
-        changes: {
-          eventSourceableType: 'EventSourceableBDDAsserter.MyEventSourceable',
-          events: [verFirstEvent, verSecondEvent],
-          commands: [],
-        },
+        eventSourceableType: 'EventSourceableBDDAsserter.MyEventSourceable',
+        events: [verFirstEvent, verSecondEvent],
+        commands: [],
         insertedAt: now,
         sentBy: appId,
         receivers: [
@@ -399,12 +392,12 @@ describe(`EventSourceableBDDAsserter`, function() {
         ],
       });
 
-      commitStore.generateCommitId.resolves(commitId);
+      commitStore.generateId.resolves(commitId);
 
       await asserter.given([firstEvent, secondEvent]);
-      expect(commitStore.generateCommitId).to.be.calledOnce;
-      expect(commitStore.addCommit).to.be.calledOnce;
-      expect(commitStore.addCommit).to.be.calledWithMatch(expectedCommit);
+      expect(commitStore.generateId).to.be.calledOnce;
+      expect(commitStore.save).to.be.calledOnce;
+      expect(commitStore.save).to.be.calledWithMatch(expectedCommit);
 
       clock.restore();
     });

@@ -202,7 +202,7 @@ export class EventSourceableBDDAsserter
         EvebleTypes.CommitStore
       >(BINDINGS.CommitStore);
 
-      await commitStore.addCommit(commit);
+      await commitStore.save(commit);
     }
 
     if (commands.length > 0) {
@@ -502,12 +502,6 @@ export class EventSourceableBDDAsserter
       );
     }
 
-    const changes = {
-      eventSourceableType: this.sut.getTypeName(),
-      commands: [],
-      events: versionedEvents,
-    };
-
     const commitReceiver = new CommitReceiver({
       appId,
       receivedAt: new Date(),
@@ -518,7 +512,9 @@ export class EventSourceableBDDAsserter
       id: new Guid().toString(),
       sourceId: eventSourceableId.toString(),
       version,
-      changes,
+      eventSourceableType: this.sut.getTypeName(),
+      commands: [],
+      events: versionedEvents,
       insertedAt: new Date(),
       sentBy: appId,
       receivers: [commitReceiver],
@@ -526,7 +522,7 @@ export class EventSourceableBDDAsserter
     const commitStore = await this.app.injector.getAsync<
       EvebleTypes.CommitStore
     >(BINDINGS.CommitStore);
-    const commitId = await commitStore.generateCommitId();
+    const commitId = await commitStore.generateId();
     if (commitId !== undefined) {
       props.id = commitId.toString();
     }
