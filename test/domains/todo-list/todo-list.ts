@@ -62,7 +62,7 @@ export class TodoList extends Aggregate {
 
   CompleteTodo(@route command: CompleteTodo): void {
     const foundTodo = this.in<Todo>('todos').findById(command.id);
-    foundTodo.on('complete').ensure.is.ableTo();
+    foundTodo.ensure.is.ableTo.complete();
     this.record(new TodoCompleted({ ...this.eventProps(), todo: foundTodo }));
 
     // Cancel todo expiration do to its completion
@@ -74,7 +74,7 @@ export class TodoList extends Aggregate {
     const foundTodo = this.in<Todo>('todos').findById(command.id);
 
     // In case todo is already expired or is completed - ignore delayed command;
-    if (foundTodo.on('expire').is.ableTo()) {
+    if (foundTodo.can.expire()) {
       this.record(new TodoExpired({ ...this.eventProps(), todo: foundTodo }));
     }
   }
