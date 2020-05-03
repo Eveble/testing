@@ -1,5 +1,6 @@
-import { Struct } from '@eveble/eveble';
-import { EvebleTypes } from '@eveble/eveble';
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Struct, EvebleTypes } from '@eveble/eveble';
 import { TestConfig } from './test-config';
 
 /*
