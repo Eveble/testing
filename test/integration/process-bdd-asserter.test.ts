@@ -17,7 +17,7 @@ import {
   WelcomeEmailTriggered,
 } from '../domains/customer/customer-events';
 
-describe(`Process BDD api`, function() {
+describe(`Process BDD api`, function () {
   let processId: Guid;
   let customerId: Guid;
   let customerName: string;

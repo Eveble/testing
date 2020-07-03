@@ -14,7 +14,7 @@ import {
 
 chai.use(chaiStructAssertion);
 
-describe('haveArrayOfStructs', function() {
+describe('haveArrayOfStructs', function () {
   const untestedProps = ['timestamp'];
 
   describe(`commands`, () => {

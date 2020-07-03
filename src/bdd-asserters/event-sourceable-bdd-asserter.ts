@@ -471,7 +471,7 @@ export class EventSourceableBDDAsserter
     const originalFillErrorProps = ExtendableError.prototype.fillErrorProps;
     this.originalFillErrorProps = originalFillErrorProps;
 
-    ExtendableError.prototype.fillErrorProps = function(
+    ExtendableError.prototype.fillErrorProps = function (
       ...args: any[]
     ): EvebleTypes.ErrorProps {
       const errorProps = originalFillErrorProps.apply(this, args);

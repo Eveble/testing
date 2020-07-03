@@ -37,7 +37,7 @@ import {
   TestConfig as TestConfigExported,
 } from '../../src/index';
 
-describe(`exports`, function() {
+describe(`exports`, function () {
   describe('asserters', () => {
     it('EventSourceableBDDAsserter', () => {
       expect(EventSourceableBDDAsserter).to.be.equal(

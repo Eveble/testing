@@ -30,7 +30,7 @@ import { InvalidMessageError } from '../../src/errors';
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
-describe(`EventSourceableBDDAsserter`, function() {
+describe(`EventSourceableBDDAsserter`, function () {
   @define('EventSourceableBDDAsserter.MyCommand')
   class MyCommand extends Command {}
   @define('EventSourceableBDDAsserter.MyOtherCommand')
@@ -69,14 +69,14 @@ describe(`EventSourceableBDDAsserter`, function() {
   let commitObserver: any;
   let commandScheduler: any;
 
-  const setupInjector = function(): void {
+  const setupInjector = function (): void {
     injector = new Injector();
     log = stubInterface<EvebleTypes.Logger>();
 
     injector.bind<EvebleTypes.Logger>(BINDINGS.log).toConstantValue(log);
   };
 
-  const setupEvebleDependencies = function(): void {
+  const setupEvebleDependencies = function (): void {
     commandBus = stubInterface<EvebleTypes.CommandBus>();
     eventBus = stubInterface<EvebleTypes.EventBus>();
     commitStore = stubInterface<EvebleTypes.CommitStore>();
@@ -103,7 +103,7 @@ describe(`EventSourceableBDDAsserter`, function() {
       .toConstantValue(commandScheduler);
   };
 
-  const rebindEvebleDependencies = function(): void {
+  const rebindEvebleDependencies = function (): void {
     commandBus = stubInterface<EvebleTypes.CommandBus>();
     eventBus = stubInterface<EvebleTypes.EventBus>();
     commitStore = stubInterface<EvebleTypes.CommitStore>();

@@ -32,14 +32,14 @@ export const chaiStructAssertion = (
   const Assertion = chai.Assertion;
 
   function property(name: string, asserter: any): void {
-    utils.addProperty(Assertion.prototype, name, function(): void {
+    utils.addProperty(Assertion.prototype, name, function (): void {
       // eslint-disable-next-line prefer-rest-params
       asserter.apply(this, arguments);
     });
   }
 
   function method(name: string, asserter: any): void {
-    utils.addMethod(Assertion.prototype, name, function(): void {
+    utils.addMethod(Assertion.prototype, name, function (): void {
       // eslint-disable-next-line prefer-rest-params
       asserter.apply(this, arguments);
     });
@@ -122,7 +122,7 @@ export const chaiStructAssertion = (
   }
 
   // eslint-disable-next-line consistent-return
-  method('structs', function(
+  method('structs', function (
     expected: Struct[],
     untestedProps: string[]
   ): void {
@@ -182,17 +182,17 @@ export const chaiStructAssertion = (
     }
   });
 
-  property('have', function() {
+  property('have', function () {
     utils.flag(this, 'have', true);
     return this as any;
   });
 
-  property('include', function() {
+  property('include', function () {
     utils.flag(this, 'include', true);
     return this as any;
   });
 
-  (chai.assert as any).haveArrayOfStructs = function(
+  (chai.assert as any).haveArrayOfStructs = function (
     actual: Struct[],
     expected: Struct[],
     untestedProps: string[],
@@ -204,7 +204,7 @@ export const chaiStructAssertion = (
     );
   };
 
-  (chai.assert as any).notHaveArrayOfStructs = function(
+  (chai.assert as any).notHaveArrayOfStructs = function (
     actual: Struct[],
     expected: Struct[],
     untestedProps: string[],
@@ -216,7 +216,7 @@ export const chaiStructAssertion = (
     );
   };
 
-  (chai.assert as any).includeArrayOfStructs = function(
+  (chai.assert as any).includeArrayOfStructs = function (
     actual: Struct[],
     expected: Struct[],
     untestedProps: string[],
@@ -228,7 +228,7 @@ export const chaiStructAssertion = (
     );
   };
 
-  (chai.assert as any).notIncludeArrayOfStructs = function(
+  (chai.assert as any).notIncludeArrayOfStructs = function (
     actual: Struct[],
     expected: Struct[],
     untestedProps: string[],

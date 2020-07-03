@@ -97,14 +97,10 @@ export class TodoList extends Aggregate {
   }
 
   TodoCompleted(@subscribe event: TodoCompleted): void {
-    this.in<Todo>('todos')
-      .findById(event.todo.id)
-      .complete();
+    this.in<Todo>('todos').findById(event.todo.id).complete();
   }
 
   TodoExpired(@subscribe event: TodoExpired): void {
-    this.in<Todo>('todos')
-      .findById(event.todo.id)
-      .expire();
+    this.in<Todo>('todos').findById(event.todo.id).expire();
   }
 }
