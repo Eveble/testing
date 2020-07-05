@@ -1,0 +1,54 @@
+import { EvebleTypes } from '@eveble/eveble';
+import { types } from '../types';
+import { TestConfig } from '../test-config';
+export declare class EventSourceableBDDAsserter implements types.EventSourceableBDDAsserter {
+    protected sut: EvebleTypes.EventSourceableType;
+    protected app: EvebleTypes.App;
+    protected config: TestConfig;
+    protected queue: EvebleTypes.Message[];
+    protected actual: {
+        events: EvebleTypes.Event[];
+        scheduledCommands: EvebleTypes.Command[];
+        unscheduledCommands: EvebleTypes.Command[];
+    };
+    protected expected: {
+        events: EvebleTypes.Event[];
+        scheduledCommands: EvebleTypes.Command[];
+        unscheduledCommands: EvebleTypes.Command[];
+    };
+    protected originalFillErrorProps: Function;
+    protected test?: () => Promise<void>;
+    protected ignoreNextEvent?: boolean;
+    constructor(sut: EvebleTypes.EventSourceableType, app: EvebleTypes.App, config: TestConfig);
+    getSUT(): EvebleTypes.EventSourceableType;
+    getApp(): EvebleTypes.App;
+    getConfig(): TestConfig;
+    getQueue(): EvebleTypes.Message[];
+    getExpectedEvents(): EvebleTypes.Event[];
+    getPublishedEvents(): EvebleTypes.Event[];
+    getScheduledCommands(): EvebleTypes.Command[];
+    getExpectedScheduledCommands(): EvebleTypes.Command[];
+    getUnscheduledCommands(): EvebleTypes.Command[];
+    getExpectedUnscheduledCommands(): EvebleTypes.Command[];
+    given(messages?: EvebleTypes.Message[]): Promise<this>;
+    when(messages?: EvebleTypes.Message[]): Promise<this>;
+    expect(expectedEvents?: EvebleTypes.Event[] | Function): Promise<void>;
+    expectToInclude(expectedEvents?: EvebleTypes.Event[] | Function): Promise<void>;
+    expectToFailWith(error: any, errorMessage?: string): Promise<void>;
+    throws(error: any, errorMessage: string): Promise<void>;
+    schedules(commands?: EvebleTypes.Command[]): Promise<this>;
+    unschedules(commands?: EvebleTypes.Command[]): Promise<this>;
+    protected assertIsValid(expectedEvents: EvebleTypes.Event[] | Function, assertionType: 'have' | 'include'): Promise<void>;
+    hasExpectedScheduledCommands(): boolean;
+    onPublishedEvent(actualPublishedEvent: EvebleTypes.Event): void;
+    onScheduleCommandSend(actualSendCommand: EvebleTypes.Command): void;
+    onUnscheduleCommandSend(actualSendCommand: EvebleTypes.Command): void;
+    delay(timeInMs: number): Promise<any>;
+    protected overrideExtendableErrorFillErrorPropsMethod(): void;
+    createCommit(eventSourceableId: string | EvebleTypes.Stringifiable, version: number, events: EvebleTypes.Event[]): Promise<EvebleTypes.Commit>;
+    protected setEventVersion(event: EvebleTypes.Event, version: number): void;
+    protected run(): Promise<void>;
+    protected cleanup(): Promise<void>;
+    protected sendMessagesThroughApp(): Promise<void>;
+    protected isSameMessage(actualMessage: EvebleTypes.Message, expectedMessage: EvebleTypes.Message): boolean;
+}
