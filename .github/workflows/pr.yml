@@ -58,6 +58,14 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
+    services:
+      mongodb:
+        image: mongo:4.2
+        ports:
+          - 27017:27017
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: password
     name: Tests / Node@${{ matrix.node-version}}
     steps:
       - uses: actions/checkout@v2
@@ -90,6 +98,14 @@ jobs:
             })
   test_coverage:
     runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:4.2
+        ports:
+          - 27017:27017
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: password
     name: Validate test coverage
     steps:
       - uses: actions/checkout@v2
