@@ -359,7 +359,7 @@ export class EventSourceableBDDAsserter
     assertionType: 'have' | 'include'
   ): Promise<void> {
     if (isFunction(expectedEvents)) {
-      this.expected.events = expectedEvents();
+      this.expected.events = (expectedEvents as Function)();
     } else {
       this.expected.events = expectedEvents as Event[];
     }
