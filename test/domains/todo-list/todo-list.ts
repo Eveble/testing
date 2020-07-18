@@ -31,11 +31,12 @@ export class TodoList extends Aggregate {
   */
   CreateTodoList(@initial command: CreateTodoList): void {
     this.record(
-      new TodoListCreated(
-        this.pickEventProps(command, {
-          todos: [],
-        })
-      )
+      new TodoListCreated({
+        ...this.eventProps(),
+        title: command.title,
+        maxItems: command.maxItems,
+        todos: [],
+      })
     );
   }
 

@@ -20,7 +20,7 @@ import {
 describe(`Process BDD api`, function () {
   let processId: Guid;
   let customerId: Guid;
-  let customerName: string;
+  let name: string;
 
   let injector: EvebleTypes.Injector;
   let app: CustomerApp;
@@ -40,7 +40,7 @@ describe(`Process BDD api`, function () {
   beforeEach(() => {
     processId = new Guid();
     customerId = new Guid();
-    customerName = 'Jane Doe';
+    name = 'Jane Doe';
   });
 
   after(async () => {
@@ -54,13 +54,13 @@ describe(`Process BDD api`, function () {
         new RegisterCustomer({
           targetId: processId,
           customerId,
-          customerName,
+          name,
         }),
       ])
       .expectToInclude([
         new CustomerCreated({
           sourceId: customerId,
-          name: customerName,
+          name,
         }),
       ]);
     await scenario.verify();
@@ -73,18 +73,18 @@ describe(`Process BDD api`, function () {
         new RegisterCustomer({
           targetId: processId,
           customerId,
-          customerName,
+          name,
         }),
       ])
       .expect([
         new CustomerRegistrationInitiated({
           sourceId: processId,
           customerId,
-          customerName,
+          name,
         }),
         new CustomerCreated({
           sourceId: customerId,
-          name: customerName,
+          name,
         }),
         new WelcomeEmailTriggered({
           sourceId: processId,
@@ -93,7 +93,7 @@ describe(`Process BDD api`, function () {
         new WelcomeEmailSent({
           sourceId: 'email-sending-instance-id',
           customerId,
-          email: `Hello ${customerName}`,
+          email: `Hello ${name}`,
         }),
         new CustomerRegistrationCompleted({
           sourceId: processId,

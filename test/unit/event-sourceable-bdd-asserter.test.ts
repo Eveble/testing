@@ -32,13 +32,13 @@ chai.use(chaiAsPromised);
 
 describe(`EventSourceableBDDAsserter`, function () {
   @define('EventSourceableBDDAsserter.MyCommand')
-  class MyCommand extends Command {}
+  class MyCommand extends Command<MyCommand> {}
   @define('EventSourceableBDDAsserter.MyOtherCommand')
-  class MyOtherCommand extends Command {}
+  class MyOtherCommand extends Command<MyOtherCommand> {}
   @define('EventSourceableBDDAsserter.MyEvent')
-  class MyEvent extends Event {}
+  class MyEvent extends Event<MyEvent> {}
   @define('EventSourceableBDDAsserter.MyOtherEvent')
-  class MyOtherEvent extends Event {}
+  class MyOtherEvent extends Event<MyOtherEvent> {}
 
   @define('EventSourceableBDDAsserter.MyDomainError')
   class MyDomainError extends DomainError {

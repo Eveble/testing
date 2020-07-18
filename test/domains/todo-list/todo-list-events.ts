@@ -6,7 +6,7 @@ import { Title } from './title-vo';
 TODO LIST
 */
 @define('TodoList.TodoListCreated')
-export class TodoListCreated extends Event {
+export class TodoListCreated extends Event<TodoListCreated> {
   title: Title;
 
   maxItems: number;
@@ -15,7 +15,7 @@ export class TodoListCreated extends Event {
 }
 
 @define('TodoList.TodoAdded')
-export class TodoAdded extends Event {
+export class TodoAdded extends Event<TodoAdded> {
   todo: Todo;
 }
 
@@ -23,11 +23,11 @@ export class TodoAdded extends Event {
 TODO
 */
 @define('TodoList.TodoCompleted')
-export class TodoCompleted extends Event {
+export class TodoCompleted extends Event<TodoCompleted> {
   todo: Todo;
 }
 
 @define('TodoList.TodoExpired')
-export class TodoExpired extends Event {
+export class TodoExpired extends Event<TodoExpired> {
   todo: Todo;
 }

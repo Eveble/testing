@@ -27,18 +27,18 @@ chai.use(chaiAsPromised);
 
 describe(`on`, () => {
   @define('on.MyCommand')
-  class MyCommand extends Command {}
+  class MyCommand extends Command<MyCommand> {}
   @define('on.FirstCommand')
-  class FirstCommand extends Command {}
+  class FirstCommand extends Command<FirstCommand> {}
   @define('on.SecondCommand')
-  class SecondCommand extends Command {}
+  class SecondCommand extends Command<SecondCommand> {}
 
   @define('on.MyEvent')
-  class MyEvent extends Event {}
+  class MyEvent extends Event<MyEvent> {}
   @define('on.FirstEvent')
-  class FirstEvent extends Event {}
+  class FirstEvent extends Event<FirstEvent> {}
   @define('on.SecondEvent')
-  class SecondEvent extends Event {}
+  class SecondEvent extends Event<SecondEvent> {}
 
   @define('on.MyDomainError')
   class MyDomainError extends DomainError {}
