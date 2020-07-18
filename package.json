@@ -51,7 +51,7 @@
     "url": "git://github.com/eveble/testing.git"
   },
   "dependencies": {
-    "@eveble/eveble": "^1.0.0",
+    "@eveble/eveble": "^2.0.0",
     "@eveble/helpers": "^1.0.3",
     "reflect-metadata": "^0.1.13",
     "tsruntime": "^3.0.0-beta.1",
