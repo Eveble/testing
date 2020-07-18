@@ -10,11 +10,15 @@ export class Customer extends Aggregate {
   HANDLES
   */
   CreateCustomer(@initial command: CreateCustomer): void {
-    this.record(new CustomerCreated(this.pickEventProps(command)));
+    this.record(
+      new CustomerCreated({ ...this.eventProps(), name: command.name })
+    );
   }
 
   ChangeCustomerName(@route command: ChangeCustomerName): void {
-    this.record(new CustomerNameChanged(this.pickEventProps(command)));
+    this.record(
+      new CustomerNameChanged({ ...this.eventProps(), name: command.name })
+    );
   }
 
   /*

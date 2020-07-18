@@ -30,25 +30,29 @@ export class CustomerRegistration extends Process {
 
   customerId: string | Guid;
 
-  customerName: string;
+  name: string;
 
   /*
     HANDLES
   */
   RegisterCustomer(@initial command: RegisterCustomer): void {
-    if (command.customerName === 'Invalid') {
-      throw new InvalidCustomerName(command.customerName);
+    if (command.name === 'Invalid') {
+      throw new InvalidCustomerName(command.name);
     }
 
     this.trigger(
       new CreateCustomer({
         targetId: command.customerId,
-        name: command.customerName,
+        name: command.name,
       })
     );
 
     this.record(
-      new CustomerRegistrationInitiated(this.pickEventProps(command))
+      new CustomerRegistrationInitiated({
+        ...this.eventProps(),
+        customerId: command.customerId,
+        name: command.name,
+      })
     );
   }
 
@@ -60,7 +64,7 @@ export class CustomerRegistration extends Process {
       new SendWelcomeEmail({
         targetId: this.customerId,
         customerId: this.customerId,
-        customerName: this.customerName,
+        customerName: this.name,
       })
     );
 

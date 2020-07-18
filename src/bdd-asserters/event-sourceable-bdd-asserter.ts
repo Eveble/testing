@@ -176,7 +176,7 @@ export class EventSourceableBDDAsserter
     }
     const normalizedMessages = Array.isArray(messages) ? messages : [messages];
 
-    const commands: Command[] = [];
+    const commands: EvebleTypes.Command[] = [];
     const events: EvebleTypes.Event[] = [];
 
     for (const message of normalizedMessages) {
@@ -361,7 +361,7 @@ export class EventSourceableBDDAsserter
     if (isFunction(expectedEvents)) {
       this.expected.events = (expectedEvents as Function)();
     } else {
-      this.expected.events = expectedEvents as Event[];
+      this.expected.events = expectedEvents as EvebleTypes.Event[];
     }
 
     this.test = async (): Promise<void> => {
