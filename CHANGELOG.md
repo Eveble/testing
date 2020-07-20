@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/eveble/testing/compare/v1.0.0...v1.0.1) (2020-07-20)
+
+
+### Bug Fixes
+
+* force release ([b86179c](https://github.com/eveble/testing/commit/b86179c3636f3d720a3f55f7e2f501b6f9b14b81))
+
 # 1.0.0 (2020-07-05)
 
 
