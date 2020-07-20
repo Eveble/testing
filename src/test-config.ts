@@ -2,7 +2,7 @@ import { Config, define } from '@eveble/eveble';
 
 @define()
 export class TestConfig extends Config {
-  untestedProperties: string[] = [
+  public untestedProperties: string[] = [
     'timestamp',
     'version',
     'metadata',
