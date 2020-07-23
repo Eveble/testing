@@ -229,6 +229,7 @@ export class Scenario implements types.Scenario {
     if (this.sut === undefined) {
       throw new InvalidSUTError(kernel.describer.describe(this.sut));
     }
+
     if (this.app.isInState(App.STATES.constructed)) {
       await this.app.initialize();
     }
