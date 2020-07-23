@@ -1,3 +1,11 @@
+## [1.0.2](https://github.com/eveble/testing/compare/v1.0.1...v1.0.2) (2020-07-23)
+
+
+### Bug Fixes
+
+* **deps:** bump @eveble/eveble to latest ([b232006](https://github.com/eveble/testing/commit/b232006aa1fffa985f9690bdb377c2bf8e0b8547))
+* **deps:** bump @eveble/helpers to latest ([536bde0](https://github.com/eveble/testing/commit/536bde048ed428908f3562fb95285cb1e8a678cb))
+
 ## [1.0.1](https://github.com/eveble/testing/compare/v1.0.0...v1.0.1) (2020-07-20)
 
 
