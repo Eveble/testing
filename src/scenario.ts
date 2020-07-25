@@ -20,6 +20,8 @@ export class Scenario implements types.Scenario {
 
   protected asserter: types.EventSourceableBDDAsserterType;
 
+  protected config: TestConfig;
+
   protected sut: EvebleTypes.EventSourceableType;
 
   protected givenMessages: EvebleTypes.Message[];
@@ -33,6 +35,7 @@ export class Scenario implements types.Scenario {
     errorMessage?: string;
     scheduledCommands?: EvebleTypes.Command[];
     unscheduledCommands?: EvebleTypes.Command[];
+    state?: EvebleTypes.Props;
   };
 
   /**
@@ -42,13 +45,17 @@ export class Scenario implements types.Scenario {
    */
   constructor(
     app: EvebleTypes.App,
-    asserter: types.EventSourceableBDDAsserterType = EventSourceableBDDAsserter
+    options: {
+      asserter?: types.EventSourceableBDDAsserterType;
+      config?: TestConfig;
+    } = {}
   ) {
     if (app === undefined) {
       throw new InvalidAppError();
     }
     this.app = app;
-    this.asserter = asserter;
+    this.asserter = options.asserter || EventSourceableBDDAsserter;
+    this.config = options.config || new TestConfig();
     this.givenMessages = [];
     this.whenMessages = [];
     this.expected = {};
@@ -220,12 +227,12 @@ export class Scenario implements types.Scenario {
 
   /**
    * Verify the assertion.
-   * @param config - Instance of `TestConfig`
+   * @param expectedState - Optional object with properties matching expected state.
    * @returns Returns `true` if assertion is truthful, else throws.
    * @throws {AssertionError}
    * Thrown if assertion does not match expectation.
    */
-  public async verify(config: TestConfig = new TestConfig()): Promise<boolean> {
+  public async verify(expectedState?: EvebleTypes.Props): Promise<boolean> {
     if (this.sut === undefined) {
       throw new InvalidSUTError(kernel.describer.describe(this.sut));
     }
@@ -238,7 +245,11 @@ export class Scenario implements types.Scenario {
       await this.app.start();
     }
 
-    const asserter = new (this.asserter as any)(this.sut, this.app, config);
+    const asserter = new (this.asserter as any)(
+      this.sut,
+      this.app,
+      this.config
+    );
     await asserter.given(this.givenMessages);
     await asserter.when(this.whenMessages);
 
@@ -259,6 +270,9 @@ export class Scenario implements types.Scenario {
       return false;
     }
 
+    if (expectedState !== undefined) {
+      asserter.expectState(expectedState);
+    }
     // Expect to include
     if (
       this.expected.includedEvents !== undefined &&

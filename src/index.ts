@@ -4,6 +4,7 @@ import { EvebleTypes } from '@eveble/eveble';
 import { types } from './types';
 // Api
 import { Scenario } from './scenario';
+import { TestConfig } from './test-config';
 
 // Asserters
 export { EventSourceableBDDAsserter } from './bdd-asserters/event-sourceable-bdd-asserter';
@@ -22,9 +23,12 @@ export { TestConfig } from './test-config';
 
 export function on(
   app: EvebleTypes.App,
-  asserter?: types.EventSourceableBDDAsserterType
+  options?: {
+    asserter?: types.EventSourceableBDDAsserterType;
+    config?: TestConfig;
+  }
 ): Scenario {
-  return new Scenario(app, asserter);
+  return new Scenario(app, options);
 }
 
 export { types, Scenario };

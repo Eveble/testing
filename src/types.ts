@@ -64,6 +64,7 @@ export namespace types {
     throws(error: any, errorMessage: string): Promise<void>;
     schedules(commands: EvebleTypes.Command[]): Promise<this>;
     unschedules(commands: EvebleTypes.Command[]): Promise<this>;
+    expectState(expectedState: EvebleTypes.Props): this;
   }
 
   export interface EventSourceableBDDAsserterType {

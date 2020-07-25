@@ -44,6 +44,7 @@ export class EventSourceableBDDAsserter
     events: EvebleTypes.Event[];
     scheduledCommands: EvebleTypes.Command[];
     unscheduledCommands: EvebleTypes.Command[];
+    state?: EvebleTypes.Props;
   };
 
   protected originalFillErrorProps: Function;
@@ -347,6 +348,16 @@ export class EventSourceableBDDAsserter
   }
 
   /**
+   * Creates state expectation describing of the subject's properties after test.
+   * @param expectedState - Object with properties matching expected state.
+   * @return Promise of `this` instance.
+   */
+  public expectState(expectedState: EvebleTypes.Props): this {
+    this.expected.state = expectedState;
+    return this;
+  }
+
+  /**
    * Creates test expectation describing the changes you expect due to the specified behavior.
    * @async
    * @param expectedEvents - Array of expected `Events` that should be published on app.
@@ -397,6 +408,23 @@ export class EventSourceableBDDAsserter
         untestedProps,
         'List of actual unscheduled commands does not match the expected ones'
       );
+
+      if (this.expected.state !== undefined) {
+        const repository = this.app.injector.get<
+          EvebleTypes.EventSourceableRepository
+        >(BINDINGS.EventSourceableRepository);
+        const sutInstance = await repository.find(
+          this.getSUT(),
+          this.expected.state.id
+        );
+        // Reuse logic of haveArrayOfStructs with untestedProps for simplicity
+        (assert as any).haveArrayOfStructs(
+          [sutInstance],
+          [this.expected.state],
+          untestedProps,
+          'Actual state does not match expected one '
+        );
+      }
     };
     await this.run();
   }
