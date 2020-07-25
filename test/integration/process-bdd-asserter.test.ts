@@ -66,6 +66,33 @@ describe(`Process BDD api`, function () {
     await scenario.verify();
   });
 
+  it(`can be used to test Process state`, async () => {
+    const scenario = on(app)
+      .test(CustomerRegistration)
+      .when([
+        new RegisterCustomer({
+          targetId: processId,
+          customerId,
+          name,
+        }),
+      ])
+      .expectToInclude([
+        new CustomerCreated({
+          sourceId: customerId,
+          name,
+        }),
+      ]);
+
+    await scenario.verify(
+      new CustomerRegistration({
+        id: processId,
+        state: 'completed',
+        customerId,
+        name,
+      })
+    );
+  });
+
   it(`can be used to verify process completion`, async () => {
     const scenario = on(app)
       .test(CustomerRegistration)

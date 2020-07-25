@@ -80,6 +80,35 @@ describe(`Aggregate BDD api`, function () {
     await scenario.verify();
   });
 
+  it(`can be used to test Aggregate state`, async () => {
+    const scenario = on(app)
+      .test(TodoList)
+      .when([
+        new CreateTodoList({
+          targetId: todoList.id,
+          title: todoList.title,
+          maxItems: todoList.maxItems,
+        }),
+      ])
+      .expect([
+        new TodoListCreated({
+          sourceId: todoList.id,
+          title: todoList.title,
+          maxItems: todoList.maxItems,
+          todos: [],
+        }),
+      ]);
+
+    await scenario.verify(
+      new TodoList({
+        id: todoList.id,
+        title: todoList.title,
+        maxItems: todoList.maxItems,
+        todos: [],
+      })
+    );
+  });
+
   it(`can be used to test resulting events`, async () => {
     const scenario = on(app)
       .test(TodoList)

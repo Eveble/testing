@@ -18,7 +18,7 @@ import {
   InvalidSUTError,
   InvalidExpectationError,
 } from '../../src/errors';
-import { on } from '../../src/index';
+import { on, TestConfig } from '../../src/index';
 import { types } from '../../src/types';
 import { Scenario } from '../../src/scenario';
 
@@ -106,7 +106,12 @@ describe(`on`, () => {
       });
 
       it('takes optional asserter as second argument on construction as asserter constructor matching EventSourceableBDDAsserterType interface', () => {
-        const scenario = on(app, asserter);
+        const scenario = on(app, { asserter });
+        expect(scenario.getApp()).to.be.equal(app);
+        expect(scenario.getAsserter()).to.be.equal(asserter);
+      });
+      it('takes optional config as second argument on construction as TestConfig instance', () => {
+        const scenario = on(app, { config: new TestConfig() });
         expect(scenario.getApp()).to.be.equal(app);
         expect(scenario.getAsserter()).to.be.equal(asserter);
       });
@@ -145,7 +150,7 @@ describe(`on`, () => {
 
   describe('given', () => {
     it(`takes array of messages that will be used to define test pre-conditions`, async () => {
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.given([command]);
       scenario.expect([event]);
@@ -155,7 +160,7 @@ describe(`on`, () => {
     });
 
     it(`allows chaining given`, async () => {
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.given([firstCommand]);
       scenario.given([secondCommand]);
@@ -171,7 +176,7 @@ describe(`on`, () => {
 
   describe('when', () => {
     it(`takes array of messages that will be used to define testing scenario`, async () => {
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.when([command]);
       scenario.expect([event]);
@@ -181,7 +186,7 @@ describe(`on`, () => {
     });
 
     it(`allows chaining when`, async () => {
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.when([firstCommand]);
       scenario.when([secondCommand]);
@@ -197,7 +202,7 @@ describe(`on`, () => {
 
   describe('expect', () => {
     it(`takes array of Events that will be used to define exact test expectation`, async () => {
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.when([command]);
       scenario.expect([event]);
@@ -207,7 +212,7 @@ describe(`on`, () => {
     });
 
     it(`allows chaining expectations`, async () => {
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.expect([firstEvent]);
       scenario.expect([secondEvent]);
@@ -220,7 +225,7 @@ describe(`on`, () => {
     });
 
     it(`throws InvalidExpectationError if the inclufing expectation is set prior to defining expectation`, async () => {
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.expectToInclude([event]);
       expect(() => scenario.expect([event])).to.throw(
@@ -232,7 +237,7 @@ describe(`on`, () => {
     it(`throws InvalidExpectationError if the failing expectation is set prior to defining expectation`, async () => {
       const errorMessage = 'my-error-message';
 
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.expectToFailWith(MyDomainError, errorMessage);
       expect(() => scenario.expect([event])).to.throw(
@@ -244,7 +249,7 @@ describe(`on`, () => {
 
   describe('expectToInclude', () => {
     it(`takes array of Events that will be used to define partial test expectation`, async () => {
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.when([command]);
       scenario.expectToInclude([event]);
@@ -254,7 +259,7 @@ describe(`on`, () => {
     });
 
     it(`allows chaining including expectations`, async () => {
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.expectToInclude([firstEvent]);
       scenario.expectToInclude([secondEvent]);
@@ -267,7 +272,7 @@ describe(`on`, () => {
     });
 
     it(`throws InvalidExpectationError if the expectation is set prior to defining inclufing expectation`, async () => {
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.expect([event]);
       expect(() => scenario.expectToInclude([event])).to.throw(
@@ -279,7 +284,7 @@ describe(`on`, () => {
     it(`throws InvalidExpectationError if the failing expectation is set prior to defining including expectation`, async () => {
       const errorMessage = 'my-error-message';
 
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.expectToFailWith(MyDomainError, errorMessage);
       expect(() => scenario.expectToInclude([event])).to.throw(
@@ -293,7 +298,7 @@ describe(`on`, () => {
     it(`takes subclass of DomainError constructor and message as a string to define exception expectation`, async () => {
       const errorMessage = 'my-error-message';
 
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.expectToFailWith(MyDomainError, errorMessage);
       await scenario.verify();
@@ -307,7 +312,7 @@ describe(`on`, () => {
     it(`throws InvalidExpectationError if the expectation is set prior to defining failing expectation`, async () => {
       const errorMessage = 'my-error-message';
 
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.expect([event]);
       expect(() =>
@@ -323,7 +328,7 @@ describe(`on`, () => {
     it(`takes subclass of DomainError constructor and message as a string to define exception expectation`, async () => {
       const errorMessage = 'my-error-message';
 
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.expectToFailWith(MyDomainError, errorMessage);
       await scenario.verify();
@@ -337,7 +342,7 @@ describe(`on`, () => {
 
   describe('schedules', () => {
     it(`takes subclass of DomainError constructor and message as a string to define exception expectation`, async () => {
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.schedules([command]);
       scenario.expect([event]);
@@ -347,7 +352,7 @@ describe(`on`, () => {
     });
 
     it(`allows chaining schedules`, async () => {
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.schedules([firstCommand]);
       scenario.schedules([secondCommand]);
@@ -363,7 +368,7 @@ describe(`on`, () => {
 
   describe('unschedules', () => {
     it(`takes subclass of DomainError constructor and message as a string to define exception expectation`, async () => {
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.unschedules([command]);
       scenario.expect([event]);
@@ -373,7 +378,7 @@ describe(`on`, () => {
     });
 
     it(`allows chaining unschedules`, async () => {
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.unschedules([firstCommand]);
       scenario.unschedules([secondCommand]);
@@ -389,12 +394,23 @@ describe(`on`, () => {
 
   describe('verify', () => {
     it('throws InvalidExpectationError if expectation is not defined on scenario with expect, expectToInclude or expectToFail', async () => {
-      const scenario = on(app, asserter);
+      const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       await expect(scenario.verify()).to.eventually.be.rejectedWith(
         InvalidExpectationError,
         `Provided scenario must have defined expectation with 'expect', 'expectToInclude'  or 'expectToFail' methods(only one!)`
       );
+    });
+
+    it(`allows to pass expected state on verification`, async () => {
+      const scenario = on(app, { asserter });
+      scenario.test(MyAggregate);
+      scenario.expect([event]);
+
+      const state = sinon.stub();
+      await scenario.verify(state);
+      expect(asserterInstance.expectState).to.be.calledOnce;
+      expect(asserterInstance.expectState).to.be.calledWithExactly(state);
     });
   });
 });
