@@ -15,6 +15,7 @@ export declare class EventSourceableBDDAsserter implements types.EventSourceable
         events: EvebleTypes.Event[];
         scheduledCommands: EvebleTypes.Command[];
         unscheduledCommands: EvebleTypes.Command[];
+        state?: EvebleTypes.Props;
     };
     protected originalFillErrorProps: Function;
     protected test?: () => Promise<void>;
@@ -38,6 +39,7 @@ export declare class EventSourceableBDDAsserter implements types.EventSourceable
     throws(error: any, errorMessage: string): Promise<void>;
     schedules(commands?: EvebleTypes.Command[]): Promise<this>;
     unschedules(commands?: EvebleTypes.Command[]): Promise<this>;
+    expectState(expectedState: EvebleTypes.Props): this;
     protected assertIsValid(expectedEvents: EvebleTypes.Event[] | Function, assertionType: 'have' | 'include'): Promise<void>;
     hasExpectedScheduledCommands(): boolean;
     onPublishedEvent(actualPublishedEvent: EvebleTypes.Event): void;

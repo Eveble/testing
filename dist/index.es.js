@@ -267,6 +267,10 @@ class EventSourceableBDDAsserter {
         commandBus.onSend('on-unschedule-command', boundHandler, true);
         return this;
     }
+    expectState(expectedState) {
+        this.expected.state = expectedState;
+        return this;
+    }
     async assertIsValid(expectedEvents, assertionType) {
         if (isFunction(expectedEvents)) {
             this.expected.events = expectedEvents();
@@ -291,6 +295,11 @@ class EventSourceableBDDAsserter {
             }
             asserter(this.actual.events, this.expected.events, untestedProps, 'List of actual published event does not match the expected ones');
             asserter(this.actual.unscheduledCommands, this.expected.unscheduledCommands, untestedProps, 'List of actual unscheduled commands does not match the expected ones');
+            if (this.expected.state !== undefined) {
+                const repository = this.app.injector.get(BINDINGS.EventSourceableRepository);
+                const sutInstance = await repository.find(this.getSUT(), this.expected.state.id);
+                assert.haveArrayOfStructs([sutInstance], [this.expected.state], untestedProps, 'Actual state does not match expected one ');
+            }
         };
         await this.run();
     }
@@ -454,12 +463,13 @@ TestConfig = __decorate([
 ], TestConfig);
 
 class Scenario {
-    constructor(app, asserter = EventSourceableBDDAsserter) {
+    constructor(app, options = {}) {
         if (app === undefined) {
             throw new InvalidAppError();
         }
         this.app = app;
-        this.asserter = asserter;
+        this.asserter = options.asserter || EventSourceableBDDAsserter;
+        this.config = options.config || new TestConfig();
         this.givenMessages = [];
         this.whenMessages = [];
         this.expected = {};
@@ -534,7 +544,7 @@ class Scenario {
         this.expected.unscheduledCommands = this.expected.unscheduledCommands.concat(commands);
         return this;
     }
-    async verify(config = new TestConfig()) {
+    async verify(expectedState) {
         if (this.sut === undefined) {
             throw new InvalidSUTError(kernel.describer.describe(this.sut));
         }
@@ -545,7 +555,7 @@ class Scenario {
         if (!this.app.isInState(App.STATES.running)) {
             await this.app.start();
         }
-        const asserter = new this.asserter(this.sut, this.app, config);
+        const asserter = new this.asserter(this.sut, this.app, this.config);
         await asserter.given(this.givenMessages);
         await asserter.when(this.whenMessages);
         if (this.expected.scheduledCommands) {
@@ -557,6 +567,9 @@ class Scenario {
         if (this.expected.error) {
             await asserter.expectToFailWith(this.expected.error, this.expected.errorMessage);
             return false;
+        }
+        if (expectedState !== undefined) {
+            asserter.expectState(expectedState);
         }
         if (this.expected.includedEvents !== undefined &&
             !isEmpty(this.expected.includedEvents)) {
@@ -573,8 +586,8 @@ class Scenario {
     }
 }
 
-function on(app, asserter) {
-    return new Scenario(app, asserter);
+function on(app, options) {
+    return new Scenario(app, options);
 }
 
 export { EventSourceableBDDAsserter, InvalidAppError, InvalidExpectationError, InvalidMessageError, InvalidSUTError, Scenario, TestConfig, TestError, chaiStructAssertion, on };

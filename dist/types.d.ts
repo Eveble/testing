@@ -42,6 +42,7 @@ export declare namespace types {
         throws(error: any, errorMessage: string): Promise<void>;
         schedules(commands: EvebleTypes.Command[]): Promise<this>;
         unschedules(commands: EvebleTypes.Command[]): Promise<this>;
+        expectState(expectedState: EvebleTypes.Props): this;
     }
     interface EventSourceableBDDAsserterType {
         new (sut: EvebleTypes.EventSourceableType, app: EvebleTypes.App, config: TestConfig): EventSourceableBDDAsserter;
