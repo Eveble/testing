@@ -132,6 +132,8 @@ export class Scenario implements types.Scenario {
    * behavior(all events published must match).
    * @param expectedEvents - List of all expected `Events` that should be published on app.
    * @returns Instance of `this`.
+   * @throws {InvalidExpectationError}
+   * Thrown if expectation for error already exists.
    */
   public expect(events: EvebleTypes.Event[] = []): this {
     if (
@@ -280,10 +282,7 @@ export class Scenario implements types.Scenario {
     ) {
       await asserter.expectToInclude(this.expected.includedEvents);
       // Expect
-    } else if (
-      this.expected.events !== undefined &&
-      !isEmpty(this.expected.events)
-    ) {
+    } else if (this.expected.events !== undefined) {
       await asserter.expect(this.expected.events);
     } else {
       // Invalid assertion
