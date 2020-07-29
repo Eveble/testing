@@ -10,7 +10,7 @@ sidebar_label: "WelcomeEmailSent"
 
 ## Hierarchy
 
-* Event
+* Event‹[WelcomeEmailSent](welcomeemailsent.md)›
 
   ↳ **WelcomeEmailSent**
 
@@ -33,10 +33,10 @@ sidebar_label: "WelcomeEmailSent"
 
 * [customerId](welcomeemailsent.md#customerid)
 * [email](welcomeemailsent.md#email)
-* [metadata](welcomeemailsent.md#metadata)
+* [metadata](welcomeemailsent.md#optional-metadata)
 * [schemaVersion](welcomeemailsent.md#optional-schemaversion)
 * [sourceId](welcomeemailsent.md#sourceid)
-* [timestamp](welcomeemailsent.md#timestamp)
+* [timestamp](welcomeemailsent.md#optional-timestamp)
 * [version](welcomeemailsent.md#optional-version)
 
 ### Methods
@@ -89,7 +89,7 @@ sidebar_label: "WelcomeEmailSent"
 
 ###  constructor
 
-\+ **new WelcomeEmailSent**(`props?`: types.Props): *[WelcomeEmailSent](welcomeemailsent.md)*
+\+ **new WelcomeEmailSent**(`props`: types.ConstructorType‹[WelcomeEmailSent](welcomeemailsent.md)› & object): *[WelcomeEmailSent](welcomeemailsent.md)*
 
 *Inherited from [CustomerRegistrationInitiated](customerregistrationinitiated.md).[constructor](customerregistrationinitiated.md#constructor)*
 
@@ -99,7 +99,7 @@ sidebar_label: "WelcomeEmailSent"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[WelcomeEmailSent](welcomeemailsent.md)› & object |
 
 **Returns:** *[WelcomeEmailSent](welcomeemailsent.md)*
 
@@ -117,11 +117,11 @@ ___
 
 ___
 
-###  metadata
+### `Optional` metadata
 
-• **metadata**: *Record‹string, any›*
+• **metadata**? : *Record‹string, any›*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
@@ -143,11 +143,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ___
 

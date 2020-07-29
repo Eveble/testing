@@ -10,7 +10,7 @@ sidebar_label: "TodoAdded"
 
 ## Hierarchy
 
-* Event
+* Event‹[TodoAdded](todoadded.md)›
 
   ↳ **TodoAdded**
 
@@ -31,10 +31,10 @@ sidebar_label: "TodoAdded"
 
 ### Properties
 
-* [metadata](todoadded.md#metadata)
+* [metadata](todoadded.md#optional-metadata)
 * [schemaVersion](todoadded.md#optional-schemaversion)
 * [sourceId](todoadded.md#sourceid)
-* [timestamp](todoadded.md#timestamp)
+* [timestamp](todoadded.md#optional-timestamp)
 * [todo](todoadded.md#todo)
 * [version](todoadded.md#optional-version)
 
@@ -88,7 +88,7 @@ sidebar_label: "TodoAdded"
 
 ###  constructor
 
-\+ **new TodoAdded**(`props?`: types.Props): *[TodoAdded](todoadded.md)*
+\+ **new TodoAdded**(`props`: types.ConstructorType‹[TodoAdded](todoadded.md)› & object): *[TodoAdded](todoadded.md)*
 
 *Inherited from [CustomerRegistrationInitiated](customerregistrationinitiated.md).[constructor](customerregistrationinitiated.md#constructor)*
 
@@ -98,17 +98,17 @@ sidebar_label: "TodoAdded"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[TodoAdded](todoadded.md)› & object |
 
 **Returns:** *[TodoAdded](todoadded.md)*
 
 ## Properties
 
-###  metadata
+### `Optional` metadata
 
-• **metadata**: *Record‹string, any›*
+• **metadata**? : *Record‹string, any›*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
@@ -130,11 +130,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ___
 

@@ -17,6 +17,7 @@ sidebar_label: "EventSourceableBDDAsserter"
 ### Methods
 
 * [expect](types.eventsourceablebddasserter.md#expect)
+* [expectState](types.eventsourceablebddasserter.md#expectstate)
 * [expectToFailWith](types.eventsourceablebddasserter.md#expecttofailwith)
 * [expectToInclude](types.eventsourceablebddasserter.md#expecttoinclude)
 * [getApp](types.eventsourceablebddasserter.md#getapp)
@@ -49,9 +50,54 @@ Name | Type |
 
 **Returns:** *Promise‹void›*
 
+▸ **expect**(`expectedEvents`: EvebleTypes.Event[] | Function): *Promise‹void›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`expectedEvents` | EvebleTypes.Event[] &#124; Function |
+
+**Returns:** *Promise‹void›*
+
+___
+
+###  expectState
+
+▸ **expectState**(`expectedState`: EvebleTypes.Props): *this*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`expectedState` | EvebleTypes.Props |
+
+**Returns:** *this*
+
+▸ **expectState**(`expectedState`: EvebleTypes.Props): *this*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`expectedState` | EvebleTypes.Props |
+
+**Returns:** *this*
+
 ___
 
 ###  expectToFailWith
+
+▸ **expectToFailWith**(`error`: any, `errorMessage?`: string): *Promise‹void›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`error` | any |
+`errorMessage?` | string |
+
+**Returns:** *Promise‹void›*
 
 ▸ **expectToFailWith**(`error`: any, `errorMessage?`: string): *Promise‹void›*
 
@@ -78,9 +124,23 @@ Name | Type |
 
 **Returns:** *Promise‹void›*
 
+▸ **expectToInclude**(`expectedEvents`: EvebleTypes.Event[] | Function): *Promise‹void›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`expectedEvents` | EvebleTypes.Event[] &#124; Function |
+
+**Returns:** *Promise‹void›*
+
 ___
 
 ###  getApp
+
+▸ **getApp**(): *EvebleTypes.App*
+
+**Returns:** *EvebleTypes.App*
 
 ▸ **getApp**(): *EvebleTypes.App*
 
@@ -94,9 +154,17 @@ ___
 
 **Returns:** *[TestConfig](../classes/testconfig.md)*
 
+▸ **getConfig**(): *TestConfig*
+
+**Returns:** *TestConfig*
+
 ___
 
 ###  getExpectedEvents
+
+▸ **getExpectedEvents**(): *EvebleTypes.Event[]*
+
+**Returns:** *EvebleTypes.Event[]*
 
 ▸ **getExpectedEvents**(): *EvebleTypes.Event[]*
 
@@ -110,9 +178,17 @@ ___
 
 **Returns:** *EvebleTypes.Command[]*
 
+▸ **getExpectedScheduledCommands**(): *EvebleTypes.Command[]*
+
+**Returns:** *EvebleTypes.Command[]*
+
 ___
 
 ###  getExpectedUnscheduledCommands
+
+▸ **getExpectedUnscheduledCommands**(): *EvebleTypes.Command[]*
+
+**Returns:** *EvebleTypes.Command[]*
 
 ▸ **getExpectedUnscheduledCommands**(): *EvebleTypes.Command[]*
 
@@ -126,9 +202,17 @@ ___
 
 **Returns:** *EvebleTypes.Event[]*
 
+▸ **getPublishedEvents**(): *EvebleTypes.Event[]*
+
+**Returns:** *EvebleTypes.Event[]*
+
 ___
 
 ###  getQueue
+
+▸ **getQueue**(): *EvebleTypes.Message[]*
+
+**Returns:** *EvebleTypes.Message[]*
 
 ▸ **getQueue**(): *EvebleTypes.Message[]*
 
@@ -142,6 +226,10 @@ ___
 
 **Returns:** *EvebleTypes.EventSourceableType*
 
+▸ **getSUT**(): *EvebleTypes.EventSourceableType*
+
+**Returns:** *EvebleTypes.EventSourceableType*
+
 ___
 
 ###  getScheduledCommands
@@ -150,9 +238,17 @@ ___
 
 **Returns:** *EvebleTypes.Command[]*
 
+▸ **getScheduledCommands**(): *EvebleTypes.Command[]*
+
+**Returns:** *EvebleTypes.Command[]*
+
 ___
 
 ###  getUnscheduledCommands
+
+▸ **getUnscheduledCommands**(): *EvebleTypes.Command[]*
+
+**Returns:** *EvebleTypes.Command[]*
 
 ▸ **getUnscheduledCommands**(): *EvebleTypes.Command[]*
 
@@ -172,9 +268,29 @@ Name | Type |
 
 **Returns:** *Promise‹this›*
 
+▸ **given**(`messages`: EvebleTypes.Message[]): *Promise‹this›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`messages` | EvebleTypes.Message[] |
+
+**Returns:** *Promise‹this›*
+
 ___
 
 ###  schedules
+
+▸ **schedules**(`commands`: EvebleTypes.Command[]): *Promise‹this›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`commands` | EvebleTypes.Command[] |
+
+**Returns:** *Promise‹this›*
 
 ▸ **schedules**(`commands`: EvebleTypes.Command[]): *Promise‹this›*
 
@@ -201,6 +317,17 @@ Name | Type |
 
 **Returns:** *Promise‹void›*
 
+▸ **throws**(`error`: any, `errorMessage`: string): *Promise‹void›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`error` | any |
+`errorMessage` | string |
+
+**Returns:** *Promise‹void›*
+
 ___
 
 ###  unschedules
@@ -215,9 +342,29 @@ Name | Type |
 
 **Returns:** *Promise‹this›*
 
+▸ **unschedules**(`commands`: EvebleTypes.Command[]): *Promise‹this›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`commands` | EvebleTypes.Command[] |
+
+**Returns:** *Promise‹this›*
+
 ___
 
 ###  when
+
+▸ **when**(`messages`: EvebleTypes.Message[]): *Promise‹this›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`messages` | EvebleTypes.Message[] |
+
+**Returns:** *Promise‹this›*
 
 ▸ **when**(`messages`: EvebleTypes.Message[]): *Promise‹this›*
 

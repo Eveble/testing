@@ -10,7 +10,7 @@ sidebar_label: "WelcomeEmailTriggered"
 
 ## Hierarchy
 
-* Event
+* Event‹[WelcomeEmailTriggered](welcomeemailtriggered.md)›
 
   ↳ **WelcomeEmailTriggered**
 
@@ -32,10 +32,10 @@ sidebar_label: "WelcomeEmailTriggered"
 ### Properties
 
 * [customerId](welcomeemailtriggered.md#customerid)
-* [metadata](welcomeemailtriggered.md#metadata)
+* [metadata](welcomeemailtriggered.md#optional-metadata)
 * [schemaVersion](welcomeemailtriggered.md#optional-schemaversion)
 * [sourceId](welcomeemailtriggered.md#sourceid)
-* [timestamp](welcomeemailtriggered.md#timestamp)
+* [timestamp](welcomeemailtriggered.md#optional-timestamp)
 * [version](welcomeemailtriggered.md#optional-version)
 
 ### Methods
@@ -88,7 +88,7 @@ sidebar_label: "WelcomeEmailTriggered"
 
 ###  constructor
 
-\+ **new WelcomeEmailTriggered**(`props?`: types.Props): *[WelcomeEmailTriggered](welcomeemailtriggered.md)*
+\+ **new WelcomeEmailTriggered**(`props`: types.ConstructorType‹[WelcomeEmailTriggered](welcomeemailtriggered.md)› & object): *[WelcomeEmailTriggered](welcomeemailtriggered.md)*
 
 *Inherited from [CustomerRegistrationInitiated](customerregistrationinitiated.md).[constructor](customerregistrationinitiated.md#constructor)*
 
@@ -98,7 +98,7 @@ sidebar_label: "WelcomeEmailTriggered"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[WelcomeEmailTriggered](welcomeemailtriggered.md)› & object |
 
 **Returns:** *[WelcomeEmailTriggered](welcomeemailtriggered.md)*
 
@@ -110,11 +110,11 @@ Name | Type |
 
 ___
 
-###  metadata
+### `Optional` metadata
 
-• **metadata**: *Record‹string, any›*
+• **metadata**? : *Record‹string, any›*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
@@ -136,11 +136,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ___
 

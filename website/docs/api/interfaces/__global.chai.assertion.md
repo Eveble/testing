@@ -28,3 +28,14 @@ Name | Type |
 `untestedProps?` | string[] |
 
 **Returns:** *[Assertion](__global.chai.assertion.md)*
+
+▸ **structs**(`expected`: Struct[], `untestedProps?`: string[]): *[Assertion](__global.chai.assertion.md)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`expected` | Struct[] |
+`untestedProps?` | string[] |
+
+**Returns:** *[Assertion](__global.chai.assertion.md)*

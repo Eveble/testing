@@ -10,7 +10,7 @@ sidebar_label: "TodoListCreated"
 
 ## Hierarchy
 
-* Event
+* Event‹[TodoListCreated](todolistcreated.md)›
 
   ↳ **TodoListCreated**
 
@@ -32,10 +32,10 @@ sidebar_label: "TodoListCreated"
 ### Properties
 
 * [maxItems](todolistcreated.md#maxitems)
-* [metadata](todolistcreated.md#metadata)
+* [metadata](todolistcreated.md#optional-metadata)
 * [schemaVersion](todolistcreated.md#optional-schemaversion)
 * [sourceId](todolistcreated.md#sourceid)
-* [timestamp](todolistcreated.md#timestamp)
+* [timestamp](todolistcreated.md#optional-timestamp)
 * [title](todolistcreated.md#title)
 * [todos](todolistcreated.md#todos)
 * [version](todolistcreated.md#optional-version)
@@ -90,7 +90,7 @@ sidebar_label: "TodoListCreated"
 
 ###  constructor
 
-\+ **new TodoListCreated**(`props?`: types.Props): *[TodoListCreated](todolistcreated.md)*
+\+ **new TodoListCreated**(`props`: types.ConstructorType‹[TodoListCreated](todolistcreated.md)› & object): *[TodoListCreated](todolistcreated.md)*
 
 *Inherited from [CustomerRegistrationInitiated](customerregistrationinitiated.md).[constructor](customerregistrationinitiated.md#constructor)*
 
@@ -100,7 +100,7 @@ sidebar_label: "TodoListCreated"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[TodoListCreated](todolistcreated.md)› & object |
 
 **Returns:** *[TodoListCreated](todolistcreated.md)*
 
@@ -112,11 +112,11 @@ Name | Type |
 
 ___
 
-###  metadata
+### `Optional` metadata
 
-• **metadata**: *Record‹string, any›*
+• **metadata**? : *Record‹string, any›*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
@@ -138,11 +138,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ___
 

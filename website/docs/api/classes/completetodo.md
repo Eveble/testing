@@ -10,7 +10,7 @@ sidebar_label: "CompleteTodo"
 
 ## Hierarchy
 
-* Command
+* Command‹[CompleteTodo](completetodo.md)›
 
   ↳ **CompleteTodo**
 
@@ -32,10 +32,10 @@ sidebar_label: "CompleteTodo"
 ### Properties
 
 * [id](completetodo.md#id)
-* [metadata](completetodo.md#metadata)
+* [metadata](completetodo.md#optional-metadata)
 * [schemaVersion](completetodo.md#optional-schemaversion)
 * [targetId](completetodo.md#targetid)
-* [timestamp](completetodo.md#timestamp)
+* [timestamp](completetodo.md#optional-timestamp)
 
 ### Methods
 
@@ -91,7 +91,7 @@ sidebar_label: "CompleteTodo"
 
 ###  constructor
 
-\+ **new CompleteTodo**(`props?`: types.Props): *[CompleteTodo](completetodo.md)*
+\+ **new CompleteTodo**(`props`: types.ConstructorType‹[CompleteTodo](completetodo.md)› & object): *[CompleteTodo](completetodo.md)*
 
 *Inherited from [RegisterCustomer](registercustomer.md).[constructor](registercustomer.md#constructor)*
 
@@ -101,7 +101,7 @@ sidebar_label: "CompleteTodo"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[CompleteTodo](completetodo.md)› & object |
 
 **Returns:** *[CompleteTodo](completetodo.md)*
 
@@ -113,11 +113,11 @@ Name | Type |
 
 ___
 
-###  metadata
+### `Optional` metadata
 
-• **metadata**: *Record‹string, any›*
+• **metadata**? : *Record‹string, any›*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
@@ -139,11 +139,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ## Methods
 

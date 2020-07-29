@@ -8,6 +8,8 @@ sidebar_label: "InvalidSUTError"
 
   ↳ [TestError](testerror.md)
 
+* TestError
+
   ↳ **InvalidSUTError**
 
 ## Index
@@ -51,6 +53,8 @@ Name | Type |
 
 *Inherited from [TestError](testerror.md).[code](testerror.md#optional-code)*
 
+*Overrides [TestError](testerror.md).[code](testerror.md#optional-code)*
+
 ___
 
 ###  message
@@ -88,6 +92,8 @@ ___
 ▸ **fillErrorProps**(`props`: types.ErrorProps): *types.ErrorProps*
 
 *Inherited from [TestError](testerror.md).[fillErrorProps](testerror.md#fillerrorprops)*
+
+*Overrides [TestError](testerror.md).[fillErrorProps](testerror.md#fillerrorprops)*
 
 **Parameters:**
 

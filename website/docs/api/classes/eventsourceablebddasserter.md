@@ -11,6 +11,7 @@ sidebar_label: "EventSourceableBDDAsserter"
 ## Implements
 
 * [EventSourceableBDDAsserter](../interfaces/types.eventsourceablebddasserter.md)
+* EventSourceableBDDAsserter
 
 ## Index
 
@@ -23,6 +24,7 @@ sidebar_label: "EventSourceableBDDAsserter"
 * [createCommit](eventsourceablebddasserter.md#createcommit)
 * [delay](eventsourceablebddasserter.md#delay)
 * [expect](eventsourceablebddasserter.md#expect)
+* [expectState](eventsourceablebddasserter.md#expectstate)
 * [expectToFailWith](eventsourceablebddasserter.md#expecttofailwith)
 * [expectToInclude](eventsourceablebddasserter.md#expecttoinclude)
 * [getApp](eventsourceablebddasserter.md#getapp)
@@ -51,6 +53,7 @@ sidebar_label: "EventSourceableBDDAsserter"
 
 \+ **new EventSourceableBDDAsserter**(`sut`: EvebleTypes.EventSourceableType, `app`: EvebleTypes.App, `config`: [TestConfig](testconfig.md)): *[EventSourceableBDDAsserter](eventsourceablebddasserter.md)*
 
+Creates an instance of EventSourceableBDDAsserter.
 Creates an instance of EventSourceableBDDAsserter.
 
 **Parameters:**
@@ -110,7 +113,7 @@ ___
 
 ###  expect
 
-▸ **expect**(`expectedEvents`: EvebleTypes.Event[] | Function): *Promise‹void›*
+▸ **expect**(`expectedEvents?`: EvebleTypes.Event[] | Function): *Promise‹void›*
 
 *Implementation of [EventSourceableBDDAsserter](../interfaces/types.eventsourceablebddasserter.md)*
 
@@ -124,11 +127,31 @@ Thrown if assertion does match all expectation.
 
 **Parameters:**
 
-Name | Type | Default | Description |
------- | ------ | ------ | ------ |
-`expectedEvents` | EvebleTypes.Event[] &#124; Function | [] | List of all expected `Events` that should be published on app. |
+Name | Type | Description |
+------ | ------ | ------ |
+`expectedEvents?` | EvebleTypes.Event[] &#124; Function | List of all expected `Events` that should be published on app. |
 
 **Returns:** *Promise‹void›*
+
+___
+
+###  expectState
+
+▸ **expectState**(`expectedState`: EvebleTypes.Props): *this*
+
+*Implementation of [EventSourceableBDDAsserter](../interfaces/types.eventsourceablebddasserter.md)*
+
+Creates state expectation describing of the subject's properties after test.
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`expectedState` | EvebleTypes.Props | Object with properties matching expected state. |
+
+**Returns:** *this*
+
+Promise of `this` instance.
 
 ___
 
@@ -158,7 +181,7 @@ ___
 
 ###  expectToInclude
 
-▸ **expectToInclude**(`expectedEvents`: EvebleTypes.Event[] | Function): *Promise‹void›*
+▸ **expectToInclude**(`expectedEvents?`: EvebleTypes.Event[] | Function): *Promise‹void›*
 
 *Implementation of [EventSourceableBDDAsserter](../interfaces/types.eventsourceablebddasserter.md)*
 
@@ -172,9 +195,9 @@ Thrown if assertion does not include expectation.
 
 **Parameters:**
 
-Name | Type | Default | Description |
------- | ------ | ------ | ------ |
-`expectedEvents` | EvebleTypes.Event[] &#124; Function | [] | List of partially expected `Events` that should be published on app. |
+Name | Type | Description |
+------ | ------ | ------ |
+`expectedEvents?` | EvebleTypes.Event[] &#124; Function | List of partially expected `Events` that should be published on app. |
 
 **Returns:** *Promise‹void›*
 
@@ -322,7 +345,7 @@ ___
 
 ###  given
 
-▸ **given**(`messages`: EvebleTypes.Message[]): *Promise‹this›*
+▸ **given**(`messages?`: EvebleTypes.Message[]): *Promise‹this›*
 
 *Implementation of [EventSourceableBDDAsserter](../interfaces/types.eventsourceablebddasserter.md)*
 
@@ -333,9 +356,9 @@ Describes the state **before** testing the behavior specified in this scenario(i
 
 **Parameters:**
 
-Name | Type | Default | Description |
------- | ------ | ------ | ------ |
-`messages` | EvebleTypes.Message[] | [] | List of instances implementing `Message` interface. |
+Name | Type | Description |
+------ | ------ | ------ |
+`messages?` | EvebleTypes.Message[] | List of instances implementing `Message` interface. |
 
 **Returns:** *Promise‹this›*
 
@@ -405,7 +428,7 @@ ___
 
 ###  schedules
 
-▸ **schedules**(`commands`: EvebleTypes.Command[]): *Promise‹this›*
+▸ **schedules**(`commands?`: EvebleTypes.Command[]): *Promise‹this›*
 
 *Implementation of [EventSourceableBDDAsserter](../interfaces/types.eventsourceablebddasserter.md)*
 
@@ -415,9 +438,9 @@ Adds scheduled commands that will be resolved immediately with application.
 
 **Parameters:**
 
-Name | Type | Default | Description |
------- | ------ | ------ | ------ |
-`commands` | EvebleTypes.Command[] | [] | Instances implementing `Command` interface that should be scheduled in testing scenario. |
+Name | Type | Description |
+------ | ------ | ------ |
+`commands?` | EvebleTypes.Command[] | Instances implementing `Command` interface that should be scheduled in testing scenario. |
 
 **Returns:** *Promise‹this›*
 
@@ -448,7 +471,7 @@ ___
 
 ###  unschedules
 
-▸ **unschedules**(`commands`: EvebleTypes.Command[]): *Promise‹this›*
+▸ **unschedules**(`commands?`: EvebleTypes.Command[]): *Promise‹this›*
 
 *Implementation of [EventSourceableBDDAsserter](../interfaces/types.eventsourceablebddasserter.md)*
 
@@ -459,9 +482,9 @@ send to application.
 
 **Parameters:**
 
-Name | Type | Default | Description |
------- | ------ | ------ | ------ |
-`commands` | EvebleTypes.Command[] | [] | Instances implementing `Command` interface that should be unscheduled in testing scenario. |
+Name | Type | Description |
+------ | ------ | ------ |
+`commands?` | EvebleTypes.Command[] | Instances implementing `Command` interface that should be unscheduled in testing scenario. |
 
 **Returns:** *Promise‹this›*
 
@@ -471,7 +494,7 @@ ___
 
 ###  when
 
-▸ **when**(`messages`: EvebleTypes.Message[]): *Promise‹this›*
+▸ **when**(`messages?`: EvebleTypes.Message[]): *Promise‹this›*
 
 *Implementation of [EventSourceableBDDAsserter](../interfaces/types.eventsourceablebddasserter.md)*
 
@@ -482,9 +505,9 @@ to application.
 
 **Parameters:**
 
-Name | Type | Default | Description |
------- | ------ | ------ | ------ |
-`messages` | EvebleTypes.Message[] | [] | List of instances implementing `Message` interface. |
+Name | Type | Description |
+------ | ------ | ------ |
+`messages?` | EvebleTypes.Message[] | List of instances implementing `Message` interface. |
 
 **Returns:** *Promise‹this›*
 

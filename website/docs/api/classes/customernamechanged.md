@@ -10,7 +10,7 @@ sidebar_label: "CustomerNameChanged"
 
 ## Hierarchy
 
-* Event
+* Event‹[CustomerNameChanged](customernamechanged.md)›
 
   ↳ **CustomerNameChanged**
 
@@ -31,11 +31,11 @@ sidebar_label: "CustomerNameChanged"
 
 ### Properties
 
-* [metadata](customernamechanged.md#metadata)
+* [metadata](customernamechanged.md#optional-metadata)
 * [name](customernamechanged.md#name)
 * [schemaVersion](customernamechanged.md#optional-schemaversion)
 * [sourceId](customernamechanged.md#sourceid)
-* [timestamp](customernamechanged.md#timestamp)
+* [timestamp](customernamechanged.md#optional-timestamp)
 * [version](customernamechanged.md#optional-version)
 
 ### Methods
@@ -88,7 +88,7 @@ sidebar_label: "CustomerNameChanged"
 
 ###  constructor
 
-\+ **new CustomerNameChanged**(`props?`: types.Props): *[CustomerNameChanged](customernamechanged.md)*
+\+ **new CustomerNameChanged**(`props`: types.ConstructorType‹[CustomerNameChanged](customernamechanged.md)› & object): *[CustomerNameChanged](customernamechanged.md)*
 
 *Inherited from [CustomerRegistrationInitiated](customerregistrationinitiated.md).[constructor](customerregistrationinitiated.md#constructor)*
 
@@ -98,17 +98,17 @@ sidebar_label: "CustomerNameChanged"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[CustomerNameChanged](customernamechanged.md)› & object |
 
 **Returns:** *[CustomerNameChanged](customernamechanged.md)*
 
 ## Properties
 
-###  metadata
+### `Optional` metadata
 
-• **metadata**: *Record‹string, any›*
+• **metadata**? : *Record‹string, any›*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
@@ -136,11 +136,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ___
 

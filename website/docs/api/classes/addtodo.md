@@ -10,7 +10,7 @@ sidebar_label: "AddTodo"
 
 ## Hierarchy
 
-* Command
+* Command‹[AddTodo](addtodo.md)›
 
   ↳ **AddTodo**
 
@@ -32,10 +32,10 @@ sidebar_label: "AddTodo"
 ### Properties
 
 * [id](addtodo.md#id)
-* [metadata](addtodo.md#metadata)
+* [metadata](addtodo.md#optional-metadata)
 * [schemaVersion](addtodo.md#optional-schemaversion)
 * [targetId](addtodo.md#targetid)
-* [timestamp](addtodo.md#timestamp)
+* [timestamp](addtodo.md#optional-timestamp)
 * [title](addtodo.md#title)
 
 ### Methods
@@ -92,7 +92,7 @@ sidebar_label: "AddTodo"
 
 ###  constructor
 
-\+ **new AddTodo**(`props?`: types.Props): *[AddTodo](addtodo.md)*
+\+ **new AddTodo**(`props`: types.ConstructorType‹[AddTodo](addtodo.md)› & object): *[AddTodo](addtodo.md)*
 
 *Inherited from [RegisterCustomer](registercustomer.md).[constructor](registercustomer.md#constructor)*
 
@@ -102,7 +102,7 @@ sidebar_label: "AddTodo"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[AddTodo](addtodo.md)› & object |
 
 **Returns:** *[AddTodo](addtodo.md)*
 
@@ -114,11 +114,11 @@ Name | Type |
 
 ___
 
-###  metadata
+### `Optional` metadata
 
-• **metadata**: *Record‹string, any›*
+• **metadata**? : *Record‹string, any›*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
@@ -140,11 +140,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ___
 

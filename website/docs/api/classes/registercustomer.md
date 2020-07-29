@@ -10,7 +10,7 @@ sidebar_label: "RegisterCustomer"
 
 ## Hierarchy
 
-* Command
+* Command‹[RegisterCustomer](registercustomer.md)›
 
   ↳ **RegisterCustomer**
 
@@ -32,11 +32,11 @@ sidebar_label: "RegisterCustomer"
 ### Properties
 
 * [customerId](registercustomer.md#customerid)
-* [customerName](registercustomer.md#customername)
-* [metadata](registercustomer.md#metadata)
+* [metadata](registercustomer.md#optional-metadata)
+* [name](registercustomer.md#name)
 * [schemaVersion](registercustomer.md#optional-schemaversion)
 * [targetId](registercustomer.md#targetid)
-* [timestamp](registercustomer.md#timestamp)
+* [timestamp](registercustomer.md#optional-timestamp)
 
 ### Methods
 
@@ -92,7 +92,7 @@ sidebar_label: "RegisterCustomer"
 
 ###  constructor
 
-\+ **new RegisterCustomer**(`props?`: types.Props): *[RegisterCustomer](registercustomer.md)*
+\+ **new RegisterCustomer**(`props`: types.ConstructorType‹[RegisterCustomer](registercustomer.md)› & object): *[RegisterCustomer](registercustomer.md)*
 
 *Inherited from [RegisterCustomer](registercustomer.md).[constructor](registercustomer.md#constructor)*
 
@@ -102,7 +102,7 @@ sidebar_label: "RegisterCustomer"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[RegisterCustomer](registercustomer.md)› & object |
 
 **Returns:** *[RegisterCustomer](registercustomer.md)*
 
@@ -114,17 +114,17 @@ Name | Type |
 
 ___
 
-###  customerName
+### `Optional` metadata
 
-• **customerName**: *string*
+• **metadata**? : *Record‹string, any›*
+
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
-###  metadata
+###  name
 
-• **metadata**: *Record‹string, any›*
-
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+• **name**: *string*
 
 ___
 
@@ -146,11 +146,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ## Methods
 

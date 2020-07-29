@@ -10,7 +10,7 @@ sidebar_label: "SendWelcomeEmail"
 
 ## Hierarchy
 
-* Command
+* Command‹[SendWelcomeEmail](sendwelcomeemail.md)›
 
   ↳ **SendWelcomeEmail**
 
@@ -33,10 +33,10 @@ sidebar_label: "SendWelcomeEmail"
 
 * [customerId](sendwelcomeemail.md#customerid)
 * [customerName](sendwelcomeemail.md#customername)
-* [metadata](sendwelcomeemail.md#metadata)
+* [metadata](sendwelcomeemail.md#optional-metadata)
 * [schemaVersion](sendwelcomeemail.md#optional-schemaversion)
 * [targetId](sendwelcomeemail.md#targetid)
-* [timestamp](sendwelcomeemail.md#timestamp)
+* [timestamp](sendwelcomeemail.md#optional-timestamp)
 
 ### Methods
 
@@ -92,7 +92,7 @@ sidebar_label: "SendWelcomeEmail"
 
 ###  constructor
 
-\+ **new SendWelcomeEmail**(`props?`: types.Props): *[SendWelcomeEmail](sendwelcomeemail.md)*
+\+ **new SendWelcomeEmail**(`props`: types.ConstructorType‹[SendWelcomeEmail](sendwelcomeemail.md)› & object): *[SendWelcomeEmail](sendwelcomeemail.md)*
 
 *Inherited from [RegisterCustomer](registercustomer.md).[constructor](registercustomer.md#constructor)*
 
@@ -102,7 +102,7 @@ sidebar_label: "SendWelcomeEmail"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[SendWelcomeEmail](sendwelcomeemail.md)› & object |
 
 **Returns:** *[SendWelcomeEmail](sendwelcomeemail.md)*
 
@@ -120,11 +120,11 @@ ___
 
 ___
 
-###  metadata
+### `Optional` metadata
 
-• **metadata**: *Record‹string, any›*
+• **metadata**? : *Record‹string, any›*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
@@ -146,11 +146,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ## Methods
 
