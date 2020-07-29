@@ -8,7 +8,11 @@ sidebar_label: "TestConfig"
 
 ▪ **T**: *SuperConstructor*
 
+▪ **T**: *SuperConstructor*
+
 ## Hierarchy
+
+* Config
 
 * Config
 
@@ -16,6 +20,9 @@ sidebar_label: "TestConfig"
 
 ## Implements
 
+* Definable
+* Hookable
+* Configurable
 * Definable
 * Hookable
 * Configurable
@@ -71,6 +78,7 @@ sidebar_label: "TestConfig"
 *Overrides void*
 
 Creates an instance of TestConfig.
+Creates an instance of TestConfig.
 
 **Parameters:**
 
@@ -88,6 +96,8 @@ Name | Type | Description |
 
 *Inherited from [TestConfig](testconfig.md).[included](testconfig.md#optional-included)*
 
+*Overrides [TestConfig](testconfig.md).[included](testconfig.md#optional-included)*
+
 ___
 
 ### `Optional` merged
@@ -95,6 +105,8 @@ ___
 • **merged**? : *Record‹string, Configurable›*
 
 *Inherited from [TestConfig](testconfig.md).[merged](testconfig.md#optional-merged)*
+
+*Overrides [TestConfig](testconfig.md).[merged](testconfig.md#optional-merged)*
 
 ___
 
@@ -115,6 +127,8 @@ ___
 
 *Inherited from [TestConfig](testconfig.md).[assign](testconfig.md#assign)*
 
+*Overrides [TestConfig](testconfig.md).[assign](testconfig.md#assign)*
+
 **Parameters:**
 
 Name | Type |
@@ -131,6 +145,8 @@ ___
 
 *Inherited from [TestConfig](testconfig.md).[equals](testconfig.md#equals)*
 
+*Overrides [TestConfig](testconfig.md).[equals](testconfig.md#equals)*
+
 **Parameters:**
 
 Name | Type |
@@ -146,6 +162,8 @@ ___
 ▸ **get**‹**T**›(`path`: string, `runtimeDefaultValue?`: T): *T | any*
 
 *Inherited from [TestConfig](testconfig.md).[get](testconfig.md#get)*
+
+*Overrides [TestConfig](testconfig.md).[get](testconfig.md#get)*
 
 **Type parameters:**
 
@@ -168,6 +186,8 @@ ___
 
 *Inherited from [TestConfig](testconfig.md).[getActions](testconfig.md#getactions)*
 
+*Overrides [TestConfig](testconfig.md).[getActions](testconfig.md#getactions)*
+
 **Returns:** *types.hooks.Actions*
 
 ___
@@ -177,6 +197,8 @@ ___
 ▸ **getDefault**‹**T**›(`path`: string): *T | any*
 
 *Inherited from [TestConfig](testconfig.md).[getDefault](testconfig.md#getdefault)*
+
+*Overrides [TestConfig](testconfig.md).[getDefault](testconfig.md#getdefault)*
 
 **Type parameters:**
 
@@ -198,6 +220,8 @@ ___
 
 *Inherited from [TestConfig](testconfig.md).[getExact](testconfig.md#getexact)*
 
+*Overrides [TestConfig](testconfig.md).[getExact](testconfig.md#getexact)*
+
 **Type parameters:**
 
 ▪ **T**: *any*
@@ -218,6 +242,8 @@ ___
 
 *Inherited from [TestConfig](testconfig.md).[getHook](testconfig.md#gethook)*
 
+*Overrides [TestConfig](testconfig.md).[getHook](testconfig.md#gethook)*
+
 **Parameters:**
 
 Name | Type |
@@ -235,6 +261,8 @@ ___
 
 *Inherited from [TestConfig](testconfig.md).[getHookOrThrow](testconfig.md#gethookorthrow)*
 
+*Overrides [TestConfig](testconfig.md).[getHookOrThrow](testconfig.md#gethookorthrow)*
+
 **Parameters:**
 
 Name | Type |
@@ -251,6 +279,8 @@ ___
 ▸ **getHooks**(`action`: string): *types.hooks.Mappings*
 
 *Inherited from [TestConfig](testconfig.md).[getHooks](testconfig.md#gethooks)*
+
+*Overrides [TestConfig](testconfig.md).[getHooks](testconfig.md#gethooks)*
 
 **Parameters:**
 
@@ -280,6 +310,8 @@ ___
 
 *Inherited from [TestConfig](testconfig.md).[getPropertyInitializers](testconfig.md#getpropertyinitializers)*
 
+*Overrides [TestConfig](testconfig.md).[getPropertyInitializers](testconfig.md#getpropertyinitializers)*
+
 **Returns:** *types.Props*
 
 ___
@@ -289,6 +321,8 @@ ___
 ▸ **has**(`path`: string): *boolean*
 
 *Inherited from [TestConfig](testconfig.md).[has](testconfig.md#has)*
+
+*Overrides [TestConfig](testconfig.md).[has](testconfig.md#has)*
 
 **Parameters:**
 
@@ -306,6 +340,8 @@ ___
 
 *Inherited from [TestConfig](testconfig.md).[hasAction](testconfig.md#hasaction)*
 
+*Overrides [TestConfig](testconfig.md).[hasAction](testconfig.md#hasaction)*
+
 **Parameters:**
 
 Name | Type |
@@ -322,6 +358,8 @@ ___
 
 *Inherited from [TestConfig](testconfig.md).[hasDefault](testconfig.md#hasdefault)*
 
+*Overrides [TestConfig](testconfig.md).[hasDefault](testconfig.md#hasdefault)*
+
 **Parameters:**
 
 Name | Type |
@@ -337,6 +375,8 @@ ___
 ▸ **hasHook**(`action`: string, `id`: string): *boolean*
 
 *Inherited from [TestConfig](testconfig.md).[hasHook](testconfig.md#hashook)*
+
+*Overrides [TestConfig](testconfig.md).[hasHook](testconfig.md#hashook)*
 
 **Parameters:**
 
@@ -355,6 +395,8 @@ ___
 
 *Inherited from [TestConfig](testconfig.md).[include](testconfig.md#include)*
 
+*Overrides [TestConfig](testconfig.md).[include](testconfig.md#include)*
+
 **Parameters:**
 
 Name | Type |
@@ -370,6 +412,8 @@ ___
 ▸ **isConfigurable**(`path`: string): *boolean*
 
 *Inherited from [TestConfig](testconfig.md).[isConfigurable](testconfig.md#isconfigurable)*
+
+*Overrides [TestConfig](testconfig.md).[isConfigurable](testconfig.md#isconfigurable)*
 
 **Parameters:**
 
@@ -387,6 +431,8 @@ ___
 
 *Inherited from [TestConfig](testconfig.md).[merge](testconfig.md#merge)*
 
+*Overrides [TestConfig](testconfig.md).[merge](testconfig.md#merge)*
+
 **Parameters:**
 
 Name | Type |
@@ -402,6 +448,8 @@ ___
 ▸ **overrideHook**(`action`: string, `id`: string, `hook`: types.Hook): *void*
 
 *Inherited from [TestConfig](testconfig.md).[overrideHook](testconfig.md#overridehook)*
+
+*Overrides [TestConfig](testconfig.md).[overrideHook](testconfig.md#overridehook)*
 
 **Parameters:**
 
@@ -420,6 +468,8 @@ ___
 ▸ **registerHook**(`action`: string, `id`: string, `hook`: types.Hook, `shouldOverride?`: boolean): *void*
 
 *Inherited from [TestConfig](testconfig.md).[registerHook](testconfig.md#registerhook)*
+
+*Overrides [TestConfig](testconfig.md).[registerHook](testconfig.md#registerhook)*
 
 **Parameters:**
 
@@ -440,6 +490,8 @@ ___
 
 *Inherited from [TestConfig](testconfig.md).[removeHook](testconfig.md#removehook)*
 
+*Overrides [TestConfig](testconfig.md).[removeHook](testconfig.md#removehook)*
+
 **Parameters:**
 
 Name | Type |
@@ -456,6 +508,8 @@ ___
 ▸ **set**‹**T**›(`path`: string, `value`: T): *void*
 
 *Inherited from [TestConfig](testconfig.md).[set](testconfig.md#set)*
+
+*Overrides [TestConfig](testconfig.md).[set](testconfig.md#set)*
 
 **Type parameters:**
 
@@ -478,6 +532,8 @@ ___
 
 *Inherited from [TestConfig](testconfig.md).[toPlainObject](testconfig.md#toplainobject)*
 
+*Overrides [TestConfig](testconfig.md).[toPlainObject](testconfig.md#toplainobject)*
+
 **Returns:** *types.Props*
 
 ___
@@ -487,6 +543,8 @@ ___
 ▸ **validateProps**(`props`: Record‹string | number | symbol, any› | undefined, `propTypes`: types.PropTypes, `isStrict?`: boolean): *boolean*
 
 *Inherited from [TestConfig](testconfig.md).[validateProps](testconfig.md#validateprops)*
+
+*Overrides [TestConfig](testconfig.md).[validateProps](testconfig.md#validateprops)*
 
 **Parameters:**
 
@@ -505,6 +563,8 @@ ___
 ▸ **from**‹**T**›(`props`: Record‹string, any›): *T*
 
 *Inherited from [TestConfig](testconfig.md).[from](testconfig.md#static-from)*
+
+*Overrides [TestConfig](testconfig.md).[from](testconfig.md#static-from)*
 
 **Type parameters:**
 
@@ -526,6 +586,8 @@ ___
 
 *Inherited from [TestConfig](testconfig.md).[getPropTypes](testconfig.md#static-getproptypes)*
 
+*Overrides [TestConfig](testconfig.md).[getPropTypes](testconfig.md#static-getproptypes)*
+
 **Returns:** *types.Props*
 
 ___
@@ -535,5 +597,7 @@ ___
 ▸ **getPropertyInitializers**(): *types.Props*
 
 *Inherited from [TestConfig](testconfig.md).[getPropertyInitializers](testconfig.md#getpropertyinitializers)*
+
+*Overrides [TestConfig](testconfig.md).[getPropertyInitializers](testconfig.md#getpropertyinitializers)*
 
 **Returns:** *types.Props*

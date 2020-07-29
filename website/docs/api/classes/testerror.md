@@ -8,6 +8,8 @@ sidebar_label: "TestError"
 
 * ExtendableError
 
+* ExtendableError
+
   ↳ **TestError**
 
   ↳ [InvalidAppError](invalidapperror.md)
@@ -43,6 +45,8 @@ sidebar_label: "TestError"
 
 *Inherited from [TestError](testerror.md).[constructor](testerror.md#constructor)*
 
+*Overrides [TestError](testerror.md).[constructor](testerror.md#constructor)*
+
 **Parameters:**
 
 Name | Type |
@@ -58,6 +62,8 @@ Name | Type |
 • **code**? : *number*
 
 *Inherited from [TestError](testerror.md).[code](testerror.md#optional-code)*
+
+*Overrides [TestError](testerror.md).[code](testerror.md#optional-code)*
 
 ___
 
@@ -96,6 +102,8 @@ ___
 ▸ **fillErrorProps**(`props`: types.ErrorProps): *types.ErrorProps*
 
 *Inherited from [TestError](testerror.md).[fillErrorProps](testerror.md#fillerrorprops)*
+
+*Overrides [TestError](testerror.md).[fillErrorProps](testerror.md#fillerrorprops)*
 
 **Parameters:**
 

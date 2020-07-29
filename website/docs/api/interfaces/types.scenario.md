@@ -44,9 +44,30 @@ Name | Type |
 
 **Returns:** *this*
 
+▸ **expect**(`events`: EvebleTypes.Event[]): *this*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`events` | EvebleTypes.Event[] |
+
+**Returns:** *this*
+
 ___
 
 ###  expectToFailWith
+
+▸ **expectToFailWith**(`error`: any, `errorMessage?`: string): *this*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`error` | any |
+`errorMessage?` | string |
+
+**Returns:** *this*
 
 ▸ **expectToFailWith**(`error`: any, `errorMessage?`: string): *this*
 
@@ -73,9 +94,23 @@ Name | Type |
 
 **Returns:** *this*
 
+▸ **expectToInclude**(`includedEvents`: EvebleTypes.Event[]): *this*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`includedEvents` | EvebleTypes.Event[] |
+
+**Returns:** *this*
+
 ___
 
 ###  getApp
+
+▸ **getApp**(): *EvebleTypes.App*
+
+**Returns:** *EvebleTypes.App*
 
 ▸ **getApp**(): *EvebleTypes.App*
 
@@ -89,6 +124,10 @@ ___
 
 **Returns:** *[EventSourceableBDDAsserterType](types.eventsourceablebddassertertype.md)*
 
+▸ **getAsserter**(): *EventSourceableBDDAsserterType*
+
+**Returns:** *EventSourceableBDDAsserterType*
+
 ___
 
 ###  getSUT
@@ -97,9 +136,23 @@ ___
 
 **Returns:** *EvebleTypes.EventSourceableType*
 
+▸ **getSUT**(): *EvebleTypes.EventSourceableType*
+
+**Returns:** *EvebleTypes.EventSourceableType*
+
 ___
 
 ###  given
+
+▸ **given**(`messages`: EvebleTypes.Message[]): *this*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`messages` | EvebleTypes.Message[] |
+
+**Returns:** *this*
 
 ▸ **given**(`messages`: EvebleTypes.Message[]): *this*
 
@@ -125,9 +178,29 @@ Name | Type |
 
 **Returns:** *this*
 
+▸ **schedules**(`commands`: EvebleTypes.Command[]): *this*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`commands` | EvebleTypes.Command[] |
+
+**Returns:** *this*
+
 ___
 
 ###  test
+
+▸ **test**(`sut`: EvebleTypes.EventSourceableType): *this*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`sut` | EvebleTypes.EventSourceableType |
+
+**Returns:** *this*
 
 ▸ **test**(`sut`: EvebleTypes.EventSourceableType): *this*
 
@@ -154,9 +227,30 @@ Name | Type |
 
 **Returns:** *this*
 
+▸ **throws**(`error`: any, `errorMessage?`: string): *this*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`error` | any |
+`errorMessage?` | string |
+
+**Returns:** *this*
+
 ___
 
 ###  unschedules
+
+▸ **unschedules**(`commands`: EvebleTypes.Command[]): *this*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`commands` | EvebleTypes.Command[] |
+
+**Returns:** *this*
 
 ▸ **unschedules**(`commands`: EvebleTypes.Command[]): *this*
 
@@ -182,9 +276,29 @@ Name | Type |
 
 **Returns:** *Promise‹boolean›*
 
+▸ **verify**(`config`: TestConfig): *Promise‹boolean›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`config` | TestConfig |
+
+**Returns:** *Promise‹boolean›*
+
 ___
 
 ###  when
+
+▸ **when**(`messages`: EvebleTypes.Message[]): *this*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`messages` | EvebleTypes.Message[] |
+
+**Returns:** *this*
 
 ▸ **when**(`messages`: EvebleTypes.Message[]): *this*
 

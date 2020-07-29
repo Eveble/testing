@@ -10,7 +10,7 @@ sidebar_label: "CustomerRegistrationCompleted"
 
 ## Hierarchy
 
-* Event
+* Event‹[CustomerRegistrationCompleted](customerregistrationcompleted.md)›
 
   ↳ **CustomerRegistrationCompleted**
 
@@ -31,10 +31,10 @@ sidebar_label: "CustomerRegistrationCompleted"
 
 ### Properties
 
-* [metadata](customerregistrationcompleted.md#metadata)
+* [metadata](customerregistrationcompleted.md#optional-metadata)
 * [schemaVersion](customerregistrationcompleted.md#optional-schemaversion)
 * [sourceId](customerregistrationcompleted.md#sourceid)
-* [timestamp](customerregistrationcompleted.md#timestamp)
+* [timestamp](customerregistrationcompleted.md#optional-timestamp)
 * [version](customerregistrationcompleted.md#optional-version)
 
 ### Methods
@@ -87,7 +87,7 @@ sidebar_label: "CustomerRegistrationCompleted"
 
 ###  constructor
 
-\+ **new CustomerRegistrationCompleted**(`props?`: types.Props): *[CustomerRegistrationCompleted](customerregistrationcompleted.md)*
+\+ **new CustomerRegistrationCompleted**(`props`: types.ConstructorType‹[CustomerRegistrationCompleted](customerregistrationcompleted.md)› & object): *[CustomerRegistrationCompleted](customerregistrationcompleted.md)*
 
 *Inherited from [CustomerRegistrationInitiated](customerregistrationinitiated.md).[constructor](customerregistrationinitiated.md#constructor)*
 
@@ -97,17 +97,17 @@ sidebar_label: "CustomerRegistrationCompleted"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[CustomerRegistrationCompleted](customerregistrationcompleted.md)› & object |
 
 **Returns:** *[CustomerRegistrationCompleted](customerregistrationcompleted.md)*
 
 ## Properties
 
-###  metadata
+### `Optional` metadata
 
-• **metadata**: *Record‹string, any›*
+• **metadata**? : *Record‹string, any›*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
@@ -129,11 +129,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ___
 

@@ -65,6 +65,7 @@ sidebar_label: "TodoList"
 * [[ROLLBACK_STATE_METHOD_KEY]](todolist.md#[rollback_state_method_key])
 * [[SAVE_STATE_METHOD_KEY]](todolist.md#[save_state_method_key])
 * [assignMetadata](todolist.md#assignmetadata)
+* [commandProps](todolist.md#commandprops)
 * [ensureHandleability](todolist.md#ensurehandleability)
 * [equals](todolist.md#equals)
 * [eventProps](todolist.md#eventprops)
@@ -118,7 +119,6 @@ sidebar_label: "TodoList"
 * [overrideHandler](todolist.md#overridehandler)
 * [overrideHook](todolist.md#overridehook)
 * [overrideLegacyTransformer](todolist.md#overridelegacytransformer)
-* [pickEventProps](todolist.md#pickeventprops)
 * [processSerializableList](todolist.md#processserializablelist)
 * [record](todolist.md#record)
 * [registerHandler](todolist.md#registerhandler)
@@ -160,7 +160,7 @@ sidebar_label: "TodoList"
 
 ###  constructor
 
-\+ **new TodoList**(`arg`: History | Command | types.Props): *[TodoList](todolist.md)*
+\+ **new TodoList**(`arg`: History | Command‹object› | types.Props): *[TodoList](todolist.md)*
 
 *Inherited from [Customer](customer.md).[constructor](customer.md#constructor)*
 
@@ -170,7 +170,7 @@ sidebar_label: "TodoList"
 
 Name | Type |
 ------ | ------ |
-`arg` | History &#124; Command &#124; types.Props |
+`arg` | History &#124; Command‹object› &#124; types.Props |
 
 **Returns:** *[TodoList](todolist.md)*
 
@@ -462,6 +462,20 @@ Name | Type |
 
 ___
 
+###  commandProps
+
+▸ **commandProps**(): *object*
+
+*Inherited from [Customer](customer.md).[commandProps](customer.md#commandprops)*
+
+**Returns:** *object*
+
+* **metadata**: *Record‹string, any›*
+
+* **timestamp**: *Date*
+
+___
+
 ###  ensureHandleability
 
 ▸ **ensureHandleability**(`messageType`: MessageType‹Message›, `handleableTypes?`: MessageType‹Message› | MessageType‹Message›[]): *boolean*
@@ -499,11 +513,19 @@ ___
 
 ###  eventProps
 
-▸ **eventProps**(): *Record‹keyof any, any›*
+▸ **eventProps**(): *object*
 
 *Inherited from [Customer](customer.md).[eventProps](customer.md#eventprops)*
 
-**Returns:** *Record‹keyof any, any›*
+**Returns:** *object*
+
+* **metadata**: *Record‹string, any›*
+
+* **sourceId**: *Guid | string*
+
+* **timestamp**: *Date*
+
+* **version**: *number*
 
 ___
 
@@ -1158,22 +1180,6 @@ Name | Type |
 `transformer` | types.Hook |
 
 **Returns:** *void*
-
-___
-
-###  pickEventProps
-
-▸ **pickEventProps**(...`sources`: Record‹string, any›[]): *PickableProperties*
-
-*Inherited from [Customer](customer.md).[pickEventProps](customer.md#pickeventprops)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`...sources` | Record‹string, any›[] |
-
-**Returns:** *PickableProperties*
 
 ___
 

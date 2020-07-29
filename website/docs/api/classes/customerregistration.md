@@ -36,9 +36,9 @@ sidebar_label: "CustomerRegistration"
 * [[COMMANDS_KEY]](customerregistration.md#[commands_key])
 * [[EVENTS_KEY]](customerregistration.md#[events_key])
 * [customerId](customerregistration.md#customerid)
-* [customerName](customerregistration.md#customername)
 * [id](customerregistration.md#id)
 * [metadata](customerregistration.md#optional-metadata)
+* [name](customerregistration.md#name)
 * [schemaVersion](customerregistration.md#optional-schemaversion)
 * [state](customerregistration.md#state)
 * [status](customerregistration.md#status)
@@ -63,6 +63,7 @@ sidebar_label: "CustomerRegistration"
 * [[ROLLBACK_STATE_METHOD_KEY]](customerregistration.md#[rollback_state_method_key])
 * [[SAVE_STATE_METHOD_KEY]](customerregistration.md#[save_state_method_key])
 * [assignMetadata](customerregistration.md#assignmetadata)
+* [commandProps](customerregistration.md#commandprops)
 * [ensureHandleability](customerregistration.md#ensurehandleability)
 * [equals](customerregistration.md#equals)
 * [eventProps](customerregistration.md#eventprops)
@@ -117,7 +118,6 @@ sidebar_label: "CustomerRegistration"
 * [overrideHandler](customerregistration.md#overridehandler)
 * [overrideHook](customerregistration.md#overridehook)
 * [overrideLegacyTransformer](customerregistration.md#overridelegacytransformer)
-* [pickEventProps](customerregistration.md#pickeventprops)
 * [processSerializableList](customerregistration.md#processserializablelist)
 * [record](customerregistration.md#record)
 * [registerHandler](customerregistration.md#registerhandler)
@@ -166,7 +166,7 @@ sidebar_label: "CustomerRegistration"
 
 ###  constructor
 
-\+ **new CustomerRegistration**(`arg`: History | Command | Event | types.Props): *[CustomerRegistration](customerregistration.md)*
+\+ **new CustomerRegistration**(`arg`: History | Command‹object› | Event‹object› | types.Props): *[CustomerRegistration](customerregistration.md)*
 
 *Inherited from [CustomerRegistration](customerregistration.md).[constructor](customerregistration.md#constructor)*
 
@@ -176,7 +176,7 @@ sidebar_label: "CustomerRegistration"
 
 Name | Type |
 ------ | ------ |
-`arg` | History &#124; Command &#124; Event &#124; types.Props |
+`arg` | History &#124; Command‹object› &#124; Event‹object› &#124; types.Props |
 
 **Returns:** *[CustomerRegistration](customerregistration.md)*
 
@@ -208,12 +208,6 @@ ___
 
 ___
 
-###  customerName
-
-• **customerName**: *string*
-
-___
-
 ###  id
 
 • **id**: *string | Guid*
@@ -231,6 +225,12 @@ ___
 *Inherited from [CustomerRegistration](customerregistration.md).[metadata](customerregistration.md#optional-metadata)*
 
 *Overrides void*
+
+___
+
+###  name
+
+• **name**: *string*
 
 ___
 
@@ -442,6 +442,20 @@ Name | Type |
 
 ___
 
+###  commandProps
+
+▸ **commandProps**(): *object*
+
+*Inherited from [Customer](customer.md).[commandProps](customer.md#commandprops)*
+
+**Returns:** *object*
+
+* **metadata**: *Record‹string, any›*
+
+* **timestamp**: *Date*
+
+___
+
 ###  ensureHandleability
 
 ▸ **ensureHandleability**(`messageType`: MessageType‹Message›, `handleableTypes?`: MessageType‹Message› | MessageType‹Message›[]): *boolean*
@@ -479,11 +493,19 @@ ___
 
 ###  eventProps
 
-▸ **eventProps**(): *Record‹keyof any, any›*
+▸ **eventProps**(): *object*
 
 *Inherited from [Customer](customer.md).[eventProps](customer.md#eventprops)*
 
-**Returns:** *Record‹keyof any, any›*
+**Returns:** *object*
+
+* **metadata**: *Record‹string, any›*
+
+* **sourceId**: *Guid | string*
+
+* **timestamp**: *Date*
+
+* **version**: *number*
 
 ___
 
@@ -1148,22 +1170,6 @@ Name | Type |
 `transformer` | types.Hook |
 
 **Returns:** *void*
-
-___
-
-###  pickEventProps
-
-▸ **pickEventProps**(...`sources`: Record‹string, any›[]): *PickableProperties*
-
-*Inherited from [Customer](customer.md).[pickEventProps](customer.md#pickeventprops)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`...sources` | Record‹string, any›[] |
-
-**Returns:** *PickableProperties*
 
 ___
 

@@ -10,7 +10,7 @@ sidebar_label: "CreateCustomer"
 
 ## Hierarchy
 
-* Command
+* Command‹[CreateCustomer](createcustomer.md)›
 
   ↳ **CreateCustomer**
 
@@ -31,11 +31,11 @@ sidebar_label: "CreateCustomer"
 
 ### Properties
 
-* [metadata](createcustomer.md#metadata)
+* [metadata](createcustomer.md#optional-metadata)
 * [name](createcustomer.md#name)
 * [schemaVersion](createcustomer.md#optional-schemaversion)
 * [targetId](createcustomer.md#targetid)
-* [timestamp](createcustomer.md#timestamp)
+* [timestamp](createcustomer.md#optional-timestamp)
 
 ### Methods
 
@@ -91,7 +91,7 @@ sidebar_label: "CreateCustomer"
 
 ###  constructor
 
-\+ **new CreateCustomer**(`props?`: types.Props): *[CreateCustomer](createcustomer.md)*
+\+ **new CreateCustomer**(`props`: types.ConstructorType‹[CreateCustomer](createcustomer.md)› & object): *[CreateCustomer](createcustomer.md)*
 
 *Inherited from [RegisterCustomer](registercustomer.md).[constructor](registercustomer.md#constructor)*
 
@@ -101,17 +101,17 @@ sidebar_label: "CreateCustomer"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[CreateCustomer](createcustomer.md)› & object |
 
 **Returns:** *[CreateCustomer](createcustomer.md)*
 
 ## Properties
 
-###  metadata
+### `Optional` metadata
 
-• **metadata**: *Record‹string, any›*
+• **metadata**? : *Record‹string, any›*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
@@ -139,11 +139,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ## Methods
 

@@ -92,13 +92,17 @@ ___
 
 ###  on
 
-▸ **on**(`app`: EvebleTypes.App, `asserter?`: [EventSourceableBDDAsserterType](interfaces/types.eventsourceablebddassertertype.md)): *[Scenario](classes/scenario.md)*
+▸ **on**(`app`: EvebleTypes.App, `options?`: object): *[Scenario](classes/scenario.md)*
 
 **Parameters:**
 
+▪ **app**: *EvebleTypes.App*
+
+▪`Optional`  **options**: *object*
+
 Name | Type |
 ------ | ------ |
-`app` | EvebleTypes.App |
 `asserter?` | [EventSourceableBDDAsserterType](interfaces/types.eventsourceablebddassertertype.md) |
+`config?` | [TestConfig](classes/testconfig.md) |
 
 **Returns:** *[Scenario](classes/scenario.md)*

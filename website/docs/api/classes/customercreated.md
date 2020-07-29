@@ -10,7 +10,7 @@ sidebar_label: "CustomerCreated"
 
 ## Hierarchy
 
-* Event
+* Event‹[CustomerCreated](customercreated.md)›
 
   ↳ **CustomerCreated**
 
@@ -31,11 +31,11 @@ sidebar_label: "CustomerCreated"
 
 ### Properties
 
-* [metadata](customercreated.md#metadata)
+* [metadata](customercreated.md#optional-metadata)
 * [name](customercreated.md#name)
 * [schemaVersion](customercreated.md#optional-schemaversion)
 * [sourceId](customercreated.md#sourceid)
-* [timestamp](customercreated.md#timestamp)
+* [timestamp](customercreated.md#optional-timestamp)
 * [version](customercreated.md#optional-version)
 
 ### Methods
@@ -88,7 +88,7 @@ sidebar_label: "CustomerCreated"
 
 ###  constructor
 
-\+ **new CustomerCreated**(`props?`: types.Props): *[CustomerCreated](customercreated.md)*
+\+ **new CustomerCreated**(`props`: types.ConstructorType‹[CustomerCreated](customercreated.md)› & object): *[CustomerCreated](customercreated.md)*
 
 *Inherited from [CustomerRegistrationInitiated](customerregistrationinitiated.md).[constructor](customerregistrationinitiated.md#constructor)*
 
@@ -98,17 +98,17 @@ sidebar_label: "CustomerCreated"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[CustomerCreated](customercreated.md)› & object |
 
 **Returns:** *[CustomerCreated](customercreated.md)*
 
 ## Properties
 
-###  metadata
+### `Optional` metadata
 
-• **metadata**: *Record‹string, any›*
+• **metadata**? : *Record‹string, any›*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
@@ -136,11 +136,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ___
 

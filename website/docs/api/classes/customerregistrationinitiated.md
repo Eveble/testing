@@ -10,7 +10,7 @@ sidebar_label: "CustomerRegistrationInitiated"
 
 ## Hierarchy
 
-* Event
+* Event‹[CustomerRegistrationInitiated](customerregistrationinitiated.md)›
 
   ↳ **CustomerRegistrationInitiated**
 
@@ -32,11 +32,11 @@ sidebar_label: "CustomerRegistrationInitiated"
 ### Properties
 
 * [customerId](customerregistrationinitiated.md#customerid)
-* [customerName](customerregistrationinitiated.md#customername)
-* [metadata](customerregistrationinitiated.md#metadata)
+* [metadata](customerregistrationinitiated.md#optional-metadata)
+* [name](customerregistrationinitiated.md#name)
 * [schemaVersion](customerregistrationinitiated.md#optional-schemaversion)
 * [sourceId](customerregistrationinitiated.md#sourceid)
-* [timestamp](customerregistrationinitiated.md#timestamp)
+* [timestamp](customerregistrationinitiated.md#optional-timestamp)
 * [version](customerregistrationinitiated.md#optional-version)
 
 ### Methods
@@ -89,7 +89,7 @@ sidebar_label: "CustomerRegistrationInitiated"
 
 ###  constructor
 
-\+ **new CustomerRegistrationInitiated**(`props?`: types.Props): *[CustomerRegistrationInitiated](customerregistrationinitiated.md)*
+\+ **new CustomerRegistrationInitiated**(`props`: types.ConstructorType‹[CustomerRegistrationInitiated](customerregistrationinitiated.md)› & object): *[CustomerRegistrationInitiated](customerregistrationinitiated.md)*
 
 *Inherited from [CustomerRegistrationInitiated](customerregistrationinitiated.md).[constructor](customerregistrationinitiated.md#constructor)*
 
@@ -99,7 +99,7 @@ sidebar_label: "CustomerRegistrationInitiated"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[CustomerRegistrationInitiated](customerregistrationinitiated.md)› & object |
 
 **Returns:** *[CustomerRegistrationInitiated](customerregistrationinitiated.md)*
 
@@ -111,17 +111,17 @@ Name | Type |
 
 ___
 
-###  customerName
+### `Optional` metadata
 
-• **customerName**: *string*
+• **metadata**? : *Record‹string, any›*
+
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
-###  metadata
+###  name
 
-• **metadata**: *Record‹string, any›*
-
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+• **name**: *string*
 
 ___
 
@@ -143,11 +143,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ___
 

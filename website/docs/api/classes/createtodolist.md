@@ -10,7 +10,7 @@ sidebar_label: "CreateTodoList"
 
 ## Hierarchy
 
-* Command
+* Command‹[CreateTodoList](createtodolist.md)›
 
   ↳ **CreateTodoList**
 
@@ -32,10 +32,10 @@ sidebar_label: "CreateTodoList"
 ### Properties
 
 * [maxItems](createtodolist.md#maxitems)
-* [metadata](createtodolist.md#metadata)
+* [metadata](createtodolist.md#optional-metadata)
 * [schemaVersion](createtodolist.md#optional-schemaversion)
 * [targetId](createtodolist.md#targetid)
-* [timestamp](createtodolist.md#timestamp)
+* [timestamp](createtodolist.md#optional-timestamp)
 * [title](createtodolist.md#title)
 
 ### Methods
@@ -92,7 +92,7 @@ sidebar_label: "CreateTodoList"
 
 ###  constructor
 
-\+ **new CreateTodoList**(`props?`: types.Props): *[CreateTodoList](createtodolist.md)*
+\+ **new CreateTodoList**(`props`: types.ConstructorType‹[CreateTodoList](createtodolist.md)› & object): *[CreateTodoList](createtodolist.md)*
 
 *Inherited from [RegisterCustomer](registercustomer.md).[constructor](registercustomer.md#constructor)*
 
@@ -102,7 +102,7 @@ sidebar_label: "CreateTodoList"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[CreateTodoList](createtodolist.md)› & object |
 
 **Returns:** *[CreateTodoList](createtodolist.md)*
 
@@ -114,11 +114,11 @@ Name | Type |
 
 ___
 
-###  metadata
+### `Optional` metadata
 
-• **metadata**: *Record‹string, any›*
+• **metadata**? : *Record‹string, any›*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
@@ -140,11 +140,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ___
 

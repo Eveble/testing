@@ -10,7 +10,7 @@ sidebar_label: "ExpireTodo"
 
 ## Hierarchy
 
-* Command
+* Command‹[ExpireTodo](expiretodo.md)›
 
   ↳ **ExpireTodo**
 
@@ -32,10 +32,10 @@ sidebar_label: "ExpireTodo"
 ### Properties
 
 * [id](expiretodo.md#id)
-* [metadata](expiretodo.md#metadata)
+* [metadata](expiretodo.md#optional-metadata)
 * [schemaVersion](expiretodo.md#optional-schemaversion)
 * [targetId](expiretodo.md#targetid)
-* [timestamp](expiretodo.md#timestamp)
+* [timestamp](expiretodo.md#optional-timestamp)
 
 ### Methods
 
@@ -91,7 +91,7 @@ sidebar_label: "ExpireTodo"
 
 ###  constructor
 
-\+ **new ExpireTodo**(`props?`: types.Props): *[ExpireTodo](expiretodo.md)*
+\+ **new ExpireTodo**(`props`: types.ConstructorType‹[ExpireTodo](expiretodo.md)› & object): *[ExpireTodo](expiretodo.md)*
 
 *Inherited from [RegisterCustomer](registercustomer.md).[constructor](registercustomer.md#constructor)*
 
@@ -101,7 +101,7 @@ sidebar_label: "ExpireTodo"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[ExpireTodo](expiretodo.md)› & object |
 
 **Returns:** *[ExpireTodo](expiretodo.md)*
 
@@ -113,11 +113,11 @@ Name | Type |
 
 ___
 
-###  metadata
+### `Optional` metadata
 
-• **metadata**: *Record‹string, any›*
+• **metadata**? : *Record‹string, any›*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
@@ -139,11 +139,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ## Methods
 

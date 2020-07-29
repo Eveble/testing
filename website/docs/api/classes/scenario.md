@@ -11,6 +11,7 @@ sidebar_label: "Scenario"
 ## Implements
 
 * [Scenario](../interfaces/types.scenario.md)
+* Scenario
 
 ## Index
 
@@ -38,16 +39,23 @@ sidebar_label: "Scenario"
 
 ###  constructor
 
-\+ **new Scenario**(`app`: EvebleTypes.App, `asserter`: [EventSourceableBDDAsserterType](../interfaces/types.eventsourceablebddassertertype.md)): *[Scenario](scenario.md)*
+\+ **new Scenario**(`app`: EvebleTypes.App, `options?`: object): *[Scenario](scenario.md)*
 
+Creates an instance of `Scenario`.
 Creates an instance of `Scenario`.
 
 **Parameters:**
 
-Name | Type | Default | Description |
------- | ------ | ------ | ------ |
-`app` | EvebleTypes.App | - | Instance implementing `App` interface. |
-`asserter` | [EventSourceableBDDAsserterType](../interfaces/types.eventsourceablebddassertertype.md) | EventSourceableBDDAsserter | Optional asserter constructor implementing `EventSourceableBDDAsserterType` interface.  |
+▪ **app**: *EvebleTypes.App*
+
+Instance implementing `App` interface.
+
+▪`Optional`  **options**: *object*
+
+Name | Type |
+------ | ------ |
+`asserter?` | [EventSourceableBDDAsserterType](../interfaces/types.eventsourceablebddassertertype.md) |
+`config?` | [TestConfig](testconfig.md) |
 
 **Returns:** *[Scenario](scenario.md)*
 
@@ -55,18 +63,21 @@ Name | Type | Default | Description |
 
 ###  expect
 
-▸ **expect**(`events`: EvebleTypes.Event[]): *this*
+▸ **expect**(`events?`: EvebleTypes.Event[]): *this*
 
 *Implementation of [Scenario](../interfaces/types.scenario.md)*
 
 Creates test expectation describing the changes you exactly expect due to the specified
 behavior(all events published must match).
 
+**`throws`** {InvalidExpectationError}
+Thrown if expectation for error already exists.
+
 **Parameters:**
 
-Name | Type | Default |
------- | ------ | ------ |
-`events` | EvebleTypes.Event[] | [] |
+Name | Type |
+------ | ------ |
+`events?` | EvebleTypes.Event[] |
 
 **Returns:** *this*
 
@@ -97,7 +108,7 @@ ___
 
 ###  expectToInclude
 
-▸ **expectToInclude**(`includedEvents`: EvebleTypes.Event[]): *this*
+▸ **expectToInclude**(`includedEvents?`: EvebleTypes.Event[]): *this*
 
 *Implementation of [Scenario](../interfaces/types.scenario.md)*
 
@@ -106,9 +117,9 @@ behavior(only part of events published can match).
 
 **Parameters:**
 
-Name | Type | Default | Description |
------- | ------ | ------ | ------ |
-`includedEvents` | EvebleTypes.Event[] | [] | List of partially expected `Events` that should be published on app. |
+Name | Type | Description |
+------ | ------ | ------ |
+`includedEvents?` | EvebleTypes.Event[] | List of partially expected `Events` that should be published on app. |
 
 **Returns:** *this*
 
@@ -160,7 +171,7 @@ ___
 
 ###  given
 
-▸ **given**(`messages`: EvebleTypes.Message[]): *this*
+▸ **given**(`messages?`: EvebleTypes.Message[]): *this*
 
 *Implementation of [Scenario](../interfaces/types.scenario.md)*
 
@@ -170,9 +181,9 @@ Describes the state **before** testing the behavior specified in this scenario(i
 
 **Parameters:**
 
-Name | Type | Default |
+Name | Type | Description |
 ------ | ------ | ------ |
-`messages` | EvebleTypes.Message[] | [] |
+`messages?` | EvebleTypes.Message[] | List of instances implementing `Message` interface. |
 
 **Returns:** *this*
 
@@ -182,7 +193,7 @@ ___
 
 ###  schedules
 
-▸ **schedules**(`commands`: EvebleTypes.Command[]): *this*
+▸ **schedules**(`commands?`: EvebleTypes.Command[]): *this*
 
 *Implementation of [Scenario](../interfaces/types.scenario.md)*
 
@@ -190,9 +201,9 @@ Adds scheduled commands that will be resolved immediately with application.
 
 **Parameters:**
 
-Name | Type | Default | Description |
------- | ------ | ------ | ------ |
-`commands` | EvebleTypes.Command[] | [] | Instances implementing `Command` interface that should be scheduled in testing scenario. |
+Name | Type | Description |
+------ | ------ | ------ |
+`commands?` | EvebleTypes.Command[] | Instances implementing `Command` interface that should be scheduled in testing scenario. |
 
 **Returns:** *this*
 
@@ -241,7 +252,7 @@ ___
 
 ###  unschedules
 
-▸ **unschedules**(`commands`: EvebleTypes.Command[]): *this*
+▸ **unschedules**(`commands?`: EvebleTypes.Command[]): *this*
 
 *Implementation of [Scenario](../interfaces/types.scenario.md)*
 
@@ -250,9 +261,9 @@ send to application.
 
 **Parameters:**
 
-Name | Type | Default | Description |
------- | ------ | ------ | ------ |
-`commands` | EvebleTypes.Command[] | [] | Instances implementing `Command` interface that should be unscheduled in testing scenario. |
+Name | Type | Description |
+------ | ------ | ------ |
+`commands?` | EvebleTypes.Command[] | Instances implementing `Command` interface that should be unscheduled in testing scenario. |
 
 **Returns:** *this*
 
@@ -262,7 +273,7 @@ ___
 
 ###  verify
 
-▸ **verify**(`config`: [TestConfig](testconfig.md)): *Promise‹boolean›*
+▸ **verify**(`expectedState?`: EvebleTypes.Props): *Promise‹boolean›*
 
 *Implementation of [Scenario](../interfaces/types.scenario.md)*
 
@@ -273,9 +284,9 @@ Thrown if assertion does not match expectation.
 
 **Parameters:**
 
-Name | Type | Default | Description |
------- | ------ | ------ | ------ |
-`config` | [TestConfig](testconfig.md) | new TestConfig() | Instance of `TestConfig` |
+Name | Type | Description |
+------ | ------ | ------ |
+`expectedState?` | EvebleTypes.Props | Optional object with properties matching expected state. |
 
 **Returns:** *Promise‹boolean›*
 
@@ -285,7 +296,7 @@ ___
 
 ###  when
 
-▸ **when**(`messages`: EvebleTypes.Message[]): *this*
+▸ **when**(`messages?`: EvebleTypes.Message[]): *this*
 
 *Implementation of [Scenario](../interfaces/types.scenario.md)*
 
@@ -296,9 +307,9 @@ to application.
 
 **Parameters:**
 
-Name | Type | Default | Description |
------- | ------ | ------ | ------ |
-`messages` | EvebleTypes.Message[] | [] | List of instances implementing `Message` interface. |
+Name | Type | Description |
+------ | ------ | ------ |
+`messages?` | EvebleTypes.Message[] | List of instances implementing `Message` interface. |
 
 **Returns:** *this*
 

@@ -10,7 +10,7 @@ sidebar_label: "ChangeCustomerName"
 
 ## Hierarchy
 
-* Command
+* Command‹[ChangeCustomerName](changecustomername.md)›
 
   ↳ **ChangeCustomerName**
 
@@ -31,11 +31,11 @@ sidebar_label: "ChangeCustomerName"
 
 ### Properties
 
-* [metadata](changecustomername.md#metadata)
+* [metadata](changecustomername.md#optional-metadata)
 * [name](changecustomername.md#name)
 * [schemaVersion](changecustomername.md#optional-schemaversion)
 * [targetId](changecustomername.md#targetid)
-* [timestamp](changecustomername.md#timestamp)
+* [timestamp](changecustomername.md#optional-timestamp)
 
 ### Methods
 
@@ -91,7 +91,7 @@ sidebar_label: "ChangeCustomerName"
 
 ###  constructor
 
-\+ **new ChangeCustomerName**(`props?`: types.Props): *[ChangeCustomerName](changecustomername.md)*
+\+ **new ChangeCustomerName**(`props`: types.ConstructorType‹[ChangeCustomerName](changecustomername.md)› & object): *[ChangeCustomerName](changecustomername.md)*
 
 *Inherited from [RegisterCustomer](registercustomer.md).[constructor](registercustomer.md#constructor)*
 
@@ -101,17 +101,17 @@ sidebar_label: "ChangeCustomerName"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[ChangeCustomerName](changecustomername.md)› & object |
 
 **Returns:** *[ChangeCustomerName](changecustomername.md)*
 
 ## Properties
 
-###  metadata
+### `Optional` metadata
 
-• **metadata**: *Record‹string, any›*
+• **metadata**? : *Record‹string, any›*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
@@ -139,11 +139,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ## Methods
 

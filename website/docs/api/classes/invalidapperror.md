@@ -8,6 +8,8 @@ sidebar_label: "InvalidAppError"
 
   ↳ [TestError](testerror.md)
 
+* TestError
+
   ↳ **InvalidAppError**
 
 ## Index
@@ -44,6 +46,8 @@ sidebar_label: "InvalidAppError"
 • **code**? : *number*
 
 *Inherited from [TestError](testerror.md).[code](testerror.md#optional-code)*
+
+*Overrides [TestError](testerror.md).[code](testerror.md#optional-code)*
 
 ___
 
@@ -82,6 +86,8 @@ ___
 ▸ **fillErrorProps**(`props`: types.ErrorProps): *types.ErrorProps*
 
 *Inherited from [TestError](testerror.md).[fillErrorProps](testerror.md#fillerrorprops)*
+
+*Overrides [TestError](testerror.md).[fillErrorProps](testerror.md#fillerrorprops)*
 
 **Parameters:**
 

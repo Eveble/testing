@@ -29,3 +29,15 @@ Name | Type |
 `config` | [TestConfig](../classes/testconfig.md) |
 
 **Returns:** *[EventSourceableBDDAsserter](types.eventsourceablebddasserter.md)*
+
+\+ **new EventSourceableBDDAsserterType**(`sut`: EvebleTypes.EventSourceableType, `app`: EvebleTypes.App, `config`: TestConfig): *EventSourceableBDDAsserter*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`sut` | EvebleTypes.EventSourceableType |
+`app` | EvebleTypes.App |
+`config` | TestConfig |
+
+**Returns:** *EventSourceableBDDAsserter*

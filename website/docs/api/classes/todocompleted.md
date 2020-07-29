@@ -10,7 +10,7 @@ sidebar_label: "TodoCompleted"
 
 ## Hierarchy
 
-* Event
+* Event‹[TodoCompleted](todocompleted.md)›
 
   ↳ **TodoCompleted**
 
@@ -31,10 +31,10 @@ sidebar_label: "TodoCompleted"
 
 ### Properties
 
-* [metadata](todocompleted.md#metadata)
+* [metadata](todocompleted.md#optional-metadata)
 * [schemaVersion](todocompleted.md#optional-schemaversion)
 * [sourceId](todocompleted.md#sourceid)
-* [timestamp](todocompleted.md#timestamp)
+* [timestamp](todocompleted.md#optional-timestamp)
 * [todo](todocompleted.md#todo)
 * [version](todocompleted.md#optional-version)
 
@@ -88,7 +88,7 @@ sidebar_label: "TodoCompleted"
 
 ###  constructor
 
-\+ **new TodoCompleted**(`props?`: types.Props): *[TodoCompleted](todocompleted.md)*
+\+ **new TodoCompleted**(`props`: types.ConstructorType‹[TodoCompleted](todocompleted.md)› & object): *[TodoCompleted](todocompleted.md)*
 
 *Inherited from [CustomerRegistrationInitiated](customerregistrationinitiated.md).[constructor](customerregistrationinitiated.md#constructor)*
 
@@ -98,17 +98,17 @@ sidebar_label: "TodoCompleted"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[TodoCompleted](todocompleted.md)› & object |
 
 **Returns:** *[TodoCompleted](todocompleted.md)*
 
 ## Properties
 
-###  metadata
+### `Optional` metadata
 
-• **metadata**: *Record‹string, any›*
+• **metadata**? : *Record‹string, any›*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
@@ -130,11 +130,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ___
 

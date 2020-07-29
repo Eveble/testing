@@ -10,7 +10,7 @@ sidebar_label: "TodoExpired"
 
 ## Hierarchy
 
-* Event
+* Event‹[TodoExpired](todoexpired.md)›
 
   ↳ **TodoExpired**
 
@@ -31,10 +31,10 @@ sidebar_label: "TodoExpired"
 
 ### Properties
 
-* [metadata](todoexpired.md#metadata)
+* [metadata](todoexpired.md#optional-metadata)
 * [schemaVersion](todoexpired.md#optional-schemaversion)
 * [sourceId](todoexpired.md#sourceid)
-* [timestamp](todoexpired.md#timestamp)
+* [timestamp](todoexpired.md#optional-timestamp)
 * [todo](todoexpired.md#todo)
 * [version](todoexpired.md#optional-version)
 
@@ -88,7 +88,7 @@ sidebar_label: "TodoExpired"
 
 ###  constructor
 
-\+ **new TodoExpired**(`props?`: types.Props): *[TodoExpired](todoexpired.md)*
+\+ **new TodoExpired**(`props`: types.ConstructorType‹[TodoExpired](todoexpired.md)› & object): *[TodoExpired](todoexpired.md)*
 
 *Inherited from [CustomerRegistrationInitiated](customerregistrationinitiated.md).[constructor](customerregistrationinitiated.md#constructor)*
 
@@ -98,17 +98,17 @@ sidebar_label: "TodoExpired"
 
 Name | Type |
 ------ | ------ |
-`props?` | types.Props |
+`props` | types.ConstructorType‹[TodoExpired](todoexpired.md)› & object |
 
 **Returns:** *[TodoExpired](todoexpired.md)*
 
 ## Properties
 
-###  metadata
+### `Optional` metadata
 
-• **metadata**: *Record‹string, any›*
+• **metadata**? : *Record‹string, any›*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#metadata)*
+*Inherited from [RegisterCustomer](registercustomer.md).[metadata](registercustomer.md#optional-metadata)*
 
 ___
 
@@ -130,11 +130,11 @@ ___
 
 ___
 
-###  timestamp
+### `Optional` timestamp
 
-• **timestamp**: *Date*
+• **timestamp**? : *Date*
 
-*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#timestamp)*
+*Inherited from [RegisterCustomer](registercustomer.md).[timestamp](registercustomer.md#optional-timestamp)*
 
 ___
 

@@ -211,6 +211,16 @@ describe(`on`, () => {
       expect(asserterInstance.expect).to.be.calledWithExactly([event]);
     });
 
+    it(`takes an empty array that will be used to define no-events fired expectation`, async () => {
+      const scenario = on(app, { asserter });
+      scenario.test(MyAggregate);
+      scenario.when([command]);
+      scenario.expect([]);
+      await scenario.verify();
+      expect(asserterInstance.expect).to.be.calledOnce;
+      expect(asserterInstance.expect).to.be.calledWithExactly([]);
+    });
+
     it(`allows chaining expectations`, async () => {
       const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
@@ -224,7 +234,7 @@ describe(`on`, () => {
       ]);
     });
 
-    it(`throws InvalidExpectationError if the inclufing expectation is set prior to defining expectation`, async () => {
+    it(`throws InvalidExpectationError if the including expectation is set prior to defining expectation`, async () => {
       const scenario = on(app, { asserter });
       scenario.test(MyAggregate);
       scenario.expectToInclude([event]);
