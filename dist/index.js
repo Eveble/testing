@@ -582,8 +582,7 @@ class Scenario {
             !lodash.isEmpty(this.expected.includedEvents)) {
             await asserter.expectToInclude(this.expected.includedEvents);
         }
-        else if (this.expected.events !== undefined &&
-            !lodash.isEmpty(this.expected.events)) {
+        else if (this.expected.events !== undefined) {
             await asserter.expect(this.expected.events);
         }
         else {

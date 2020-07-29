@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/eveble/testing/compare/v2.0.0...v2.1.0) (2020-07-29)
+
+
+### Features
+
+* allow empty array on expect ([f8ea003](https://github.com/eveble/testing/commit/f8ea003f347461758a68f375e766359566980a8f))
+
 # [2.0.0](https://github.com/eveble/testing/compare/v1.0.2...v2.0.0) (2020-07-25)
 
 
