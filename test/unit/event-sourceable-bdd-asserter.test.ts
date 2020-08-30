@@ -574,7 +574,7 @@ describe(`EventSourceableBDDAsserter`, function () {
 
       await expect(asserter.expect(events)).to.eventually.be.rejectedWith(
         AssertionError,
-        'List of actual published event does not match the expected ones'
+        'List of actual published events does not match the expected ones'
       );
     });
   });

@@ -399,7 +399,7 @@ export class EventSourceableBDDAsserter
         this.actual.events,
         this.expected.events,
         untestedProps,
-        'List of actual published event does not match the expected ones'
+        'List of actual published events does not match the expected ones'
       );
 
       asserter(
