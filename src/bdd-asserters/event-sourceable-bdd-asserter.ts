@@ -16,10 +16,16 @@ import {
 } from '@eveble/eveble';
 import chai, { assert, expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import {
+  METADATA_KEY,
+  interfaces as inversifyTypes,
+} from '@parisholley/inversify-async';
 import { types } from '../types';
 import { InvalidMessageError } from '../errors';
 import { chaiStructAssertion } from '../chai-assertions/chai-struct-assertion';
 import { TestConfig } from '../test-config';
+
+type Mappings = Record<keyof any, inversifyTypes.Metadata[]>;
 
 chai.use(chaiStructAssertion);
 chai.use(chaiAsPromised);
@@ -417,6 +423,9 @@ export class EventSourceableBDDAsserter
           this.getSUT(),
           this.expected.state.id
         );
+        if (sutInstance !== undefined) {
+          this.removeDependencies(sutInstance);
+        }
         // Reuse logic of haveArrayOfStructs with untestedProps for simplicity
         (assert as any).haveArrayOfStructs(
           [sutInstance],
@@ -427,6 +436,26 @@ export class EventSourceableBDDAsserter
       }
     };
     await this.run();
+  }
+
+  /**
+   * Removes dependencies from Event Sourceable.
+   * @param sutInstance - Instance of `EventSourceable`.
+   */
+  protected removeDependencies(sutInstance: EvebleTypes.EventSourceable): void {
+    const mappings: Mappings = Reflect.getMetadata(
+      METADATA_KEY.TAGGED_PROP,
+      sutInstance.constructor
+    );
+    if (mappings) {
+      for (const [key, metadatas] of Object.entries(mappings)) {
+        for (const metadata of metadatas) {
+          if (metadata.key === 'inject') {
+            delete sutInstance[key];
+          }
+        }
+      }
+    }
   }
 
   /**
