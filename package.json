@@ -54,6 +54,7 @@
     "@eveble/eveble": "latest",
     "@eveble/helpers": "latest",
     "reflect-metadata": "^0.1.13",
+    "@parisholley/inversify-async": "^1.1.7",
     "tsruntime": "^3.0.0-beta.1",
     "ttypescript": "^1.5.10",
     "delay": "^4.4.0",
