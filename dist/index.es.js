@@ -3,6 +3,7 @@ import { isEqual, some, omit, isFunction, isEmpty } from 'lodash';
 import delay from 'delay';
 import chai, { expect, assert } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import { METADATA_KEY } from '@parisholley/inversify-async';
 import { inspect } from 'util';
 import { getTypeName } from '@eveble/helpers';
 
@@ -293,15 +294,30 @@ class EventSourceableBDDAsserter {
             else {
                 asserter = assert.includeArrayOfStructs;
             }
-            asserter(this.actual.events, this.expected.events, untestedProps, 'List of actual published event does not match the expected ones');
+            asserter(this.actual.events, this.expected.events, untestedProps, 'List of actual published events does not match the expected ones');
             asserter(this.actual.unscheduledCommands, this.expected.unscheduledCommands, untestedProps, 'List of actual unscheduled commands does not match the expected ones');
             if (this.expected.state !== undefined) {
                 const repository = this.app.injector.get(BINDINGS.EventSourceableRepository);
                 const sutInstance = await repository.find(this.getSUT(), this.expected.state.id);
+                if (sutInstance !== undefined) {
+                    this.removeDependencies(sutInstance);
+                }
                 assert.haveArrayOfStructs([sutInstance], [this.expected.state], untestedProps, 'Actual state does not match expected one ');
             }
         };
         await this.run();
+    }
+    removeDependencies(sutInstance) {
+        const mappings = Reflect.getMetadata(METADATA_KEY.TAGGED_PROP, sutInstance.constructor);
+        if (mappings) {
+            for (const [key, metadatas] of Object.entries(mappings)) {
+                for (const metadata of metadatas) {
+                    if (metadata.key === 'inject') {
+                        delete sutInstance[key];
+                    }
+                }
+            }
+        }
     }
     hasExpectedScheduledCommands() {
         return this.getExpectedScheduledCommands().length > 0;

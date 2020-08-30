@@ -2,16 +2,20 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
 var eveble = require('@eveble/eveble');
 var lodash = require('lodash');
-var delay = _interopDefault(require('delay'));
+var delay = require('delay');
 var chai = require('chai');
-var chai__default = _interopDefault(chai);
-var chaiAsPromised = _interopDefault(require('chai-as-promised'));
+var chaiAsPromised = require('chai-as-promised');
+var inversifyAsync = require('@parisholley/inversify-async');
 var util = require('util');
 var helpers = require('@eveble/helpers');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var delay__default = /*#__PURE__*/_interopDefaultLegacy(delay);
+var chai__default = /*#__PURE__*/_interopDefaultLegacy(chai);
+var chaiAsPromised__default = /*#__PURE__*/_interopDefaultLegacy(chaiAsPromised);
 
 class TestError extends eveble.ExtendableError {
 }
@@ -141,8 +145,8 @@ const chaiStructAssertion = (chai, utils) => {
     };
 };
 
-chai__default.use(chaiStructAssertion);
-chai__default.use(chaiAsPromised);
+chai__default['default'].use(chaiStructAssertion);
+chai__default['default'].use(chaiAsPromised__default['default']);
 class EventSourceableBDDAsserter {
     constructor(sut, app, config) {
         this.sut = sut;
@@ -300,15 +304,30 @@ class EventSourceableBDDAsserter {
             else {
                 asserter = chai.assert.includeArrayOfStructs;
             }
-            asserter(this.actual.events, this.expected.events, untestedProps, 'List of actual published event does not match the expected ones');
+            asserter(this.actual.events, this.expected.events, untestedProps, 'List of actual published events does not match the expected ones');
             asserter(this.actual.unscheduledCommands, this.expected.unscheduledCommands, untestedProps, 'List of actual unscheduled commands does not match the expected ones');
             if (this.expected.state !== undefined) {
                 const repository = this.app.injector.get(eveble.BINDINGS.EventSourceableRepository);
                 const sutInstance = await repository.find(this.getSUT(), this.expected.state.id);
+                if (sutInstance !== undefined) {
+                    this.removeDependencies(sutInstance);
+                }
                 chai.assert.haveArrayOfStructs([sutInstance], [this.expected.state], untestedProps, 'Actual state does not match expected one ');
             }
         };
         await this.run();
+    }
+    removeDependencies(sutInstance) {
+        const mappings = Reflect.getMetadata(inversifyAsync.METADATA_KEY.TAGGED_PROP, sutInstance.constructor);
+        if (mappings) {
+            for (const [key, metadatas] of Object.entries(mappings)) {
+                for (const metadata of metadatas) {
+                    if (metadata.key === 'inject') {
+                        delete sutInstance[key];
+                    }
+                }
+            }
+        }
     }
     hasExpectedScheduledCommands() {
         return this.getExpectedScheduledCommands().length > 0;
@@ -341,7 +360,7 @@ class EventSourceableBDDAsserter {
         }
     }
     async delay(timeInMs) {
-        return delay(timeInMs);
+        return delay__default['default'](timeInMs);
     }
     overrideExtendableErrorFillErrorPropsMethod() {
         const originalFillErrorProps = eveble.ExtendableError.prototype.fillErrorProps;

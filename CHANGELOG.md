@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/eveble/testing/compare/v2.1.0...v2.1.1) (2020-08-30)
+
+
+### Bug Fixes
+
+* remove dependencies on state verification ([d41dc8b](https://github.com/eveble/testing/commit/d41dc8bb3befa2011837f5967183a48b4443f8a2))
+
 # [2.1.0](https://github.com/eveble/testing/compare/v2.0.0...v2.1.0) (2020-07-29)
 
 

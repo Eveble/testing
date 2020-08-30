@@ -41,6 +41,7 @@ export declare class EventSourceableBDDAsserter implements types.EventSourceable
     unschedules(commands?: EvebleTypes.Command[]): Promise<this>;
     expectState(expectedState: EvebleTypes.Props): this;
     protected assertIsValid(expectedEvents: EvebleTypes.Event[] | Function, assertionType: 'have' | 'include'): Promise<void>;
+    protected removeDependencies(sutInstance: EvebleTypes.EventSourceable): void;
     hasExpectedScheduledCommands(): boolean;
     onPublishedEvent(actualPublishedEvent: EvebleTypes.Event): void;
     onScheduleCommandSend(actualSendCommand: EvebleTypes.Command): void;
