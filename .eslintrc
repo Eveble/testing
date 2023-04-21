@@ -1,9 +1,12 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "prettier", "mocha"],
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "mocha"
+  ],
   "extends": [
     "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint",
     "plugin:prettier/recommended",
     "airbnb-base",
     "prettier"
@@ -11,7 +14,10 @@
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".ts"]
+        "extensions": [
+          ".js",
+          ".ts"
+        ]
       }
     }
   },
@@ -33,7 +39,9 @@
         "allowTemplateLiterals": true
       }
     ],
-    "prettier/prettier": ["error"],
+    "prettier/prettier": [
+      "error"
+    ],
     "mocha/no-exclusive-tests": "error",
     "no-unused-expressions": 0,
     "no-underscore-dangle": 0,
@@ -58,17 +66,17 @@
     "@typescript-eslint/ban-types": 0,
     "no-useless-constructor": 0,
     "import/extensions": 0,
-    "no-unused-vars": [
-      "error",
+    "no-use-before-define": 0,
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
       {
-        "argsIgnorePattern": "^_"
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
       }
     ],
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      {
-        "argsIgnorePattern": "^_"
-      }
-    ]
+    "default-param-last": 0,
+    "prefer-regex-literals": 0
   }
 }
