@@ -130,7 +130,8 @@
     "dotenv-expand": "^10.0.0",
     "dotenv": "^16.0.3",
     "chai": "^4.3.7",
-    "delay": "^5.0.0"
+    "delay": "^5.0.0",
+    "@types/lodash": "^4.14.192"
   },
   "scripts": {
     "explain": "./node_modules/.bin/npm-scripts-info",
