@@ -1,9 +1,7 @@
 import { Guid, Event, define } from '@eveble/eveble';
 
 @define('Customer.CustomerRegistrationInitiated')
-export class CustomerRegistrationInitiated extends Event<
-  CustomerRegistrationInitiated
-> {
+export class CustomerRegistrationInitiated extends Event<CustomerRegistrationInitiated> {
   customerId: string | Guid;
 
   name: string;
@@ -32,6 +30,4 @@ export class WelcomeEmailSent extends Event<WelcomeEmailSent> {
 }
 
 @define('Customer.CustomerRegistrationCompleted')
-export class CustomerRegistrationCompleted extends Event<
-  CustomerRegistrationCompleted
-> {}
+export class CustomerRegistrationCompleted extends Event<CustomerRegistrationCompleted> {}

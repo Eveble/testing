@@ -1,3 +1,4 @@
+import Chai from 'chai';
 import { isFunction, isEqual, omit, some } from 'lodash';
 import { inspect } from 'util';
 import { Struct, validate } from '@eveble/eveble';
@@ -122,65 +123,66 @@ export const chaiStructAssertion = (
   }
 
   // eslint-disable-next-line consistent-return
-  method('structs', function (
-    expected: Struct[],
-    untestedProps: string[]
-  ): void {
-    const have = utils.flag(this, 'have') || false;
-    const include = utils.flag(this, 'include') || false;
-    const negate = utils.flag(this, 'negate') || false;
+  method(
+    'structs',
+    // eslint-disable-next-line consistent-return
+    function (expected: Struct[], untestedProps: string[]): void {
+      const have = utils.flag(this, 'have') || false;
+      const include = utils.flag(this, 'include') || false;
+      const negate = utils.flag(this, 'negate') || false;
 
-    const actual: any = this._obj;
-    const processed = processAssertion(actual, expected, untestedProps);
-    const actualStringified = inspect(actual, {
-      colors: true,
-      depth: 10,
-    });
-    const expectedStringified = inspect(expected, {
-      colors: true,
-      depth: 10,
-    });
+      const actual: any = this._obj;
+      const processed = processAssertion(actual, expected, untestedProps);
+      const actualStringified = inspect(actual, {
+        colors: true,
+        depth: 10,
+      });
+      const expectedStringified = inspect(expected, {
+        colors: true,
+        depth: 10,
+      });
 
-    if (have) {
-      if (negate) {
+      if (have) {
+        if (negate) {
+          return this.assert(
+            isEqual(processed.actual, processed.expected),
+            null,
+            `expected ${actualStringified} to not have ${expectedStringified}`,
+            processed.actualReadable.join(''),
+            processed.expectedReadable.join(''),
+            true
+          );
+        }
         return this.assert(
           isEqual(processed.actual, processed.expected),
+          `expected ${actualStringified} to have ${expectedStringified}`,
           null,
-          `expected ${actualStringified} to not have ${expectedStringified}`,
           processed.actualReadable.join(''),
           processed.expectedReadable.join(''),
           true
         );
       }
-      return this.assert(
-        isEqual(processed.actual, processed.expected),
-        `expected ${actualStringified} to have ${expectedStringified}`,
-        null,
-        processed.actualReadable.join(''),
-        processed.expectedReadable.join(''),
-        true
-      );
-    }
 
-    if (include) {
-      for (const [index, struct] of Object.entries(processed.expected)) {
-        const structStringified = inspect(struct, {
-          colors: true,
-          depth: 10,
-        });
-        const structName = getTypeName(expected[index]);
-        this.assert(
-          some(processed.actual, (actualStruct: Struct) => {
-            return isEqual(actualStruct, struct);
-          }),
-          `Expected struct \n ${structName} ${structStringified} to be includeed in ${actualStringified}`,
-          `Expected struct \n ${structName} ${structStringified} to not be includeed in ${actualStringified}`,
-          struct,
-          processed.actualReadable.join('')
-        );
+      if (include) {
+        for (const [index, struct] of Object.entries(processed.expected)) {
+          const structStringified = inspect(struct, {
+            colors: true,
+            depth: 10,
+          });
+          const structName = getTypeName(expected[index]);
+          this.assert(
+            some(processed.actual, (actualStruct: Struct) =>
+              isEqual(actualStruct, struct)
+            ),
+            `Expected struct \n ${structName} ${structStringified} to be includeed in ${actualStringified}`,
+            `Expected struct \n ${structName} ${structStringified} to not be includeed in ${actualStringified}`,
+            struct,
+            processed.actualReadable.join('')
+          );
+        }
       }
     }
-  });
+  );
 
   property('have', function () {
     utils.flag(this, 'have', true);

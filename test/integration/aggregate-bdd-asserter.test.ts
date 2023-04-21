@@ -25,7 +25,7 @@ import { TodoExceededError } from '../domains/todo-list/domain-errors';
 import { TodoListApp } from '../domains/todo-list/app';
 import { on } from '../../src/index';
 
-describe(`Aggregate BDD api`, function () {
+describe(`Aggregate BDD api`, () => {
   let todoList: Record<string, any>;
   let todo: Record<string, any>;
   let injector: EvebleTypes.Injector;

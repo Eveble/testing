@@ -31,7 +31,8 @@ chai.use(chaiStructAssertion);
 chai.use(chaiAsPromised);
 
 export class EventSourceableBDDAsserter
-  implements types.EventSourceableBDDAsserter {
+  implements types.EventSourceableBDDAsserter
+{
   protected sut: EvebleTypes.EventSourceableType;
 
   protected app: EvebleTypes.App;
@@ -205,9 +206,10 @@ export class EventSourceableBDDAsserter
         version,
         events
       );
-      const commitStore = await this.app.injector.getAsync<
-        EvebleTypes.CommitStore
-      >(BINDINGS.CommitStore);
+      const commitStore =
+        await this.app.injector.getAsync<EvebleTypes.CommitStore>(
+          BINDINGS.CommitStore
+        );
 
       await commitStore.save(commit);
     }
@@ -314,9 +316,8 @@ export class EventSourceableBDDAsserter
       command.schedule(assignment);
     }
 
-    this.expected.scheduledCommands = this.expected.scheduledCommands.concat(
-      normalizedCommands
-    );
+    this.expected.scheduledCommands =
+      this.expected.scheduledCommands.concat(normalizedCommands);
 
     const commandBus = await this.app.injector.getAsync<EvebleTypes.CommandBus>(
       BINDINGS.CommandBus
@@ -386,9 +387,10 @@ export class EventSourceableBDDAsserter
       if (this.hasExpectedScheduledCommands()) {
         // Since CommandScheduler runs scheduled jobs in interval, we need to wait enough amount of time
         // till the job will actually be triggered and then processed on CommandScheduler
-        const commandScheduler = await this.app.injector.getAsync<
-          EvebleTypes.CommandScheduler
-        >(BINDINGS.CommandScheduler);
+        const commandScheduler =
+          await this.app.injector.getAsync<EvebleTypes.CommandScheduler>(
+            BINDINGS.CommandScheduler
+          );
         const interval = commandScheduler.getInterval();
         await this.delay(interval * 2 + 500);
       }
@@ -416,9 +418,10 @@ export class EventSourceableBDDAsserter
       );
 
       if (this.expected.state !== undefined) {
-        const repository = this.app.injector.get<
-          EvebleTypes.EventSourceableRepository
-        >(BINDINGS.EventSourceableRepository);
+        const repository =
+          this.app.injector.get<EvebleTypes.EventSourceableRepository>(
+            BINDINGS.EventSourceableRepository
+          );
         const sutInstance = await repository.find(
           this.getSUT(),
           this.expected.state.id
@@ -576,9 +579,10 @@ export class EventSourceableBDDAsserter
       sentBy: appId,
       receivers: [commitReceiver],
     };
-    const commitStore = await this.app.injector.getAsync<
-      EvebleTypes.CommitStore
-    >(BINDINGS.CommitStore);
+    const commitStore =
+      await this.app.injector.getAsync<EvebleTypes.CommitStore>(
+        BINDINGS.CommitStore
+      );
     const commitId = await commitStore.generateId();
     if (commitId !== undefined) {
       props.id = commitId.toString();
@@ -622,7 +626,8 @@ export class EventSourceableBDDAsserter
    */
   protected async cleanup(): Promise<void> {
     // Restore error stack traces after testing
-    (ExtendableError.prototype as any).fillErrorProps = this.originalFillErrorProps;
+    (ExtendableError.prototype as any).fillErrorProps =
+      this.originalFillErrorProps;
   }
 
   /**

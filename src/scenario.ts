@@ -162,9 +162,8 @@ export class Scenario implements types.Scenario {
     if (this.expected.includedEvents === undefined)
       this.expected.includedEvents = [];
 
-    this.expected.includedEvents = this.expected.includedEvents.concat(
-      includedEvents
-    );
+    this.expected.includedEvents =
+      this.expected.includedEvents.concat(includedEvents);
     return this;
   }
 
@@ -204,9 +203,8 @@ export class Scenario implements types.Scenario {
     if (this.expected.scheduledCommands === undefined)
       this.expected.scheduledCommands = [];
 
-    this.expected.scheduledCommands = this.expected.scheduledCommands.concat(
-      commands
-    );
+    this.expected.scheduledCommands =
+      this.expected.scheduledCommands.concat(commands);
     return this;
   }
 
@@ -221,9 +219,8 @@ export class Scenario implements types.Scenario {
     if (this.expected.unscheduledCommands === undefined)
       this.expected.unscheduledCommands = [];
 
-    this.expected.unscheduledCommands = this.expected.unscheduledCommands.concat(
-      commands
-    );
+    this.expected.unscheduledCommands =
+      this.expected.unscheduledCommands.concat(commands);
     return this;
   }
 

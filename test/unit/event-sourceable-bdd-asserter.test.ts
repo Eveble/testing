@@ -30,7 +30,7 @@ import { InvalidMessageError } from '../../src/errors';
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
-describe(`EventSourceableBDDAsserter`, function () {
+describe(`EventSourceableBDDAsserter`, () => {
   @define('EventSourceableBDDAsserter.MyCommand')
   class MyCommand extends Command<MyCommand> {}
   @define('EventSourceableBDDAsserter.MyOtherCommand')
@@ -475,9 +475,7 @@ describe(`EventSourceableBDDAsserter`, function () {
       asserter.onPublishedEvent(events[0]);
       asserter.onPublishedEvent(events[1]);
 
-      await asserter.expect(() => {
-        return events;
-      });
+      await asserter.expect(() => events);
       expect(asserter.getExpectedEvents()).to.eql(events);
     });
 

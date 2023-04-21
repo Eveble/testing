@@ -14,7 +14,7 @@ import {
 
 chai.use(chaiStructAssertion);
 
-describe('haveArrayOfStructs', function () {
+describe('haveArrayOfStructs', () => {
   const untestedProps = ['timestamp'];
 
   describe(`commands`, () => {
@@ -22,18 +22,20 @@ describe('haveArrayOfStructs', function () {
       const todoListId = new Guid();
       const todoId = new Guid();
 
-      (expect([
-        new CreateTodoList({
-          targetId: todoListId,
-          title: new Title('my-todo-list-title'),
-          maxItems: 10,
-        }),
-        new AddTodo({
-          targetId: todoListId,
-          id: todoId,
-          title: new Title('my-todo-title'),
-        }),
-      ]) as any).to.have.structs(
+      (
+        expect([
+          new CreateTodoList({
+            targetId: todoListId,
+            title: new Title('my-todo-list-title'),
+            maxItems: 10,
+          }),
+          new AddTodo({
+            targetId: todoListId,
+            id: todoId,
+            title: new Title('my-todo-title'),
+          }),
+        ]) as any
+      ).to.have.structs(
         [
           new CreateTodoList({
             targetId: todoListId,
@@ -54,18 +56,20 @@ describe('haveArrayOfStructs', function () {
       const todoListId = new Guid();
       const todoId = new Guid();
 
-      (expect([
-        new CreateTodoList({
-          targetId: todoListId,
-          title: new Title('my-todo-list-title'),
-          maxItems: 10,
-        }),
-        new AddTodo({
-          targetId: todoListId,
-          id: todoId,
-          title: new Title('my-todo-title'),
-        }),
-      ]) as any).to.not.have.structs(
+      (
+        expect([
+          new CreateTodoList({
+            targetId: todoListId,
+            title: new Title('my-todo-list-title'),
+            maxItems: 10,
+          }),
+          new AddTodo({
+            targetId: todoListId,
+            id: todoId,
+            title: new Title('my-todo-title'),
+          }),
+        ]) as any
+      ).to.not.have.structs(
         [
           new CreateTodoList({
             targetId: todoListId,
@@ -80,14 +84,16 @@ describe('haveArrayOfStructs', function () {
     describe(`omitting untested properties`, () => {
       it('returns true if structs contains different values for timestamp', () => {
         const todoListId = new Guid();
-        (expect([
-          new CreateTodoList({
-            targetId: todoListId,
-            title: new Title('my-todo-list-title'),
-            maxItems: 10,
-            timestamp: new Date('Tue Mar 14 2017 01:00:00 GMT+0100 (CET)'),
-          }),
-        ]) as any).to.have.structs(
+        (
+          expect([
+            new CreateTodoList({
+              targetId: todoListId,
+              title: new Title('my-todo-list-title'),
+              maxItems: 10,
+              timestamp: new Date('Tue Mar 14 2017 01:00:00 GMT+0100 (CET)'),
+            }),
+          ]) as any
+        ).to.have.structs(
           [
             new CreateTodoList({
               targetId: todoListId,
@@ -102,16 +108,18 @@ describe('haveArrayOfStructs', function () {
 
       it('returns true if structs contains different values for metadata', () => {
         const todoListId = new Guid();
-        (expect([
-          new CreateTodoList({
-            targetId: todoListId,
-            title: new Title('my-todo-list-title'),
-            maxItems: 10,
-            metadata: {
-              my: 'meta-data',
-            },
-          }),
-        ]) as any).to.have.structs(
+        (
+          expect([
+            new CreateTodoList({
+              targetId: todoListId,
+              title: new Title('my-todo-list-title'),
+              maxItems: 10,
+              metadata: {
+                my: 'meta-data',
+              },
+            }),
+          ]) as any
+        ).to.have.structs(
           [
             new CreateTodoList({
               targetId: todoListId,
@@ -125,14 +133,16 @@ describe('haveArrayOfStructs', function () {
 
       it('returns true if structs contains different values for schemaVersion', () => {
         const todoListId = new Guid();
-        (expect([
-          new CreateTodoList({
-            targetId: todoListId,
-            title: new Title('my-todo-list-title'),
-            maxItems: 10,
-            schemaVersion: 10,
-          }),
-        ]) as any).to.have.structs(
+        (
+          expect([
+            new CreateTodoList({
+              targetId: todoListId,
+              title: new Title('my-todo-list-title'),
+              maxItems: 10,
+              schemaVersion: 10,
+            }),
+          ]) as any
+        ).to.have.structs(
           [
             new CreateTodoList({
               targetId: todoListId,
@@ -150,21 +160,23 @@ describe('haveArrayOfStructs', function () {
     it('returns true if both collections contains same structs', () => {
       const todoListId = new Guid();
       const todoId = new Guid();
-      (expect([
-        new TodoListCreated({
-          sourceId: todoListId,
-          title: new Title('my-todo-list-title'),
-          maxItems: 10,
-          todos: [],
-        }),
-        new TodoAdded({
-          sourceId: todoListId,
-          todo: new Todo({
-            id: todoId,
-            title: new Title('my-todo-title'),
+      (
+        expect([
+          new TodoListCreated({
+            sourceId: todoListId,
+            title: new Title('my-todo-list-title'),
+            maxItems: 10,
+            todos: [],
           }),
-        }),
-      ]) as any).to.have.structs(
+          new TodoAdded({
+            sourceId: todoListId,
+            todo: new Todo({
+              id: todoId,
+              title: new Title('my-todo-title'),
+            }),
+          }),
+        ]) as any
+      ).to.have.structs(
         [
           new TodoListCreated({
             sourceId: todoListId,
@@ -187,21 +199,23 @@ describe('haveArrayOfStructs', function () {
     it('returns false if collections contains only partial selection of structs', () => {
       const todoListId = new Guid();
       const todoId = new Guid();
-      (expect([
-        new TodoListCreated({
-          sourceId: todoListId,
-          title: new Title('my-todo-list-title'),
-          maxItems: 10,
-          todos: [],
-        }),
-        new TodoAdded({
-          sourceId: todoListId,
-          todo: new Todo({
-            id: todoId,
-            title: new Title('my-todo-title'),
+      (
+        expect([
+          new TodoListCreated({
+            sourceId: todoListId,
+            title: new Title('my-todo-list-title'),
+            maxItems: 10,
+            todos: [],
           }),
-        }),
-      ]) as any).to.not.have.structs(
+          new TodoAdded({
+            sourceId: todoListId,
+            todo: new Todo({
+              id: todoId,
+              title: new Title('my-todo-title'),
+            }),
+          }),
+        ]) as any
+      ).to.not.have.structs(
         [
           new TodoListCreated({
             sourceId: todoListId,
@@ -217,15 +231,17 @@ describe('haveArrayOfStructs', function () {
     describe(`omitting untested properties`, () => {
       it('returns true even if structs contains different values for timestamp', () => {
         const todoListId = new Guid();
-        (expect([
-          new TodoListCreated({
-            sourceId: todoListId,
-            title: new Title('my-todo-list-title'),
-            maxItems: 10,
-            todos: [],
-            timestamp: new Date('Tue Mar 14 2017 01:00:00 GMT+0100 (CET)'),
-          }),
-        ]) as any).to.have.structs(
+        (
+          expect([
+            new TodoListCreated({
+              sourceId: todoListId,
+              title: new Title('my-todo-list-title'),
+              maxItems: 10,
+              todos: [],
+              timestamp: new Date('Tue Mar 14 2017 01:00:00 GMT+0100 (CET)'),
+            }),
+          ]) as any
+        ).to.have.structs(
           [
             new TodoListCreated({
               sourceId: todoListId,
@@ -241,17 +257,19 @@ describe('haveArrayOfStructs', function () {
 
       it('returns true even if structs contains different values for metadata', () => {
         const todoListId = new Guid();
-        (expect([
-          new TodoListCreated({
-            sourceId: todoListId,
-            title: new Title('my-todo-list-title'),
-            maxItems: 10,
-            todos: [],
-            metadata: {
-              my: 'meta-data',
-            },
-          }),
-        ]) as any).to.have.structs(
+        (
+          expect([
+            new TodoListCreated({
+              sourceId: todoListId,
+              title: new Title('my-todo-list-title'),
+              maxItems: 10,
+              todos: [],
+              metadata: {
+                my: 'meta-data',
+              },
+            }),
+          ]) as any
+        ).to.have.structs(
           [
             new TodoListCreated({
               sourceId: todoListId,
@@ -266,15 +284,17 @@ describe('haveArrayOfStructs', function () {
 
       it('returns true even if structs contains different values for schemaVersion', () => {
         const todoListId = new Guid();
-        (expect([
-          new TodoListCreated({
-            sourceId: todoListId,
-            title: new Title('my-todo-list-title'),
-            maxItems: 10,
-            todos: [],
-            schemaVersion: 10,
-          }),
-        ]) as any).to.have.structs(
+        (
+          expect([
+            new TodoListCreated({
+              sourceId: todoListId,
+              title: new Title('my-todo-list-title'),
+              maxItems: 10,
+              todos: [],
+              schemaVersion: 10,
+            }),
+          ]) as any
+        ).to.have.structs(
           [
             new TodoListCreated({
               sourceId: todoListId,
