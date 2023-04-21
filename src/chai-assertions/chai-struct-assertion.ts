@@ -1,4 +1,5 @@
-import Chai from 'chai';
+/* eslint-disable no-undef */
+import * as chai from 'chai';
 import { isFunction, isEqual, omit, some } from 'lodash';
 import { inspect } from 'util';
 import { Struct, validate } from '@eveble/eveble';
@@ -27,10 +28,10 @@ export class ProcessedAssertion {
 }
 
 export const chaiStructAssertion = (
-  chai: Chai.ChaiStatic,
+  chaiInstance: Chai.ChaiStatic,
   utils: Chai.ChaiUtils
 ): void => {
-  const Assertion = chai.Assertion;
+  const Assertion = chaiInstance.Assertion;
 
   function property(name: string, asserter: any): void {
     utils.addProperty(Assertion.prototype, name, function (): void {
