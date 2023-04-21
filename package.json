@@ -1,6 +1,6 @@
 {
   "name": "@eveble/testing",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Testing framework for Eveble applications",
   "main": "dist/index.js",
   "module": "dist/index.es.js",

@@ -1,3 +1,12 @@
+## [2.1.2](https://github.com/eveble/testing/compare/v2.1.1...v2.1.2) (2023-04-21)
+
+
+### Bug Fixes
+
+* **bdd:** ensure published event names are matching expected one ([b6374d1](https://github.com/eveble/testing/commit/b6374d129654c3e0ed76f98ca83f59ee2b3612eb))
+* **docs:** update docs build process ([6a88cb0](https://github.com/eveble/testing/commit/6a88cb09bca61295667f3e2f5e9ba18db52c2aa8))
+* issue with Chai types ([76a9123](https://github.com/eveble/testing/commit/76a9123f805d0606b82fbe683e63762946df5970))
+
 ## [2.1.1](https://github.com/eveble/testing/compare/v2.1.0...v2.1.1) (2020-08-30)
 
 

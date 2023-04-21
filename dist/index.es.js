@@ -1,7 +1,8 @@
-import { ExtendableError, validate, Command, Event, kernel, BINDINGS, Assignment, ScheduleCommand, UnscheduleCommand, CommitReceiver, Guid, Commit, Config, define, EventSourceable, App } from '@eveble/eveble';
+import { ExtendableError, validate, Command, Event, kernel, BINDINGS, Assignment, ScheduleCommand, UnscheduleCommand, CommitReceiver, Guid, Commit, define, Config, EventSourceable, App } from '@eveble/eveble';
 import { isEqual, some, omit, isFunction, isEmpty } from 'lodash';
 import delay from 'delay';
-import chai, { expect, assert } from 'chai';
+import * as chai from 'chai';
+import chai__default, { expect, assert } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { METADATA_KEY } from '@parisholley/inversify-async';
 import { inspect } from 'util';
@@ -38,8 +39,8 @@ class ProcessedAssertion {
         this.expectedReadable = expectedReadable;
     }
 }
-const chaiStructAssertion = (chai, utils) => {
-    const Assertion = chai.Assertion;
+const chaiStructAssertion = (chaiInstance, utils) => {
+    const Assertion = chaiInstance.Assertion;
     function property(name, asserter) {
         utils.addProperty(Assertion.prototype, name, function () {
             asserter.apply(this, arguments);
@@ -107,9 +108,7 @@ const chaiStructAssertion = (chai, utils) => {
                     depth: 10,
                 });
                 const structName = getTypeName(expected[index]);
-                this.assert(some(processed.actual, (actualStruct) => {
-                    return isEqual(actualStruct, struct);
-                }), `Expected struct \n ${structName} ${structStringified} to be includeed in ${actualStringified}`, `Expected struct \n ${structName} ${structStringified} to not be includeed in ${actualStringified}`, struct, processed.actualReadable.join(''));
+                this.assert(some(processed.actual, (actualStruct) => isEqual(actualStruct, struct)), `Expected struct \n ${structName} ${structStringified} to be includeed in ${actualStringified}`, `Expected struct \n ${structName} ${structStringified} to not be includeed in ${actualStringified}`, struct, processed.actualReadable.join(''));
             }
         }
     });
@@ -135,8 +134,8 @@ const chaiStructAssertion = (chai, utils) => {
     };
 };
 
-chai.use(chaiStructAssertion);
-chai.use(chaiAsPromised);
+chai__default.use(chaiStructAssertion);
+chai__default.use(chaiAsPromised);
 class EventSourceableBDDAsserter {
     constructor(sut, app, config) {
         this.sut = sut;
@@ -250,7 +249,8 @@ class EventSourceableBDDAsserter {
             });
             command.schedule(assignment);
         }
-        this.expected.scheduledCommands = this.expected.scheduledCommands.concat(normalizedCommands);
+        this.expected.scheduledCommands =
+            this.expected.scheduledCommands.concat(normalizedCommands);
         const commandBus = await this.app.injector.getAsync(BINDINGS.CommandBus);
         const boundHandler = this.onScheduleCommandSend.bind(this);
         boundHandler.original = this.onScheduleCommandSend;
@@ -296,6 +296,10 @@ class EventSourceableBDDAsserter {
             }
             asserter(this.actual.events, this.expected.events, untestedProps, 'List of actual published events does not match the expected ones');
             asserter(this.actual.unscheduledCommands, this.expected.unscheduledCommands, untestedProps, 'List of actual unscheduled commands does not match the expected ones');
+            const actualEventTypeNames = this.getEventTypeNameList(this.actual.events);
+            const expectedEventTypeNames = this.getEventTypeNameList(this.expected.events);
+            const chaiAssertionMethodNameForArray = assertionType === 'include' ? 'contain' : 'have';
+            expect(actualEventTypeNames).to[chaiAssertionMethodNameForArray].members(expectedEventTypeNames, 'Actual list of published event type names does not match expected one');
             if (this.expected.state !== undefined) {
                 const repository = this.app.injector.get(BINDINGS.EventSourceableRepository);
                 const sutInstance = await repository.find(this.getSUT(), this.expected.state.id);
@@ -306,6 +310,13 @@ class EventSourceableBDDAsserter {
             }
         };
         await this.run();
+    }
+    getEventTypeNameList(events) {
+        const list = [];
+        for (const event of events) {
+            list.push(event.getTypeName());
+        }
+        return list;
     }
     removeDependencies(sutInstance) {
         const mappings = Reflect.getMetadata(METADATA_KEY.TAGGED_PROP, sutInstance.constructor);
@@ -408,7 +419,8 @@ class EventSourceableBDDAsserter {
         }
     }
     async cleanup() {
-        ExtendableError.prototype.fillErrorProps = this.originalFillErrorProps;
+        ExtendableError.prototype.fillErrorProps =
+            this.originalFillErrorProps;
     }
     async sendMessagesThroughApp() {
         for (const message of this.queue) {
@@ -532,7 +544,8 @@ class Scenario {
         }
         if (this.expected.includedEvents === undefined)
             this.expected.includedEvents = [];
-        this.expected.includedEvents = this.expected.includedEvents.concat(includedEvents);
+        this.expected.includedEvents =
+            this.expected.includedEvents.concat(includedEvents);
         return this;
     }
     expectToFailWith(error, errorMessage) {
@@ -551,13 +564,15 @@ class Scenario {
     schedules(commands = []) {
         if (this.expected.scheduledCommands === undefined)
             this.expected.scheduledCommands = [];
-        this.expected.scheduledCommands = this.expected.scheduledCommands.concat(commands);
+        this.expected.scheduledCommands =
+            this.expected.scheduledCommands.concat(commands);
         return this;
     }
     unschedules(commands = []) {
         if (this.expected.unscheduledCommands === undefined)
             this.expected.unscheduledCommands = [];
-        this.expected.unscheduledCommands = this.expected.unscheduledCommands.concat(commands);
+        this.expected.unscheduledCommands =
+            this.expected.unscheduledCommands.concat(commands);
         return this;
     }
     async verify(expectedState) {

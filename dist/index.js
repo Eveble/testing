@@ -1,7 +1,5 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
 var eveble = require('@eveble/eveble');
 var lodash = require('lodash');
 var delay = require('delay');
@@ -11,11 +9,24 @@ var inversifyAsync = require('@parisholley/inversify-async');
 var util = require('util');
 var helpers = require('@eveble/helpers');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopNamespaceDefault(e) {
+  var n = Object.create(null);
+  if (e) {
+    Object.keys(e).forEach(function (k) {
+      if (k !== 'default') {
+        var d = Object.getOwnPropertyDescriptor(e, k);
+        Object.defineProperty(n, k, d.get ? d : {
+          enumerable: true,
+          get: function () { return e[k]; }
+        });
+      }
+    });
+  }
+  n.default = e;
+  return Object.freeze(n);
+}
 
-var delay__default = /*#__PURE__*/_interopDefaultLegacy(delay);
-var chai__default = /*#__PURE__*/_interopDefaultLegacy(chai);
-var chaiAsPromised__default = /*#__PURE__*/_interopDefaultLegacy(chaiAsPromised);
+var chai__namespace = /*#__PURE__*/_interopNamespaceDefault(chai);
 
 class TestError extends eveble.ExtendableError {
 }
@@ -48,8 +59,8 @@ class ProcessedAssertion {
         this.expectedReadable = expectedReadable;
     }
 }
-const chaiStructAssertion = (chai, utils) => {
-    const Assertion = chai.Assertion;
+const chaiStructAssertion = (chaiInstance, utils) => {
+    const Assertion = chaiInstance.Assertion;
     function property(name, asserter) {
         utils.addProperty(Assertion.prototype, name, function () {
             asserter.apply(this, arguments);
@@ -117,9 +128,7 @@ const chaiStructAssertion = (chai, utils) => {
                     depth: 10,
                 });
                 const structName = helpers.getTypeName(expected[index]);
-                this.assert(lodash.some(processed.actual, (actualStruct) => {
-                    return lodash.isEqual(actualStruct, struct);
-                }), `Expected struct \n ${structName} ${structStringified} to be includeed in ${actualStringified}`, `Expected struct \n ${structName} ${structStringified} to not be includeed in ${actualStringified}`, struct, processed.actualReadable.join(''));
+                this.assert(lodash.some(processed.actual, (actualStruct) => lodash.isEqual(actualStruct, struct)), `Expected struct \n ${structName} ${structStringified} to be includeed in ${actualStringified}`, `Expected struct \n ${structName} ${structStringified} to not be includeed in ${actualStringified}`, struct, processed.actualReadable.join(''));
             }
         }
     });
@@ -131,22 +140,22 @@ const chaiStructAssertion = (chai, utils) => {
         utils.flag(this, 'include', true);
         return this;
     });
-    chai.assert.haveArrayOfStructs = function (actual, expected, untestedProps, message) {
-        return new chai.Assertion(actual, message).to.have.structs(expected, untestedProps);
+    chai__namespace.assert.haveArrayOfStructs = function (actual, expected, untestedProps, message) {
+        return new chai__namespace.Assertion(actual, message).to.have.structs(expected, untestedProps);
     };
-    chai.assert.notHaveArrayOfStructs = function (actual, expected, untestedProps, message) {
-        return new chai.Assertion(actual, message).to.not.have.structs(expected, untestedProps);
+    chai__namespace.assert.notHaveArrayOfStructs = function (actual, expected, untestedProps, message) {
+        return new chai__namespace.Assertion(actual, message).to.not.have.structs(expected, untestedProps);
     };
-    chai.assert.includeArrayOfStructs = function (actual, expected, untestedProps, message) {
-        return new chai.Assertion(actual, message).to.include.structs(expected, untestedProps);
+    chai__namespace.assert.includeArrayOfStructs = function (actual, expected, untestedProps, message) {
+        return new chai__namespace.Assertion(actual, message).to.include.structs(expected, untestedProps);
     };
-    chai.assert.notIncludeArrayOfStructs = function (actual, expected, untestedProps, message) {
-        return new chai.Assertion(actual, message).to.not.include.structs(expected, untestedProps);
+    chai__namespace.assert.notIncludeArrayOfStructs = function (actual, expected, untestedProps, message) {
+        return new chai__namespace.Assertion(actual, message).to.not.include.structs(expected, untestedProps);
     };
 };
 
-chai__default['default'].use(chaiStructAssertion);
-chai__default['default'].use(chaiAsPromised__default['default']);
+chai.use(chaiStructAssertion);
+chai.use(chaiAsPromised);
 class EventSourceableBDDAsserter {
     constructor(sut, app, config) {
         this.sut = sut;
@@ -260,7 +269,8 @@ class EventSourceableBDDAsserter {
             });
             command.schedule(assignment);
         }
-        this.expected.scheduledCommands = this.expected.scheduledCommands.concat(normalizedCommands);
+        this.expected.scheduledCommands =
+            this.expected.scheduledCommands.concat(normalizedCommands);
         const commandBus = await this.app.injector.getAsync(eveble.BINDINGS.CommandBus);
         const boundHandler = this.onScheduleCommandSend.bind(this);
         boundHandler.original = this.onScheduleCommandSend;
@@ -306,6 +316,10 @@ class EventSourceableBDDAsserter {
             }
             asserter(this.actual.events, this.expected.events, untestedProps, 'List of actual published events does not match the expected ones');
             asserter(this.actual.unscheduledCommands, this.expected.unscheduledCommands, untestedProps, 'List of actual unscheduled commands does not match the expected ones');
+            const actualEventTypeNames = this.getEventTypeNameList(this.actual.events);
+            const expectedEventTypeNames = this.getEventTypeNameList(this.expected.events);
+            const chaiAssertionMethodNameForArray = assertionType === 'include' ? 'contain' : 'have';
+            chai.expect(actualEventTypeNames).to[chaiAssertionMethodNameForArray].members(expectedEventTypeNames, 'Actual list of published event type names does not match expected one');
             if (this.expected.state !== undefined) {
                 const repository = this.app.injector.get(eveble.BINDINGS.EventSourceableRepository);
                 const sutInstance = await repository.find(this.getSUT(), this.expected.state.id);
@@ -316,6 +330,13 @@ class EventSourceableBDDAsserter {
             }
         };
         await this.run();
+    }
+    getEventTypeNameList(events) {
+        const list = [];
+        for (const event of events) {
+            list.push(event.getTypeName());
+        }
+        return list;
     }
     removeDependencies(sutInstance) {
         const mappings = Reflect.getMetadata(inversifyAsync.METADATA_KEY.TAGGED_PROP, sutInstance.constructor);
@@ -360,7 +381,7 @@ class EventSourceableBDDAsserter {
         }
     }
     async delay(timeInMs) {
-        return delay__default['default'](timeInMs);
+        return delay(timeInMs);
     }
     overrideExtendableErrorFillErrorPropsMethod() {
         const originalFillErrorProps = eveble.ExtendableError.prototype.fillErrorProps;
@@ -418,7 +439,8 @@ class EventSourceableBDDAsserter {
         }
     }
     async cleanup() {
-        eveble.ExtendableError.prototype.fillErrorProps = this.originalFillErrorProps;
+        eveble.ExtendableError.prototype.fillErrorProps =
+            this.originalFillErrorProps;
     }
     async sendMessagesThroughApp() {
         for (const message of this.queue) {
@@ -542,7 +564,8 @@ class Scenario {
         }
         if (this.expected.includedEvents === undefined)
             this.expected.includedEvents = [];
-        this.expected.includedEvents = this.expected.includedEvents.concat(includedEvents);
+        this.expected.includedEvents =
+            this.expected.includedEvents.concat(includedEvents);
         return this;
     }
     expectToFailWith(error, errorMessage) {
@@ -561,13 +584,15 @@ class Scenario {
     schedules(commands = []) {
         if (this.expected.scheduledCommands === undefined)
             this.expected.scheduledCommands = [];
-        this.expected.scheduledCommands = this.expected.scheduledCommands.concat(commands);
+        this.expected.scheduledCommands =
+            this.expected.scheduledCommands.concat(commands);
         return this;
     }
     unschedules(commands = []) {
         if (this.expected.unscheduledCommands === undefined)
             this.expected.unscheduledCommands = [];
-        this.expected.unscheduledCommands = this.expected.unscheduledCommands.concat(commands);
+        this.expected.unscheduledCommands =
+            this.expected.unscheduledCommands.concat(commands);
         return this;
     }
     async verify(expectedState) {
