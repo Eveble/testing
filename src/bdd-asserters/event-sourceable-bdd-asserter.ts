@@ -31,8 +31,7 @@ chai.use(chaiStructAssertion);
 chai.use(chaiAsPromised);
 
 export class EventSourceableBDDAsserter
-  implements types.EventSourceableBDDAsserter
-{
+  implements types.EventSourceableBDDAsserter {
   protected sut: EvebleTypes.EventSourceableType;
 
   protected app: EvebleTypes.App;
@@ -402,7 +401,6 @@ export class EventSourceableBDDAsserter
       } else {
         asserter = (assert as any).includeArrayOfStructs;
       }
-
       asserter(
         this.actual.events,
         this.expected.events,
@@ -415,6 +413,20 @@ export class EventSourceableBDDAsserter
         this.expected.unscheduledCommands,
         untestedProps,
         'List of actual unscheduled commands does not match the expected ones'
+      );
+
+      const actualEventTypeNames = this.getEventTypeNameList(
+        this.actual.events
+      );
+      const expectedEventTypeNames = this.getEventTypeNameList(
+        this.expected.events
+      );
+
+      const chaiAssertionMethodNameForArray =
+        assertionType === 'include' ? 'contain' : 'have';
+      expect(actualEventTypeNames).to[chaiAssertionMethodNameForArray].members(
+        expectedEventTypeNames,
+        'Actual list of published event type names does not match expected one'
       );
 
       if (this.expected.state !== undefined) {
@@ -439,6 +451,19 @@ export class EventSourceableBDDAsserter
       }
     };
     await this.run();
+  }
+
+  /**
+   * Returns event type name list.
+   * @param events - List of `Events`.
+   * @returns List with all event type names.
+   */
+  getEventTypeNameList(events: EvebleTypes.Event[]): string[] {
+    const list: string[] = [];
+    for (const event of events) {
+      list.push(event.getTypeName());
+    }
+    return list;
   }
 
   /**
