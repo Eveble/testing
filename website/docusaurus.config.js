@@ -16,6 +16,7 @@ module.exports = {
   url: project.url, // URL to documentation
   baseUrl: project.baseUrl,
   favicon: 'img/favicon.ico',
+  onBrokenLinks: 'warn',
   organizationName: project.organizationName, // Usually your GitHub org/user name, use object to define author on package.json
   projectName: project.projectName, // Usually your repo name.
   themeConfig: {
@@ -28,9 +29,9 @@ module.exports = {
         alt: `${project.title} Logo`,
         src: 'img/logo.svg',
       },
-      links: [
+      items: [
         {
-          to: 'docs/guides/01-the-basics/01-getting-started',
+          to: 'docs/guides/the-basics/getting-started',
           label: 'Docs',
           position: 'right',
         },
@@ -61,7 +62,7 @@ module.exports = {
           items: [
             {
               label: 'Getting Started',
-              to: 'docs/guides/01-the-basics/01-getting-started',
+              to: 'docs/guides/the-basics/getting-started',
             },
             {
               label: 'API',
