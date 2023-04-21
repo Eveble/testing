@@ -122,7 +122,8 @@
     "@types/mongodb": "^3.5.25",
     "ttypescript": "^1.5.15",
     "deepmerge": "^4.3.1",
-    "decache": "^4.6.1"
+    "decache": "^4.6.1",
+    "uuid": "^9.0.0"
   },
   "scripts": {
     "explain": "./node_modules/.bin/npm-scripts-info",
