@@ -120,7 +120,8 @@
     "chalk": "^4.1.0",
     "rimraf": "^3.0.2",
     "@types/mongodb": "^3.5.25",
-    "ttypescript": "^1.5.15"
+    "ttypescript": "^1.5.15",
+    "deepmerge": "^4.3.1"
   },
   "scripts": {
     "explain": "./node_modules/.bin/npm-scripts-info",
