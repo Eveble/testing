@@ -128,7 +128,8 @@
     "polytype": "^0.16.2",
     "dotenv-extended": "^2.9.0",
     "dotenv-expand": "^10.0.0",
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "chai": "^4.3.7"
   },
   "scripts": {
     "explain": "./node_modules/.bin/npm-scripts-info",
