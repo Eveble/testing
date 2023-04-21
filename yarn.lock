@@ -188,7 +188,7 @@
   resolved "https://registry.npmjs.org/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@commitlint/cli@^17.6.1":
+"@commitlint/cli@^17.5.1":
   version "17.6.1"
   resolved "https://registry.npmjs.org/@commitlint/cli/-/cli-17.6.1.tgz#571a1272a656cd316f4b601cbb0fcb2ef50bfc7a"
   integrity sha512-kCnDD9LE2ySiTnj/VPaxy4/oRayRcdv4aCuVxtoum8SxIU7OADHc0nJPQfheE8bHcs3zZdWzDMWltRosuT13bg==
@@ -204,7 +204,7 @@
     resolve-global "1.0.0"
     yargs "^17.0.0"
 
-"@commitlint/config-conventional@^17.6.1":
+"@commitlint/config-conventional@^17.4.4":
   version "17.6.1"
   resolved "https://registry.npmjs.org/@commitlint/config-conventional/-/config-conventional-17.6.1.tgz#ab07c82c88f99ffee89ae321f1f49f1798127fbb"
   integrity sha512-ng/ybaSLuTCH9F+7uavSOnEQ9EFMl7lHEjfAEgRh1hwmEe8SpLKpQeMo2aT1IWvHaGMuTb+gjfbzoRf2IR23NQ==
@@ -452,9 +452,9 @@
     underscore "~1.8.3"
 
 "@eveble/eveble@latest":
-  version "2.5.3"
-  resolved "https://registry.npmjs.org/@eveble/eveble/-/eveble-2.5.3.tgz#80aec6dd314c3112bc63e94bc68b247833be860a"
-  integrity sha512-6PnuWfLVQMUIqfa58YCB7N9Eb3Kh4cuUViFk9osdgasGdzmlhCgOgNCvToZnrOvvEPXfXdGEeQJPKTcd7HSULA==
+  version "2.5.4"
+  resolved "https://registry.npmjs.org/@eveble/eveble/-/eveble-2.5.4.tgz#229f5fa333b1b439c79ee20f4c5b2ed655da07f5"
+  integrity sha512-URSTaSZIcWrg7KCqEnyrEPorXzM9Rr+VFMbJ3SPu0uANBZK60+uS7jeOzqwe/2g4+CHF6CChFGtpRBferGstuQ==
   dependencies:
     "@eveble/core" latest
     "@eveble/ejson" latest
@@ -1372,7 +1372,7 @@
   dependencies:
     "@types/sinonjs__fake-timers" "*"
 
-"@types/sinon@^10.0.14":
+"@types/sinon@^10.0.13":
   version "10.0.14"
   resolved "https://registry.npmjs.org/@types/sinon/-/sinon-10.0.14.tgz#6bd18b088ea5ef1e5153fa37d0b68e91eff09e22"
   integrity sha512-mn72up6cjaMyMuaPaa/AwKf6WtsSRysQC7wxFkCm1XcOKXPM1z+5Y4H5wjIVBz4gdAkjvZxVVfjA6ba1nHr5WQ==
@@ -1384,7 +1384,7 @@
   resolved "https://registry.yarnpkg.com/@types/sinonjs__fake-timers/-/sinonjs__fake-timers-6.0.1.tgz#681df970358c82836b42f989188d133e218c458e"
   integrity sha512-yYezQwGWty8ziyYLdZjwxyMb0CZR49h8JALHGrxjQHWlqGgc8kLdHEgWrgL0uZ29DMvEVBDnHU2Wg36zKSIUtA==
 
-"@typescript-eslint/eslint-plugin@^5.59.0":
+"@typescript-eslint/eslint-plugin@^5.58.0":
   version "5.59.0"
   resolved "https://registry.npmjs.org/@typescript-eslint/eslint-plugin/-/eslint-plugin-5.59.0.tgz#c0e10eeb936debe5d1c3433cf36206a95befefd0"
   integrity sha512-p0QgrEyrxAWBecR56gyn3wkG15TJdI//eetInP3zYRewDh0XS+DhB3VUAd3QqvziFsfaQIoIuZMxZRB7vXYaYw==
@@ -1400,7 +1400,7 @@
     semver "^7.3.7"
     tsutils "^3.21.0"
 
-"@typescript-eslint/parser@^5.59.0":
+"@typescript-eslint/parser@^5.58.0":
   version "5.59.0"
   resolved "https://registry.npmjs.org/@typescript-eslint/parser/-/parser-5.59.0.tgz#0ad7cd019346cc5d150363f64869eca10ca9977c"
   integrity sha512-qK9TZ70eJtjojSUMrrEwA9ZDQ4N0e/AuoOIgXuNBorXYcBDk397D2r5MIe1B3cok/oCtdNC5j+lUUpVB+Dpb+w==
