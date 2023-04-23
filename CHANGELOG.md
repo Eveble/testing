@@ -1,3 +1,10 @@
+## [2.1.3](https://github.com/eveble/testing/compare/v2.1.2...v2.1.3) (2023-04-23)
+
+
+### Bug Fixes
+
+* **docs:** fix docs build do to issue with node_modules types ([a43e083](https://github.com/eveble/testing/commit/a43e08377cfbc5636e04351e8ee84f889fb35e0d))
+
 ## [2.1.2](https://github.com/eveble/testing/compare/v2.1.1...v2.1.2) (2023-04-21)
 
 
