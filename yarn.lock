@@ -452,9 +452,9 @@
     underscore "~1.8.3"
 
 "@eveble/eveble@latest":
-  version "2.5.4"
-  resolved "https://registry.npmjs.org/@eveble/eveble/-/eveble-2.5.4.tgz#229f5fa333b1b439c79ee20f4c5b2ed655da07f5"
-  integrity sha512-URSTaSZIcWrg7KCqEnyrEPorXzM9Rr+VFMbJ3SPu0uANBZK60+uS7jeOzqwe/2g4+CHF6CChFGtpRBferGstuQ==
+  version "2.5.5"
+  resolved "https://registry.npmjs.org/@eveble/eveble/-/eveble-2.5.5.tgz#e369c28cb3a334c676b231904c867b44dcc0e56c"
+  integrity sha512-RrWPJWOPz0aBdJwLYZbAQd55pWtaWrDo+drpJcyjmueZpuvf8rY62z+GQFsvpHEFweZx1XvSyCEDIT+rgfK/rw==
   dependencies:
     "@eveble/core" latest
     "@eveble/ejson" latest
@@ -2081,7 +2081,7 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bl@^2.2.0:
+bl@^2.2.0, bl@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/bl/-/bl-2.2.1.tgz#8c11a7b730655c5d56898cdc871224f40fd901d5"
   integrity sha512-6Pesp1w0DEX1N550i/uGV/TqucVL4AM/pgThFSN/Qq9si1/DF9aIHs1BxD8V/QU0HoeHO6cQRTAuYnLPKq1e4g==
@@ -7015,6 +7015,19 @@ mongodb@^3.5.9:
   optionalDependencies:
     saslprep "^1.0.0"
 
+mongodb@^3.7.3:
+  version "3.7.3"
+  resolved "https://registry.npmjs.org/mongodb/-/mongodb-3.7.3.tgz#b7949cfd0adc4cc7d32d3f2034214d4475f175a5"
+  integrity sha512-Psm+g3/wHXhjBEktkxXsFMZvd3nemI0r3IPsE0bU+4//PnvNWKkzhZcEsbPcYiWqe8XqXJJEg4Tgtr7Raw67Yw==
+  dependencies:
+    bl "^2.2.1"
+    bson "^1.1.4"
+    denque "^1.4.1"
+    optional-require "^1.1.8"
+    safe-buffer "^5.1.2"
+  optionalDependencies:
+    saslprep "^1.0.0"
+
 mongodb@~3.5.0:
   version "3.5.10"
   resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.5.10.tgz#ed414988d2935b529004cead6dfdd22681258887"
@@ -7741,6 +7754,13 @@ opener@^1.5.2:
   version "1.5.2"
   resolved "https://registry.npmjs.org/opener/-/opener-1.5.2.tgz#5d37e1f35077b9dcac4301372271afdeb2a13598"
   integrity sha512-ur5UIdyw5Y7yEj9wLzhqXiy6GZ3Mwx0yGI+5sMn2r0N0v3cKJvUmFH5yPP+WXh9e0xfyzyJX95D8l088DNFj7A==
+
+optional-require@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.npmjs.org/optional-require/-/optional-require-1.1.8.tgz#16364d76261b75d964c482b2406cb824d8ec44b7"
+  integrity sha512-jq83qaUb0wNg9Krv1c5OQ+58EK+vHde6aBPzLvPPqJm89UQWsvSuFy9X/OSNJnFeSOKo7btE0n8Nl2+nE+z5nA==
+  dependencies:
+    require-at "^1.0.6"
 
 optionator@^0.9.1:
   version "0.9.1"
@@ -8677,6 +8697,11 @@ replace-homedir@^1.0.0:
     homedir-polyfill "^1.0.1"
     is-absolute "^1.0.0"
     remove-trailing-separator "^1.1.0"
+
+require-at@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.npmjs.org/require-at/-/require-at-1.0.6.tgz#9eb7e3c5e00727f5a4744070a7f560d4de4f6e6a"
+  integrity sha512-7i1auJbMUrXEAZCOQ0VNJgmcT2VOKPRl2YGJwgpHpC9CE91Mv4/4UYIUm4chGJaI381ZDq1JUicFii64Hapd8g==
 
 require-directory@^2.1.1:
   version "2.1.1"
