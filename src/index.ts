@@ -17,7 +17,7 @@ export {
 // Asserters
 export { EventSourceableBDDAsserter } from './bdd-asserters/event-sourceable-bdd-asserter';
 // Chai
-export { chaiStructAssertion } from './chai-assertions/chai-struct-assertion';
+export { evebleChai } from './chai-assertions/eveble-chai-assertion';
 // Errors
 export {
   TestError,
