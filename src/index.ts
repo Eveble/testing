@@ -26,6 +26,7 @@ export {
   InvalidMessageError,
   InvalidExpectationError,
   InvalidScenarioError,
+  EventSourceableFeatureMappingsNotFoundError,
 } from './errors';
 // Environment
 export { TestConfig } from './test-config';

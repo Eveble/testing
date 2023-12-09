@@ -13,6 +13,8 @@ import {
   InvalidEventSourceableError,
   InvalidMessageError,
   InvalidExpectationError,
+  InvalidScenarioError,
+  EventSourceableFeatureMappingsNotFoundError,
 } from '../../src/errors';
 // Api
 import { Scenario } from '../../src/scenario';
@@ -38,6 +40,8 @@ import {
   InvalidEventSourceableError as InvalidEventSourceableErrorExported,
   InvalidMessageError as InvalidMessageErrorExported,
   InvalidExpectationError as InvalidExpectationErrorExported,
+  InvalidScenarioError as InvalidScenarioErrorExported,
+  EventSourceableFeatureMappingsNotFoundError as EventSourceableFeatureMappingsNotFoundErrorExported,
   // Api
   Scenario as ScenarioExported,
   on,

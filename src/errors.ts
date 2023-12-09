@@ -22,6 +22,12 @@ export class InvalidEventSourceableError extends TestError {
   }
 }
 
+export class EventSourceableFeatureMappingsNotFoundError extends TestError {
+  constructor(eventSourceableName: string) {
+    super(`Mapping for event sourceable '${eventSourceableName}' not found`);
+  }
+}
+
 export class InvalidExpectationError extends TestError {
   constructor() {
     super(
