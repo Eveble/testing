@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { stubInterface } from 'ts-sinon';
 import { EventSourceableBDDAsserter } from '../../src/bdd-asserters/event-sourceable-bdd-asserter';
 // Chai
-import { chaiStructAssertion } from '../../src/chai-assertions/chai-struct-assertion';
+import { evebleChai } from '../../src/chai-assertions/eveble-chai-assertion';
 // Errors
 import {
   TestError,
@@ -23,7 +23,7 @@ import {
   // Asserters
   EventSourceableBDDAsserter as EventSourceableBDDAsserterExported,
   // Chai
-  chaiStructAssertion as chaiStructAssertionExported,
+  evebleChai as evebleChaiExported,
   // Errors
   TestError as TestErrorExported,
   InvalidAppError as InvalidAppErrorExported,
@@ -46,8 +46,8 @@ describe(`exports`, () => {
     });
   });
   describe('chai', () => {
-    it('chaiStructAssertion', () => {
-      expect(chaiStructAssertion).to.be.equal(chaiStructAssertionExported);
+    it('evebleChai', () => {
+      expect(evebleChai).to.be.equal(evebleChaiExported);
     });
   });
   describe('errors', () => {
