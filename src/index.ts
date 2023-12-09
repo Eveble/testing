@@ -28,17 +28,3 @@ export {
   InvalidScenarioError,
   EventSourceableFeatureMappingsNotFoundError,
 } from './errors';
-// Environment
-export { TestConfig } from './test-config';
-
-export function on(
-  app: EvebleTypes.App,
-  options?: {
-    asserter?: types.EventSourceableBDDAsserterType;
-    config?: TestConfig;
-  }
-): Scenario {
-  return new Scenario(app, options);
-}
-
-export { types, Scenario };

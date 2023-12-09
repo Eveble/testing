@@ -44,7 +44,6 @@ import {
   EventSourceableFeatureMappingsNotFoundError as EventSourceableFeatureMappingsNotFoundErrorExported,
   // Api
   Scenario as ScenarioExported,
-  on,
   // Environment
   TestConfig as TestConfigExported,
   // BDD Chain
@@ -101,9 +100,6 @@ describe(`exports`, () => {
     it('Scenario', () => {
       expect(Scenario).to.be.equal(ScenarioExported);
     });
-    it('on', () => {
-      const app = stubInterface<EvebleTypes.App>();
-      expect(on(app)).to.be.instanceof(Scenario);
   describe('BDD chain', () => {
     it('BaseChain', () => {
       expect(BaseChain).to.be.equal(BaseChainExported);
