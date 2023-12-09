@@ -1,11 +1,8 @@
-import { EvebleTypes } from '@eveble/eveble';
-
 // Types
-import { types } from './types';
-// Api
-import { Scenario } from './scenario';
-import { TestConfig } from './test-config';
-
+export { types } from './types';
+export { types as BDDTypes } from './types';
+// Components
+export { Scenario } from './components/scenario';
 // BDD Chain
 export {
   BaseChain,
