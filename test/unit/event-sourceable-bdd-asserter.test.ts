@@ -1,4 +1,4 @@
-import chai, { expect, AssertionError } from 'chai';
+import chai, { expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import {
@@ -7,9 +7,7 @@ import {
   Event,
   App,
   EventSourceable,
-  define,
   Guid,
-  DomainError,
   ScheduleCommand,
   UnscheduleCommand,
   AppConfig,
@@ -19,6 +17,7 @@ import {
   EvebleTypes,
   Injector,
   LoggingConfig,
+  Type,
   Assignment,
 } from '@eveble/eveble';
 import { stubInterface } from 'ts-sinon';
@@ -26,48 +25,51 @@ import sinon from 'sinon';
 import { EventSourceableBDDAsserter } from '../../src/bdd-asserters/event-sourceable-bdd-asserter';
 import { TestConfig } from '../../src/test-config';
 import { InvalidMessageError } from '../../src/errors';
+import { Scenario } from '../../src';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
 describe(`EventSourceableBDDAsserter`, () => {
-  @define('EventSourceableBDDAsserter.MyCommand')
-  class MyCommand extends Command<MyCommand> {}
-  @define('EventSourceableBDDAsserter.MyOtherCommand')
-  class MyOtherCommand extends Command<MyOtherCommand> {}
-  @define('EventSourceableBDDAsserter.MyEvent')
-  class MyEvent extends Event<MyEvent> {}
-  @define('EventSourceableBDDAsserter.MyOtherEvent')
-  class MyOtherEvent extends Event<MyOtherEvent> {}
+  @Type('EventSourceableBDDAsserter.MyCommand')
+  class MyCommand extends Command<MyCommand> { }
+  @Type('EventSourceableBDDAsserter.MyOtherCommand')
+  class MyOtherCommand extends Command<MyOtherCommand> { }
+  @Type('EventSourceableBDDAsserter.MyEvent')
+  class MyEvent extends Event<MyEvent> { }
+  @Type('EventSourceableBDDAsserter.MyOtherEvent')
+  class MyOtherEvent extends Event<MyOtherEvent> { }
 
-  @define('EventSourceableBDDAsserter.MyDomainError')
-  class MyDomainError extends DomainError {
-    constructor() {
-      super('We need more lemon pledge!');
-    }
-  }
+  // @Type('EventSourceableBDDAsserter.MyDomainError')
+  // class MyDomainError extends DomainError {
+  //   constructor() {
+  //     super('We need more lemon pledge!');
+  //   }
+  // }
 
-  @define('EventSourceableBDDAsserter.MyEventSourceable')
-  class MyEventSourceable extends EventSourceable {}
+  @Type('EventSourceableBDDAsserter.MyEventSourceable')
+  class MyEventSourceable extends EventSourceable { }
 
-  class MyApp extends App {}
+  class MyApp extends App { }
 
   // Props
   let now: Date;
   let appId: string;
   // Test
   let app: any;
-  let asserter: EventSourceableBDDAsserter;
+  let asserter: EventSourceableBDDAsserter<MyEventSourceable>;
   let testConfig: TestConfig;
   // Injector
   let injector: EvebleTypes.Injector;
   let log: any;
   // Dependencies
+  let scenario: any;
   let commandBus: any;
   let eventBus: any;
   let commitStore: any;
   let commitObserver: any;
   let commandScheduler: any;
+  let eventSourceableRepository: any;
 
   const setupInjector = function (): void {
     injector = new Injector();
@@ -82,6 +84,8 @@ describe(`EventSourceableBDDAsserter`, () => {
     commitStore = stubInterface<EvebleTypes.CommitStore>();
     commitObserver = stubInterface<EvebleTypes.CommitObserver>();
     commandScheduler = stubInterface<EvebleTypes.CommandScheduler>();
+    eventSourceableRepository =
+      stubInterface<EvebleTypes.EventSourceableRepository>();
 
     // Buses
     injector
@@ -101,6 +105,12 @@ describe(`EventSourceableBDDAsserter`, () => {
     injector
       .bind<EvebleTypes.CommandScheduler>(BINDINGS.CommandScheduler)
       .toConstantValue(commandScheduler);
+    // EventSourceableRepository
+    injector
+      .bind<EvebleTypes.EventSourceableRepository>(
+        BINDINGS.EventSourceableRepository
+      )
+      .toConstantValue(eventSourceableRepository);
   };
 
   const rebindEvebleDependencies = function (): void {
@@ -149,12 +159,14 @@ describe(`EventSourceableBDDAsserter`, () => {
   });
 
   beforeEach(async () => {
+    scenario = stubInterface<Scenario<MyEventSourceable>>();
+    scenario.getApp.returns(app);
+    scenario.getSUT.returns(MyEventSourceable);
+
     testConfig = new TestConfig();
-    asserter = new EventSourceableBDDAsserter(
-      MyEventSourceable,
-      app,
-      testConfig
-    );
+    scenario.getConfig.returns(testConfig);
+
+    asserter = new EventSourceableBDDAsserter(scenario);
 
     rebindEvebleDependencies();
   });
@@ -172,15 +184,9 @@ describe(`EventSourceableBDDAsserter`, () => {
   });
 
   describe('construction', () => {
-    it('takes system under test as EventSourceable class, app as App instance, and config as TestConfig and assigns them', () => {
-      const asserterInstance = new EventSourceableBDDAsserter(
-        MyEventSourceable,
-        app,
-        testConfig
-      );
-      expect(asserterInstance.getSUT()).to.be.equal(MyEventSourceable);
-      expect(asserterInstance.getApp()).to.be.equal(app);
-      expect(asserterInstance.getConfig()).to.be.equal(testConfig);
+    it('takes scenario as instance of Scenario and assings it', () => {
+      const asserterInstance = new EventSourceableBDDAsserter(scenario);
+      expect(asserterInstance.getScenario()).to.be.equal(scenario);
     });
 
     it('initializes with empty queue for messages array', () => {
@@ -219,7 +225,7 @@ describe(`EventSourceableBDDAsserter`, () => {
     });
 
     it(`overrides ExtendableError's fillErrorProps instance method do to stubbing issues`, () => {
-      @define()
+      @Type()
       class MyExtendableError extends ExtendableError {
         customField: string;
       }
@@ -242,7 +248,7 @@ describe(`EventSourceableBDDAsserter`, () => {
 
   describe(`given`, () => {
     it('throws InvalidMessageError if provided message(s) are not instances of Command or Event', async () => {
-      class MyInvalidMessage {}
+      class MyInvalidMessage { }
 
       await expect(
         asserter.given([new MyInvalidMessage() as any])
@@ -456,27 +462,10 @@ describe(`EventSourceableBDDAsserter`, () => {
     });
   });
 
-  describe(`expect`, () => {
+  describe(`execute`, () => {
     it(`ensures that app must be shutdown manually after expectation test`, async () => {
-      await asserter.expect([]);
+      await asserter.execute();
       expect(app.isInState(MyApp.STATES.shutdown)).to.be.false;
-    });
-
-    it(`can take a function that returns an array of Events and runs the initialized test as a result`, async () => {
-      const events = [
-        new MyEvent({
-          sourceId: new Guid(),
-        }),
-        new MyEvent({
-          sourceId: new Guid(),
-        }),
-      ];
-      // Fake run with onPublished hook invoked on EventBus
-      asserter.onPublishedEvent(events[0]);
-      asserter.onPublishedEvent(events[1]);
-
-      await asserter.expect(() => events);
-      expect(asserter.getExpectedEvents()).to.eql(events);
     });
 
     it(`ensures that added onPublish hook to EventBus is bound to instance of asserter`, async () => {
@@ -492,7 +481,7 @@ describe(`EventSourceableBDDAsserter`, () => {
       asserter.onPublishedEvent(events[0]);
       asserter.onPublishedEvent(events[1]);
 
-      await asserter.expect(events);
+      await asserter.execute();
 
       expect(eventBus.onPublish).to.be.calledOnce;
       // Resolve bound callback from call
@@ -503,23 +492,6 @@ describe(`EventSourceableBDDAsserter`, () => {
       expect(eventBus.onPublish.getCall(0).args[1].original).to.be.equal(
         asserter.onPublishedEvent
       ); // Compare bound function
-    });
-
-    it(`can take an array of Events and runs the initialized test as a result`, async () => {
-      const events = [
-        new MyEvent({
-          sourceId: new Guid(),
-        }),
-        new MyEvent({
-          sourceId: new Guid(),
-        }),
-      ];
-      // Fake run of onPublished hook
-      asserter.onPublishedEvent(events[0]);
-      asserter.onPublishedEvent(events[1]);
-
-      await asserter.expect(events);
-      expect(asserter.getExpectedEvents()).to.eql(events);
     });
 
     it(`sends Command messages through CommandBus on test run`, async () => {
@@ -534,7 +506,7 @@ describe(`EventSourceableBDDAsserter`, () => {
 
       await asserter.given([commands[0]]);
       await asserter.when([commands[1]]);
-      await asserter.expect([]);
+      await asserter.execute();
 
       expect(commandBus.send).to.be.calledTwice;
       expect(commandBus.send).to.be.calledWithExactly(commands[0]);
@@ -553,14 +525,14 @@ describe(`EventSourceableBDDAsserter`, () => {
 
       await asserter.given([]);
       await asserter.when([events[0], events[1]]);
-      await asserter.expect([]);
+      await asserter.execute();
 
       expect(eventBus.publish).to.be.calledTwice;
       expect(eventBus.publish).to.be.calledWithExactly(events[0]);
       expect(eventBus.publish).to.be.calledWithExactly(events[1]);
     });
 
-    it(`throws error if expected list of published Events does not match the one that was actually published`, async () => {
+    it(`returns object with published events`, async () => {
       const events = [
         new MyEvent({
           sourceId: new Guid(),
@@ -569,76 +541,27 @@ describe(`EventSourceableBDDAsserter`, () => {
           sourceId: new Guid(),
         }),
       ];
-
-      await expect(asserter.expect(events)).to.eventually.be.rejectedWith(
-        AssertionError,
-        'List of actual published events does not match the expected ones'
-      );
-    });
-  });
-
-  describe(`expect to fail`, () => {
-    it(`ensures that app must be shutdown manually after fail expectation test`, async () => {
-      commandBus.send.rejects(new MyDomainError());
-
-      await expect(
-        asserter.expectToFailWith(MyDomainError)
-      ).to.eventually.not.be.rejectedWith(Error);
-      expect(app.isInState(MyApp.STATES.shutdown)).to.be.false;
+      // Fake run of onPublished hook
+      asserter.onPublishedEvent(events[0]);
+      asserter.onPublishedEvent(events[1]);
+      await asserter.when([events[0], events[1]]);
+      const result = await asserter.execute();
+      expect(result.events).to.eql(events);
     });
 
-    it(`catches only thrown subclass of DomainError type`, async () => {
-      commandBus.send.rejects(new MyDomainError());
+    it(`returns object with target actual state`, async () => {
+      const targetId = new Guid().toString();
 
-      const command = new MyCommand({
-        targetId: new Guid(),
-      });
+      const esInstance = stubInterface<MyEventSourceable>();
+      esInstance.id = targetId;
+      eventSourceableRepository.find
+        .withArgs(MyEventSourceable, targetId)
+        .returns(esInstance);
 
-      await asserter.given([command]);
-      expect(
-        asserter.expectToFailWith(MyDomainError)
-      ).to.eventually.not.be.rejectedWith(Error);
-    });
+      scenario.options.targetId = targetId;
 
-    it(`catches thrown DomainError type with message`, async () => {
-      commandBus.send.rejects(new MyDomainError());
-
-      const command = new MyCommand({
-        targetId: new Guid(),
-      });
-
-      await asserter.given([command]);
-      await asserter.expectToFailWith(
-        MyDomainError,
-        'We need more lemon pledge!'
-      );
-    });
-
-    it(`ensures that thrown DomainError message matches only the expected one`, async () => {
-      commandBus.send.rejects(new MyDomainError());
-
-      const command = new MyCommand({
-        targetId: new Guid(),
-      });
-
-      await asserter.given([command]);
-      expect(
-        asserter.expectToFailWith(
-          MyDomainError,
-          'We need more totally invalid, not matching error messages... or pylons'
-        )
-      ).to.eventually.be.rejectedWith(AssertionError);
-    });
-
-    it(`aliases failed expectation as 'throws'`, async () => {
-      commandBus.send.rejects(new MyDomainError());
-
-      const command = new MyCommand({
-        targetId: new Guid(),
-      });
-
-      await asserter.given([command]);
-      await asserter.throws(MyDomainError, 'We need more lemon pledge!');
+      const result = await asserter.execute();
+      expect(result.target).to.equal(esInstance);
     });
   });
 
@@ -652,6 +575,24 @@ describe(`EventSourceableBDDAsserter`, () => {
 
       await asserter.schedules([expected]);
       expect(asserter.getExpectedScheduledCommands()).to.be.eql([expected]);
+    });
+
+    it(`returns object with scheduled commands upon execution`, async () => {
+      const esId = new Guid();
+      const scheduledCommand = new MyCommand({ targetId: esId });
+
+      await asserter.schedules([scheduledCommand]);
+
+      // Fake run of onScheduleCommandSend hook
+      asserter.onScheduleCommandSend(
+        new ScheduleCommand({
+          targetId: esId,
+          command: scheduledCommand,
+        })
+      );
+
+      const result = await asserter.execute();
+      expect(result.scheduled).to.be.eql([scheduledCommand]);
     });
 
     it(`adds a array of Commands to scheduled commands queue that should be send immediately on test execution`, async () => {
@@ -703,7 +644,7 @@ describe(`EventSourceableBDDAsserter`, () => {
         assignmentId: targetId,
         deliverAt: new Date(new Date().getTime() + 1000),
         assignerId: targetId,
-        assignerType: asserter.getSUT().getTypeName(),
+        assignerType: MyEventSourceable.getTypeName(),
       });
       const expectedCommand = new MyCommand({ targetId });
       expectedCommand.schedule(expectedAssignment);
@@ -714,7 +655,7 @@ describe(`EventSourceableBDDAsserter`, () => {
         assignmentId: targetId,
         deliverAt: new Date(new Date().getTime() + 1000),
         assignerId: targetId,
-        assignerType: asserter.getSUT().getTypeName(),
+        assignerType: MyEventSourceable.getTypeName(),
       });
       actualCommand.schedule(actualAssignment);
 
@@ -742,7 +683,7 @@ describe(`EventSourceableBDDAsserter`, () => {
         assignmentId: targetId,
         deliverAt: new Date(new Date().getTime() + 1000),
         assignerId: targetId,
-        assignerType: asserter.getSUT().getTypeName(),
+        assignerType: MyEventSourceable.getTypeName(),
       });
       const expectedCommand = new MyCommand({ targetId });
       expectedCommand.schedule(expectedAssignment);
@@ -753,7 +694,7 @@ describe(`EventSourceableBDDAsserter`, () => {
         assignmentId: targetId,
         deliverAt: new Date(new Date().getTime() + 1000),
         assignerId: targetId,
-        assignerType: asserter.getSUT().getTypeName(),
+        assignerType: MyEventSourceable.getTypeName(),
       });
       actualCommand.schedule(actualAssignment);
 
@@ -779,7 +720,7 @@ describe(`EventSourceableBDDAsserter`, () => {
         assignmentId: firstTargetId,
         deliverAt: new Date(new Date().getTime() + 1000),
         assignerId: firstTargetId,
-        assignerType: asserter.getSUT().getTypeName(),
+        assignerType: MyEventSourceable.getTypeName(),
       });
       const firstExpectedCommand = new MyCommand({ targetId: firstTargetId });
       firstExpectedCommand.schedule(firstExpectedAssignment);
@@ -790,7 +731,7 @@ describe(`EventSourceableBDDAsserter`, () => {
         assignmentId: firstTargetId,
         deliverAt: new Date(new Date().getTime() + 1000),
         assignerId: firstTargetId,
-        assignerType: asserter.getSUT().getTypeName(),
+        assignerType: MyEventSourceable.getTypeName(),
       });
       firstActualCommand.schedule(firstActualAssignment);
 
@@ -799,7 +740,7 @@ describe(`EventSourceableBDDAsserter`, () => {
         assignmentId: secondTargetId,
         deliverAt: new Date(new Date().getTime() + 1000),
         assignerId: secondTargetId,
-        assignerType: asserter.getSUT().getTypeName(),
+        assignerType: MyEventSourceable.getTypeName(),
       });
       secondActualCommand.schedule(secondActualAssignment);
 
@@ -830,7 +771,7 @@ describe(`EventSourceableBDDAsserter`, () => {
       const expectedCommand = new MyCommand({ targetId: new Guid() });
 
       await asserter.schedules([expectedCommand]);
-      await asserter.expect();
+      await asserter.execute();
       expect(asserter.delay).to.be.calledOnce;
       expect(asserter.delay).to.be.calledWith(interval * 2 + 500);
     });
@@ -937,36 +878,26 @@ describe(`EventSourceableBDDAsserter`, () => {
       asserter.onUnscheduleCommandSend(firstActual);
       asserter.onUnscheduleCommandSend(secondActual);
 
-      await asserter.expect();
+      await asserter.execute();
     });
 
-    it(`throws error if expected list of uscheduled commands does not match the one that was unscheduled`, async () => {
-      const firstProps = {
-        targetId: new Guid(),
+    it(`returns object with unscheduled commands upon execution`, async () => {
+      const esId = new Guid();
+      const unscheduledCommand = new UnscheduleCommand({
+        targetId: esId,
         assignmentId: new Guid(),
         commandType: MyCommand.typeName(),
         assignerId: new Guid(),
-        assignerType: 'EventSourceableBDDApi.MyEventSourceable',
-      };
-      const secondProps = {
-        targetId: new Guid(),
-        assignmentId: new Guid(),
-        commandType: MyOtherCommand.typeName(),
-        assignerId: new Guid(),
-        assignerType: 'EventSourceableBDDApi.MyEventSourceable',
-      };
+        assignerType: 'EventSourceableBDDAsserter.MyEventSourceable',
+      });
 
-      const firstExpected = new UnscheduleCommand(firstProps);
-      const firstActual = new UnscheduleCommand(firstProps);
-      const secondExpected = new UnscheduleCommand(secondProps);
+      await asserter.unschedules([unscheduledCommand]);
 
-      await asserter.unschedules([firstExpected, secondExpected]);
+      // Fake run of onUnscheduleCommandSend hook
+      asserter.onUnscheduleCommandSend(unscheduledCommand);
 
-      asserter.onUnscheduleCommandSend(firstActual);
-      await expect(asserter.expect()).to.eventually.be.rejectedWith(
-        AssertionError,
-        'List of actual unscheduled commands does not match the expected ones'
-      );
+      const result = await asserter.execute();
+      expect(result.unscheduled).to.be.eql([unscheduledCommand]);
     });
   });
 });

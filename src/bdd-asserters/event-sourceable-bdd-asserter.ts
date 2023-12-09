@@ -1,4 +1,4 @@
-import { isFunction, isEqual, omit } from 'lodash';
+import { isEqual, omit } from 'lodash';
 import delay from 'delay';
 import {
   Command,
@@ -14,7 +14,7 @@ import {
   Assignment,
   Guid,
 } from '@eveble/eveble';
-import chai, { assert, expect } from 'chai';
+import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {
   METADATA_KEY,
@@ -22,21 +22,18 @@ import {
 } from '@parisholley/inversify-async';
 import { types } from '../types';
 import { InvalidMessageError } from '../errors';
-import { chaiStructAssertion } from '../chai-assertions/chai-struct-assertion';
-import { TestConfig } from '../test-config';
+import { evebleChai } from '../chai-assertions/eveble-chai-assertion';
+import { Scenario } from '../components/scenario';
 
 type Mappings = Record<keyof any, inversifyTypes.Metadata[]>;
 
-chai.use(chaiStructAssertion);
+chai.use(evebleChai);
 chai.use(chaiAsPromised);
 
-export class EventSourceableBDDAsserter
-  implements types.EventSourceableBDDAsserter {
-  protected sut: EvebleTypes.EventSourceableType;
-
-  protected app: EvebleTypes.App;
-
-  protected config: TestConfig;
+export class EventSourceableBDDAsserter<EventSourceable>
+  implements types.EventSourceableBDDAsserter<EventSourceable>
+{
+  protected scenario: Scenario<EventSourceable>;
 
   protected queue: EvebleTypes.Message[];
 
@@ -60,19 +57,11 @@ export class EventSourceableBDDAsserter
   protected ignoreNextEvent?: boolean;
 
   /**
-   * Creates an instance of EventSourceableBDDAsserter.
-   * @param sut - **S**ystem **U**nder **T**est as `EventSourceable` type constructor.
-   * @param app - Instance implementing `App` interface.
-   * @param config - Instance of `TestConfig`.
+   * Creates an instance of `EventSourceableBDDAsserter`.
+   * @param scenario - Instance of `Scenario`.
    */
-  constructor(
-    sut: EvebleTypes.EventSourceableType,
-    app: EvebleTypes.App,
-    config: TestConfig
-  ) {
-    this.sut = sut;
-    this.app = app;
-    this.config = config;
+  constructor(scenario: Scenario<EventSourceable>) {
+    this.scenario = scenario;
 
     this.queue = [];
     this.actual = {
@@ -90,27 +79,11 @@ export class EventSourceableBDDAsserter
   }
 
   /**
-   * Returns system under test.
+   * Returns scenario
    * @returns `EventSourceable` type constructor.
    */
-  public getSUT(): EvebleTypes.EventSourceableType {
-    return this.sut;
-  }
-
-  /**
-   * Returns application instance against which test is performed.
-   * @returns Instance implementing `App` interface.
-   */
-  public getApp(): EvebleTypes.App {
-    return this.app;
-  }
-
-  /**
-   * Returns testing configuration.
-   * @returns Instance of `TestConfig`.
-   */
-  public getConfig(): TestConfig {
-    return this.config;
+  public getScenario(): Scenario<EventSourceable> {
+    return this.scenario;
   }
 
   /**
@@ -205,10 +178,9 @@ export class EventSourceableBDDAsserter
         version,
         events
       );
-      const commitStore =
-        await this.app.injector.getAsync<EvebleTypes.CommitStore>(
-          BINDINGS.CommitStore
-        );
+      const commitStore = await this.scenario
+        .getApp()
+        .injector.getAsync<EvebleTypes.CommitStore>(BINDINGS.CommitStore);
 
       await commitStore.save(commit);
     }
@@ -234,68 +206,6 @@ export class EventSourceableBDDAsserter
   }
 
   /**
-   * Creates test expectation describing the changes you exactly expect due to the specified
-   * behavior(all events published must match).
-   * @async
-   * @param expectedEvents - List of all expected `Events` that should be published on app.
-   * @throws {AssertionError}
-   * Thrown if assertion does match all expectation.
-   */
-  public async expect(
-    expectedEvents: EvebleTypes.Event[] | Function = []
-  ): Promise<void> {
-    await this.assertIsValid(expectedEvents, 'have');
-  }
-
-  /**
-   * Creates test expectation describing the changes you partially expect due to the specified
-   * behavior(only part of events published can match).
-   * @async
-   * @param expectedEvents - List of partially expected `Events` that should be published on app.
-   * @throws {AssertionError}
-   * Thrown if assertion does not include expectation.
-   */
-  public async expectToInclude(
-    expectedEvents: EvebleTypes.Event[] | Function = []
-  ): Promise<void> {
-    await this.assertIsValid(expectedEvents, 'include');
-  }
-
-  /**
-   * Creates exception expectation.
-   * @async
-   * @param error - Expected error type as subclass of `DomainError` type constructor.
-   * @param errorMessage - Optional expected error message that should be thrown.
-   * @throws {Error}
-   * Re-throws if catched error is not instance of `DomainError`.
-   */
-  public async expectToFailWith(
-    error: any,
-    errorMessage?: string
-  ): Promise<void> {
-    this.test = async (): Promise<void> => {
-      if (errorMessage === undefined) {
-        await expect(
-          this.sendMessagesThroughApp()
-        ).to.eventually.be.rejectedWith(error);
-      } else {
-        await expect(
-          this.sendMessagesThroughApp()
-        ).to.eventually.be.rejectedWith(error, errorMessage);
-      }
-    };
-    await this.run();
-  }
-
-  /**
-   * @alias expectToFailWith
-   * @async
-   */
-  public async throws(error: any, errorMessage: string): Promise<void> {
-    await this.expectToFailWith(error, errorMessage);
-  }
-
-  /**
    * Adds scheduled commands that will be resolved immediately with application.
    * @async
    * @param commands - Instances implementing `Command` interface that should be
@@ -310,7 +220,7 @@ export class EventSourceableBDDAsserter
         assignmentId: command.targetId,
         deliverAt: new Date(),
         assignerId: command.targetId,
-        assignerType: this.sut.getTypeName(),
+        assignerType: this.scenario.getSUT().getTypeName(),
       });
       command.schedule(assignment);
     }
@@ -318,9 +228,9 @@ export class EventSourceableBDDAsserter
     this.expected.scheduledCommands =
       this.expected.scheduledCommands.concat(normalizedCommands);
 
-    const commandBus = await this.app.injector.getAsync<EvebleTypes.CommandBus>(
-      BINDINGS.CommandBus
-    );
+    const commandBus = await this.scenario
+      .getApp()
+      .injector.getAsync<EvebleTypes.CommandBus>(BINDINGS.CommandBus);
     const boundHandler = this.onScheduleCommandSend.bind(this);
     boundHandler.original = this.onScheduleCommandSend;
     commandBus.onSend('on-scheduled-command', boundHandler, true);
@@ -343,9 +253,9 @@ export class EventSourceableBDDAsserter
     for (const command of normalizedCommands) {
       this.expected.unscheduledCommands.push(command);
     }
-    const commandBus = await this.app.injector.getAsync<EvebleTypes.CommandBus>(
-      BINDINGS.CommandBus
-    );
+    const commandBus = await this.scenario
+      .getApp()
+      .injector.getAsync<EvebleTypes.CommandBus>(BINDINGS.CommandBus);
 
     const boundHandler = this.onUnscheduleCommandSend.bind(this);
     boundHandler.original = this.onUnscheduleCommandSend;
@@ -354,103 +264,62 @@ export class EventSourceableBDDAsserter
   }
 
   /**
-   * Creates state expectation describing of the subject's properties after test.
-   * @param expectedState - Object with properties matching expected state.
-   * @return Promise of `this` instance.
-   */
-  public expectState(expectedState: EvebleTypes.Props): this {
-    this.expected.state = expectedState;
-    return this;
-  }
-
-  /**
-   * Creates test expectation describing the changes you expect due to the specified behavior.
    * @async
-   * @param expectedEvents - Array of expected `Events` that should be published on app.
-   * @param assertionType - Type of assertion being made.
-   * @throws {AssertionError}
-   * Thrown if assertion does not match expectation.
+   * Executes test.
    */
-  protected async assertIsValid(
-    expectedEvents: EvebleTypes.Event[] | Function,
-    assertionType: 'have' | 'include'
-  ): Promise<void> {
-    if (isFunction(expectedEvents)) {
-      this.expected.events = (expectedEvents as Function)();
-    } else {
-      this.expected.events = expectedEvents as EvebleTypes.Event[];
-    }
-
+  public async execute(): Promise<types.Result<EventSourceable>> {
     this.test = async (): Promise<void> => {
       await this.sendMessagesThroughApp();
       if (this.hasExpectedScheduledCommands()) {
         // Since CommandScheduler runs scheduled jobs in interval, we need to wait enough amount of time
         // till the job will actually be triggered and then processed on CommandScheduler
-        const commandScheduler =
-          await this.app.injector.getAsync<EvebleTypes.CommandScheduler>(
+        const commandScheduler = await this.scenario
+          .getApp()
+          .injector.getAsync<EvebleTypes.CommandScheduler>(
             BINDINGS.CommandScheduler
           );
         const interval = commandScheduler.getInterval();
         await this.delay(interval * 2 + 500);
       }
-      const untestedProps = this.config.get('untestedProperties');
-
-      let asserter: Function;
-      if (assertionType === 'have') {
-        asserter = (assert as any).haveArrayOfStructs;
-      } else {
-        asserter = (assert as any).includeArrayOfStructs;
-      }
-      asserter(
-        this.actual.events,
-        this.expected.events,
-        untestedProps,
-        'List of actual published events does not match the expected ones'
-      );
-
-      asserter(
-        this.actual.unscheduledCommands,
-        this.expected.unscheduledCommands,
-        untestedProps,
-        'List of actual unscheduled commands does not match the expected ones'
-      );
-
-      const actualEventTypeNames = this.getEventTypeNameList(
-        this.actual.events
-      );
-      const expectedEventTypeNames = this.getEventTypeNameList(
-        this.expected.events
-      );
-
-      const chaiAssertionMethodNameForArray =
-        assertionType === 'include' ? 'contain' : 'have';
-      expect(actualEventTypeNames).to[chaiAssertionMethodNameForArray].members(
-        expectedEventTypeNames,
-        'Actual list of published event type names does not match expected one'
-      );
-
-      if (this.expected.state !== undefined) {
-        const repository =
-          this.app.injector.get<EvebleTypes.EventSourceableRepository>(
-            BINDINGS.EventSourceableRepository
-          );
-        const sutInstance = await repository.find(
-          this.getSUT(),
-          this.expected.state.id
-        );
-        if (sutInstance !== undefined) {
-          this.removeDependencies(sutInstance);
-        }
-        // Reuse logic of haveArrayOfStructs with untestedProps for simplicity
-        (assert as any).haveArrayOfStructs(
-          [sutInstance],
-          [this.expected.state],
-          untestedProps,
-          'Actual state does not match expected one '
-        );
-      }
     };
     await this.run();
+    const result: types.Result<EventSourceable> = {
+      events: this.actual.events,
+      scheduled: this.actual.scheduledCommands,
+      unscheduled: this.actual.unscheduledCommands,
+    };
+    if (this.scenario.options?.targetId !== undefined) {
+      result.target = await this.resolveActualTargetState(
+        this.scenario.options.targetId
+      );
+    }
+    return result;
+  }
+
+  /**
+   * Resolves actual target state.
+   * @async
+   * @param id - Instance of `Guid` or `string`.
+   * @returns Instance of `<EventSourceable>`, else `undefined`.
+   */
+  protected async resolveActualTargetState(
+    id: string | Guid
+  ): Promise<EventSourceable | undefined> {
+    const repository = this.scenario
+      .getApp()
+      .injector.get<EvebleTypes.EventSourceableRepository>(
+        BINDINGS.EventSourceableRepository
+      );
+    const foundInstance = await repository.find(
+      this.scenario.getSUT(),
+      id.toString()
+    );
+
+    if (foundInstance !== undefined) {
+      this.removeDependencies(foundInstance);
+      return foundInstance as EventSourceable;
+    }
+    return undefined;
   }
 
   /**
@@ -458,7 +327,7 @@ export class EventSourceableBDDAsserter
    * @param events - List of `Events`.
    * @returns List with all event type names.
    */
-  getEventTypeNameList(events: EvebleTypes.Event[]): string[] {
+  protected getEventTypeNameList(events: EvebleTypes.Event[]): string[] {
     const list: string[] = [];
     for (const event of events) {
       list.push(event.getTypeName());
@@ -578,7 +447,7 @@ export class EventSourceableBDDAsserter
     version: number,
     events: EvebleTypes.Event[]
   ): Promise<EvebleTypes.Commit> {
-    const appId = this.app.config.get('appId');
+    const appId = this.scenario.getApp().config.get('appId');
 
     const versionedEvents: EvebleTypes.Event[] = [];
     for (const event of events) {
@@ -597,17 +466,16 @@ export class EventSourceableBDDAsserter
       id: new Guid().toString(),
       sourceId: eventSourceableId.toString(),
       version,
-      eventSourceableType: this.sut.getTypeName(),
+      eventSourceableType: this.scenario.getSUT().getTypeName(),
       commands: [],
       events: versionedEvents,
       insertedAt: new Date(),
       sentBy: appId,
       receivers: [commitReceiver],
     };
-    const commitStore =
-      await this.app.injector.getAsync<EvebleTypes.CommitStore>(
-        BINDINGS.CommitStore
-      );
+    const commitStore = await this.scenario
+      .getApp()
+      .injector.getAsync<EvebleTypes.CommitStore>(BINDINGS.CommitStore);
     const commitId = await commitStore.generateId();
     if (commitId !== undefined) {
       props.id = commitId.toString();
@@ -630,9 +498,9 @@ export class EventSourceableBDDAsserter
    */
   protected async run(): Promise<void> {
     try {
-      const eventBus = await this.app.injector.getAsync<EvebleTypes.EventBus>(
-        BINDINGS.EventBus
-      );
+      const eventBus = await this.scenario
+        .getApp()
+        .injector.getAsync<EvebleTypes.EventBus>(BINDINGS.EventBus);
       const boundHandler = this.onPublishedEvent.bind(this);
       boundHandler.original = this.onPublishedEvent;
 
@@ -662,10 +530,10 @@ export class EventSourceableBDDAsserter
   protected async sendMessagesThroughApp(): Promise<void> {
     for (const message of this.queue) {
       if (message instanceof Command) {
-        await this.app.send(message);
+        await this.scenario.getApp().send(message);
       } else {
         this.ignoreNextEvent = true;
-        await this.app.publish(message as EvebleTypes.Event);
+        await this.scenario.getApp().publish(message as EvebleTypes.Event);
       }
     }
   }
@@ -682,7 +550,7 @@ export class EventSourceableBDDAsserter
     actualMessage: EvebleTypes.Message,
     expectedMessage: EvebleTypes.Message
   ): boolean {
-    const untestedProps = this.config.get('untestedProperties');
+    const untestedProps = this.scenario.getConfig().get('untestedProperties');
 
     const processedActual = omit(
       JSON.parse(JSON.stringify(actualMessage)),
