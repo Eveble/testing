@@ -1,6 +1,6 @@
-import { Config, define } from '@eveble/eveble';
+import { Config, Type } from '@eveble/eveble';
 
-@define()
+@Type()
 export class TestConfig extends Config {
   public untestedProperties: string[] = [
     'timestamp',

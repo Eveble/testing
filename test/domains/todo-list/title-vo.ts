@@ -1,6 +1,6 @@
-import { define, ValueObject } from '@eveble/eveble';
+import { Type, ValueObject } from '@eveble/eveble';
 
-@define('TodoList.Title')
+@Type('TodoList.Title')
 export class Title extends ValueObject {
   value: string;
 

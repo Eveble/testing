@@ -1,8 +1,8 @@
-import { Aggregate, define, initial, subscribe, route } from '@eveble/eveble';
+import { Aggregate, Type, initial, subscribe, route } from '@eveble/eveble';
 import { CreateCustomer, ChangeCustomerName } from './customer-commands';
 import { CustomerCreated, CustomerNameChanged } from './customer-events';
 
-@define('Customer.Customer')
+@Type('Customer.Customer')
 export class Customer extends Aggregate {
   name: string;
 

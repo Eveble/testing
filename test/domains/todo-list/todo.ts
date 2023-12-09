@@ -1,7 +1,7 @@
-import { define, Entity, can } from '@eveble/eveble';
+import { Type, Entity, can } from '@eveble/eveble';
 import { Title } from './title-vo';
 
-@define('TodoList.Todo')
+@Type('TodoList.Todo')
 export class Todo extends Entity {
   static STATES = {
     created: 'created',

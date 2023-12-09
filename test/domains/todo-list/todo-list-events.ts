@@ -1,11 +1,11 @@
-import { Event, define } from '@eveble/eveble';
+import { Event, Type } from '@eveble/eveble';
 import { Todo } from './todo';
 import { Title } from './title-vo';
 
 /*
 TODO LIST
 */
-@define('TodoList.TodoListCreated')
+@Type('TodoList.TodoListCreated')
 export class TodoListCreated extends Event<TodoListCreated> {
   title: Title;
 
@@ -14,7 +14,7 @@ export class TodoListCreated extends Event<TodoListCreated> {
   todos: Todo[];
 }
 
-@define('TodoList.TodoAdded')
+@Type('TodoList.TodoAdded')
 export class TodoAdded extends Event<TodoAdded> {
   todo: Todo;
 }
@@ -22,12 +22,12 @@ export class TodoAdded extends Event<TodoAdded> {
 /*
 TODO
 */
-@define('TodoList.TodoCompleted')
+@Type('TodoList.TodoCompleted')
 export class TodoCompleted extends Event<TodoCompleted> {
   todo: Todo;
 }
 
-@define('TodoList.TodoExpired')
+@Type('TodoList.TodoExpired')
 export class TodoExpired extends Event<TodoExpired> {
   todo: Todo;
 }

@@ -1,23 +1,23 @@
-import { Guid, Command, define } from '@eveble/eveble';
+import { Guid, Command, Type } from '@eveble/eveble';
 
-@define('Customer.RegisterCustomer')
+@Type('Customer.RegisterCustomer')
 export class RegisterCustomer extends Command<RegisterCustomer> {
   customerId: string | Guid;
 
   name: string;
 }
 
-@define('Customer.CreateCustomer')
+@Type('Customer.CreateCustomer')
 export class CreateCustomer extends Command<CreateCustomer> {
   name: string;
 }
 
-@define('Customer.ChangeCustomerName')
+@Type('Customer.ChangeCustomerName')
 export class ChangeCustomerName extends Command<ChangeCustomerName> {
   name: string;
 }
 
-@define('Customer.SendWelcomeEmail')
+@Type('Customer.SendWelcomeEmail')
 export class SendWelcomeEmail extends Command<SendWelcomeEmail> {
   customerId: string | Guid;
 

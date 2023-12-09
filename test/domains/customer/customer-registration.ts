@@ -1,11 +1,4 @@
-import {
-  Process,
-  define,
-  initial,
-  route,
-  Guid,
-  subscribe,
-} from '@eveble/eveble';
+import { Process, Type, initial, route, Guid, subscribe } from '@eveble/eveble';
 import {
   RegisterCustomer,
   CreateCustomer,
@@ -20,7 +13,7 @@ import {
 } from './customer-events';
 import { InvalidCustomerName } from './domain-errors';
 
-@define('ProcessBDDApi.CustomerRegistration')
+@Type('ProcessBDDApi.CustomerRegistration')
 export class CustomerRegistration extends Process {
   public static STATES = {
     creatingCustomer: 'creatingCustomer',

@@ -1,4 +1,4 @@
-import { Aggregate, define, initial, route, subscribe } from '@eveble/eveble';
+import { Aggregate, Type, initial, route, subscribe } from '@eveble/eveble';
 import { Title } from './title-vo';
 import { Todo } from './todo';
 import {
@@ -15,7 +15,7 @@ import {
 } from './todo-list-events';
 import { TodoExceededError } from './domain-errors';
 
-@define('TodoList.TodoList')
+@Type('TodoList.TodoList')
 export class TodoList extends Aggregate {
   title: Title;
 
