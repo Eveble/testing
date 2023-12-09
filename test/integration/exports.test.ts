@@ -16,6 +16,7 @@ import {
 } from '../../src/errors';
 // Components
 import { Scenario } from '../../src/components/scenario';
+import { Feature } from '../../src/components/feature';
 import { TestConfig } from '../../src/test-config';
 // BDD Chain
 import {
@@ -41,7 +42,7 @@ import {
   EventSourceableFeatureMappingsNotFoundError as EventSourceableFeatureMappingsNotFoundErrorExported,
   // Api
   Scenario as ScenarioExported,
-  // Environment
+  Feature as FeatureExported,
   TestConfig as TestConfigExported,
   // BDD Chain
   BaseChain as BaseChainExported,
@@ -97,6 +98,11 @@ describe(`exports`, () => {
     it('Scenario', () => {
       expect(Scenario).to.be.equal(ScenarioExported);
     });
+    it('Feature', () => {
+      expect(Feature).to.be.equal(FeatureExported);
+    });
+  });
+
   describe('BDD chain', () => {
     it('BaseChain', () => {
       expect(BaseChain).to.be.equal(BaseChainExported);

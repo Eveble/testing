@@ -3,6 +3,8 @@ export { types } from './types';
 export { types as BDDTypes } from './types';
 // Components
 export { Scenario } from './components/scenario';
+export { Feature } from './components/feature';
+export { TestConfig } from './test-config';
 // BDD Chain
 export {
   BaseChain,
