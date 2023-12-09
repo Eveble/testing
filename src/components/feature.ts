@@ -28,7 +28,6 @@ export class Feature<EventSourceable> {
   constructor(name: string, EventSourceableClass: any) {
     this.name = name;
     this.EventSourceableClass = EventSourceableClass;
-    this.initialize();
   }
 
   /**
@@ -84,11 +83,6 @@ export class Feature<EventSourceable> {
   }
 
   /**
-   * Initializes feature.
-   */
-  protected initialize(): void { }
-
-  /**
    * Sets scenario instance.
    * @param scenario - Instance of `Scenario`.
    */
@@ -118,11 +112,6 @@ export class Feature<EventSourceable> {
       await callback(this.generateApi());
     });
   }
-
-  /**
-   * Resets feature.
-   */
-  public reset(): void { }
 
   /**
    * Generates feature api.
