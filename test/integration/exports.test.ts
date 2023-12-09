@@ -18,6 +18,14 @@ import {
 import { Scenario } from '../../src/scenario';
 // Environment
 import { TestConfig } from '../../src/test-config';
+// BDD Chain
+import {
+  BaseChain,
+  BaseThenChain,
+  WhenThenChain,
+  GivenWhenThenChain,
+  GivenWhenChain,
+} from '../../src/components/bdd-chain';
 
 import {
   // Asserters
@@ -35,6 +43,12 @@ import {
   on,
   // Environment
   TestConfig as TestConfigExported,
+  // BDD Chain
+  BaseChain as BaseChainExported,
+  BaseThenChain as BaseThenChainExported,
+  WhenThenChain as WhenThenChainExported,
+  GivenWhenThenChain as GivenWhenThenChainExported,
+  GivenWhenChain as GivenWhenChainExported,
 } from '../../src/index';
 
 describe(`exports`, () => {
@@ -76,6 +90,21 @@ describe(`exports`, () => {
     it('on', () => {
       const app = stubInterface<EvebleTypes.App>();
       expect(on(app)).to.be.instanceof(Scenario);
+  describe('BDD chain', () => {
+    it('BaseChain', () => {
+      expect(BaseChain).to.be.equal(BaseChainExported);
+    });
+    it('BaseThenChain', () => {
+      expect(BaseThenChain).to.be.equal(BaseThenChainExported);
+    });
+    it('WhenThenChain', () => {
+      expect(WhenThenChain).to.be.equal(WhenThenChainExported);
+    });
+    it('GivenWhenThenChain', () => {
+      expect(GivenWhenThenChain).to.be.equal(GivenWhenThenChainExported);
+    });
+    it('GivenWhenChain', () => {
+      expect(GivenWhenChain).to.be.equal(GivenWhenChainExported);
     });
   });
   describe('environment', () => {

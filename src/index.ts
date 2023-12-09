@@ -6,6 +6,14 @@ import { types } from './types';
 import { Scenario } from './scenario';
 import { TestConfig } from './test-config';
 
+// BDD Chain
+export {
+  BaseChain,
+  BaseThenChain,
+  WhenThenChain,
+  GivenWhenThenChain,
+  GivenWhenChain,
+} from './components/bdd-chain';
 // Asserters
 export { EventSourceableBDDAsserter } from './bdd-asserters/event-sourceable-bdd-asserter';
 // Chai
