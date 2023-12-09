@@ -10,7 +10,7 @@ import { evebleChai } from '../../src/chai-assertions/eveble-chai-assertion';
 import {
   TestError,
   InvalidAppError,
-  InvalidSUTError,
+  InvalidEventSourceableError,
   InvalidMessageError,
   InvalidExpectationError,
 } from '../../src/errors';
@@ -35,7 +35,7 @@ import {
   // Errors
   TestError as TestErrorExported,
   InvalidAppError as InvalidAppErrorExported,
-  InvalidSUTError as InvalidSUTErrorExported,
+  InvalidEventSourceableError as InvalidEventSourceableErrorExported,
   InvalidMessageError as InvalidMessageErrorExported,
   InvalidExpectationError as InvalidExpectationErrorExported,
   // Api
@@ -71,8 +71,10 @@ describe(`exports`, () => {
     it('InvalidAppError', () => {
       expect(InvalidAppError).to.be.equal(InvalidAppErrorExported);
     });
-    it('InvalidSUTError', () => {
-      expect(InvalidSUTError).to.be.equal(InvalidSUTErrorExported);
+    it('InvalidEventSourceableError', () => {
+      expect(InvalidEventSourceableError).to.be.equal(
+        InvalidEventSourceableErrorExported
+      );
     });
     it('InvalidMessageError', () => {
       expect(InvalidMessageError).to.be.equal(InvalidMessageErrorExported);

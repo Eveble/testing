@@ -22,7 +22,7 @@ export { evebleChai } from './chai-assertions/eveble-chai-assertion';
 export {
   TestError,
   InvalidAppError,
-  InvalidSUTError,
+  InvalidEventSourceableError,
   InvalidMessageError,
   InvalidExpectationError,
 } from './errors';

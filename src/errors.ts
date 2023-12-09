@@ -8,7 +8,7 @@ export class InvalidAppError extends TestError {
   }
 }
 
-export class InvalidSUTError extends TestError {
+export class InvalidEventSourceableError extends TestError {
   constructor(got: string) {
     super(
       `System Under Test(SUT) must be a valid subclass(constructor type) of EventSourceable like Aggregate or Process, got ${got}`
