@@ -1,3 +1,36 @@
+# [3.0.0](https://github.com/eveble/testing/compare/v2.1.3...v3.0.0) (2023-12-09)
+
+
+### Bug Fixes
+
+* remove empty methods ([cdd3358](https://github.com/eveble/testing/commit/cdd3358dc042e0009e037b0830bdadf6e33c6e0e))
+* remove legacy exports ([5da1a45](https://github.com/eveble/testing/commit/5da1a45773fb2fa460c1b8074040444ed6595ee9))
+* update evebleChai exports ([bfd838f](https://github.com/eveble/testing/commit/bfd838f2e1c7e0636def8d8295806a0a1c406d9a))
+
+
+* refactor!: update Scenario to match e2e API ([3f5e109](https://github.com/eveble/testing/commit/3f5e10944b2e0e90e824dd7467e14fa1560eaef6))
+* refactor!: update EventSourceableBDDAsserter to match e2e API ([124f309](https://github.com/eveble/testing/commit/124f309c69a1f4262c77d852bd6add348fa7237e))
+* refactor!: update types to match e2e API ([6e419df](https://github.com/eveble/testing/commit/6e419df964ee39c601f605e7e1ade7618061a0df))
+* refactor!: rename InvalidSUTError to InvalidEventSourceableError ([ad575f3](https://github.com/eveble/testing/commit/ad575f31bd10915f00f796d1ba99790a30873561))
+* refactor!: chaiStructAssertion to evebleChai supporting new events, commands api ([3074278](https://github.com/eveble/testing/commit/3074278b7753d51382b824f4acbd525a52ae7b6d))
+
+
+### Features
+
+* add BDD chains ([e301ba0](https://github.com/eveble/testing/commit/e301ba0e2e7902a033bb1f956fceef460235386c))
+* add Feature component ([0a87cb4](https://github.com/eveble/testing/commit/0a87cb4b7731cc8e6894f14a220bafee20a50ca6))
+* **errors:** add EventSourceableFeatureMappingsNotFoundError ([517ad11](https://github.com/eveble/testing/commit/517ad11d09f24d2514426c7a8c5a7cf85aa915c1))
+* **errors:** add InvalidScenarioError ([68f0357](https://github.com/eveble/testing/commit/68f0357e87bfc1352d413c32993ab714f8776417))
+
+
+### BREAKING CHANGES
+
+* update Scenario to match e2e API
+* update EventSourceableBDDAsserter to match e2e API
+* update types to match e2e API
+* rename InvalidSUTError to InvalidEventSourceableError
+* chaiStructAssertion to evebleChai supporting new events, commands api
+
 ## [2.1.3](https://github.com/eveble/testing/compare/v2.1.2...v2.1.3) (2023-04-23)
 
 

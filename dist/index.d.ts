@@ -1,13 +1,9 @@
-import { EvebleTypes } from '@eveble/eveble';
-import { types } from './types';
-import { Scenario } from './scenario';
-import { TestConfig } from './test-config';
-export { EventSourceableBDDAsserter } from './bdd-asserters/event-sourceable-bdd-asserter';
-export { chaiStructAssertion } from './chai-assertions/chai-struct-assertion';
-export { TestError, InvalidAppError, InvalidSUTError, InvalidMessageError, InvalidExpectationError, } from './errors';
+export { types } from './types';
+export { types as BDDTypes } from './types';
+export { Scenario } from './components/scenario';
+export { Feature } from './components/feature';
 export { TestConfig } from './test-config';
-export declare function on(app: EvebleTypes.App, options?: {
-    asserter?: types.EventSourceableBDDAsserterType;
-    config?: TestConfig;
-}): Scenario;
-export { types, Scenario };
+export { BaseChain, BaseThenChain, WhenThenChain, GivenWhenThenChain, GivenWhenChain, } from './components/bdd-chain';
+export { EventSourceableBDDAsserter } from './bdd-asserters/event-sourceable-bdd-asserter';
+export { evebleChai } from './chai-assertions/eveble-chai-assertion';
+export { TestError, InvalidAppError, InvalidEventSourceableError, InvalidMessageError, InvalidExpectationError, InvalidScenarioError, EventSourceableFeatureMappingsNotFoundError, } from './errors';

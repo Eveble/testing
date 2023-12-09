@@ -1,5 +1,7 @@
-import { Struct, EvebleTypes } from '@eveble/eveble';
+import { Struct, EvebleTypes, App, Guid } from '@eveble/eveble';
 import { TestConfig } from './test-config';
+import { GivenWhenChain, WhenThenChain } from './components/bdd-chain';
+import { Scenario } from './components/scenario';
 declare global {
     export namespace Chai {
         interface Assertion {
@@ -8,25 +10,37 @@ declare global {
     }
 }
 export declare namespace types {
-    interface Scenario {
+    type FeatureCallback<EventSourceable> = ({ scenario, }: {
+        scenario: Scenario<EventSourceable>;
+    }) => Promise<void>;
+    type FeatureOptions = {};
+    type FeatureApi<EventSourceable> = {
+        scenario: Scenario<EventSourceable>;
+    };
+    type SUTOptions<EventSourceable> = {
+        app: App;
+        EventSourceable: any;
+        config?: TestConfig;
+    };
+    type ThenCallback<EventSourceable> = (result: types.Result<EventSourceable>) => Promise<void> | void;
+    type RuntimeOptions = {
+        targetId: string | Guid;
+    };
+    interface EventSourceableBDDFramework<EventSourceable> {
         getSUT(): EvebleTypes.EventSourceableType;
         getApp(): EvebleTypes.App;
-        getAsserter(): types.EventSourceableBDDAsserterType;
-        test(sut: EvebleTypes.EventSourceableType): this;
-        given(messages: EvebleTypes.Message[]): this;
-        when(messages: EvebleTypes.Message[]): this;
-        expect(events: EvebleTypes.Event[]): this;
-        expectToInclude(includedEvents: EvebleTypes.Event[]): this;
-        expectToFailWith(error: any, errorMessage?: string): this;
-        throws(error: any, errorMessage?: string): this;
-        schedules(commands: EvebleTypes.Command[]): this;
-        unschedules(commands: EvebleTypes.Command[]): this;
-        verify(config: TestConfig): Promise<boolean>;
+        getAsserter(): types.EventSourceableBDDAsserterType<EventSourceable>;
+        given(description: string, givenFn: () => Promise<EvebleTypes.Message[]>): GivenWhenChain<EventSourceable>;
+        when(description: string, whenFn: () => Promise<EvebleTypes.Message[]>): WhenThenChain<EventSourceable>;
     }
-    interface EventSourceableBDDAsserter {
-        getSUT(): EvebleTypes.EventSourceableType;
-        getApp(): EvebleTypes.App;
-        getConfig(): TestConfig;
+    type Result<EventSourceable> = {
+        events: EvebleTypes.Event[];
+        scheduled: EvebleTypes.Command[];
+        unscheduled: EvebleTypes.Command[];
+        target?: EventSourceable;
+    };
+    interface EventSourceableBDDAsserter<EventSourceable> {
+        getScenario(): Scenario<EventSourceable>;
         getQueue(): EvebleTypes.Message[];
         getExpectedEvents(): EvebleTypes.Event[];
         getPublishedEvents(): EvebleTypes.Event[];
@@ -36,15 +50,11 @@ export declare namespace types {
         getExpectedUnscheduledCommands(): EvebleTypes.Command[];
         given(messages: EvebleTypes.Message[]): Promise<this>;
         when(messages: EvebleTypes.Message[]): Promise<this>;
-        expect(expectedEvents: EvebleTypes.Event[] | Function): Promise<void>;
-        expectToInclude(expectedEvents: EvebleTypes.Event[] | Function): Promise<void>;
-        expectToFailWith(error: any, errorMessage?: string): Promise<void>;
-        throws(error: any, errorMessage: string): Promise<void>;
-        schedules(commands: EvebleTypes.Command[]): Promise<this>;
         unschedules(commands: EvebleTypes.Command[]): Promise<this>;
-        expectState(expectedState: EvebleTypes.Props): this;
+        schedules(commands: EvebleTypes.Command[]): Promise<this>;
+        execute(): Promise<Result<EventSourceable>>;
     }
-    interface EventSourceableBDDAsserterType {
-        new (sut: EvebleTypes.EventSourceableType, app: EvebleTypes.App, config: TestConfig): EventSourceableBDDAsserter;
+    interface EventSourceableBDDAsserterType<EventSourceable> {
+        new (sut: EvebleTypes.EventSourceableType, app: EvebleTypes.App, config: TestConfig): EventSourceableBDDAsserter<EventSourceable>;
     }
 }

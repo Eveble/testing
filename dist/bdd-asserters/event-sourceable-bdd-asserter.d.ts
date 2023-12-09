@@ -1,10 +1,8 @@
-import { EvebleTypes } from '@eveble/eveble';
+import { EvebleTypes, Guid } from '@eveble/eveble';
 import { types } from '../types';
-import { TestConfig } from '../test-config';
-export declare class EventSourceableBDDAsserter implements types.EventSourceableBDDAsserter {
-    protected sut: EvebleTypes.EventSourceableType;
-    protected app: EvebleTypes.App;
-    protected config: TestConfig;
+import { Scenario } from '../components/scenario';
+export declare class EventSourceableBDDAsserter<EventSourceable> implements types.EventSourceableBDDAsserter<EventSourceable> {
+    protected scenario: Scenario<EventSourceable>;
     protected queue: EvebleTypes.Message[];
     protected actual: {
         events: EvebleTypes.Event[];
@@ -20,10 +18,8 @@ export declare class EventSourceableBDDAsserter implements types.EventSourceable
     protected originalFillErrorProps: Function;
     protected test?: () => Promise<void>;
     protected ignoreNextEvent?: boolean;
-    constructor(sut: EvebleTypes.EventSourceableType, app: EvebleTypes.App, config: TestConfig);
-    getSUT(): EvebleTypes.EventSourceableType;
-    getApp(): EvebleTypes.App;
-    getConfig(): TestConfig;
+    constructor(scenario: Scenario<EventSourceable>);
+    getScenario(): Scenario<EventSourceable>;
     getQueue(): EvebleTypes.Message[];
     getExpectedEvents(): EvebleTypes.Event[];
     getPublishedEvents(): EvebleTypes.Event[];
@@ -33,15 +29,11 @@ export declare class EventSourceableBDDAsserter implements types.EventSourceable
     getExpectedUnscheduledCommands(): EvebleTypes.Command[];
     given(messages?: EvebleTypes.Message[]): Promise<this>;
     when(messages?: EvebleTypes.Message[]): Promise<this>;
-    expect(expectedEvents?: EvebleTypes.Event[] | Function): Promise<void>;
-    expectToInclude(expectedEvents?: EvebleTypes.Event[] | Function): Promise<void>;
-    expectToFailWith(error: any, errorMessage?: string): Promise<void>;
-    throws(error: any, errorMessage: string): Promise<void>;
     schedules(commands?: EvebleTypes.Command[]): Promise<this>;
     unschedules(commands?: EvebleTypes.Command[]): Promise<this>;
-    expectState(expectedState: EvebleTypes.Props): this;
-    protected assertIsValid(expectedEvents: EvebleTypes.Event[] | Function, assertionType: 'have' | 'include'): Promise<void>;
-    getEventTypeNameList(events: EvebleTypes.Event[]): string[];
+    execute(): Promise<types.Result<EventSourceable>>;
+    protected resolveActualTargetState(id: string | Guid): Promise<EventSourceable | undefined>;
+    protected getEventTypeNameList(events: EvebleTypes.Event[]): string[];
     protected removeDependencies(sutInstance: EvebleTypes.EventSourceable): void;
     hasExpectedScheduledCommands(): boolean;
     onPublishedEvent(actualPublishedEvent: EvebleTypes.Event): void;

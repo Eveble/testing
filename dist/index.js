@@ -30,14 +30,24 @@ var chai__namespace = /*#__PURE__*/_interopNamespaceDefault(chai);
 
 class TestError extends eveble.ExtendableError {
 }
+class InvalidScenarioError extends TestError {
+    constructor() {
+        super('Please define testing scenario in valid, behavior driven form');
+    }
+}
 class InvalidAppError extends TestError {
     constructor() {
         super('Application was not provided for the test');
     }
 }
-class InvalidSUTError extends TestError {
+class InvalidEventSourceableError extends TestError {
     constructor(got) {
         super(`System Under Test(SUT) must be a valid subclass(constructor type) of EventSourceable like Aggregate or Process, got ${got}`);
+    }
+}
+class EventSourceableFeatureMappingsNotFoundError extends TestError {
+    constructor(eventSourceableName) {
+        super(`Mapping for event sourceable '${eventSourceableName}' not found`);
     }
 }
 class InvalidExpectationError extends TestError {
@@ -51,6 +61,113 @@ class InvalidMessageError extends TestError {
     }
 }
 
+class BaseChain {
+    constructor(scenario) {
+        this.scenario = scenario;
+    }
+}
+class BaseThenChain extends BaseChain {
+    async throws(_description, throwsFn) {
+        this.scenario.throwsFn = throwsFn;
+        await this.scenario.verify();
+    }
+}
+class WhenThenChain extends BaseThenChain {
+    schedules(_description, scheduledFn) {
+        this.scenario.scheduledFn = scheduledFn;
+        return this;
+    }
+    unschedules(_description, unscheduledFn) {
+        this.scenario.unscheduledFn = unscheduledFn;
+        return this;
+    }
+    async then(_description, thenFnOrOptions, thenFn) {
+        if (typeof thenFnOrOptions === 'function') {
+            this.scenario.thenFn = thenFnOrOptions;
+        }
+        else {
+            this.scenario.thenFn = thenFn;
+            this.scenario.setRuntimeOptions(thenFnOrOptions);
+        }
+        await this.scenario.verify();
+    }
+}
+class GivenWhenThenChain extends BaseThenChain {
+    schedules(_description, scheduledFn) {
+        this.scenario.scheduledFn = scheduledFn;
+        return this;
+    }
+    unschedules(_description, unscheduledFn) {
+        this.scenario.unscheduledFn = unscheduledFn;
+        return this;
+    }
+    async then(_description, thenFnOrOptions, thenFn) {
+        if (typeof thenFnOrOptions === 'function') {
+            this.scenario.thenFn = thenFnOrOptions;
+        }
+        else {
+            this.scenario.thenFn = thenFn;
+            this.scenario.setRuntimeOptions(thenFnOrOptions);
+        }
+        await this.scenario.verify();
+    }
+}
+class GivenWhenChain extends BaseChain {
+    when(_description, whenFn) {
+        this.scenario.whenFn = whenFn;
+        return new GivenWhenThenChain(this.scenario);
+    }
+}
+
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+function __decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function __metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+
+exports.TestConfig = class TestConfig extends eveble.Config {
+    constructor(props) {
+        super();
+        this.untestedProperties = [
+            'timestamp',
+            'version',
+            'metadata',
+            'schemaVersion',
+        ];
+        if (props)
+            Object.assign(this, this.processProps(props));
+    }
+};
+exports.TestConfig = __decorate([
+    eveble.Type()({ kind: 19, name: "TestConfig", properties: { "untestedProperties": { kind: 18, initializer: () => [
+                    'timestamp',
+                    'version',
+                    'metadata',
+                    'schemaVersion',
+                ], type: Array, arguments: [{ kind: 2 }] } }, extends: { kind: 18, type: eveble.Config, arguments: [] } }),
+    __metadata("design:paramtypes", [Object])
+], exports.TestConfig);
+
 class ProcessedAssertion {
     constructor(actual, expected, actualReadable, expectedReadable) {
         this.actual = actual;
@@ -59,7 +176,7 @@ class ProcessedAssertion {
         this.expectedReadable = expectedReadable;
     }
 }
-const chaiStructAssertion = (chaiInstance, utils) => {
+const evebleChai = (chaiInstance, utils) => {
     const Assertion = chaiInstance.Assertion;
     function property(name, asserter) {
         utils.addProperty(Assertion.prototype, name, function () {
@@ -77,15 +194,28 @@ const chaiStructAssertion = (chaiInstance, utils) => {
             depth: 10,
         })}\n`;
     }
-    function processAssertion(actual, expected, untestedProps = []) {
+    function processAssertion(actual, expected, untestedProps = [
+        'timestamp',
+        'version',
+        'metadata',
+        'schemaVersion',
+    ]) {
         const processedActual = [];
         const processedExpected = [];
         const processedActualString = [];
         const processedExpectedString = [];
-        for (const [index, actualStruct] of Object.entries(actual)) {
+        let actualTarget = actual;
+        if (Array.isArray(actual) === false) {
+            actualTarget = [actual];
+        }
+        let expectedTarget = expected;
+        if (Array.isArray(expected) === false) {
+            expectedTarget = [expected];
+        }
+        for (const [index, actualStruct] of Object.entries(actualTarget)) {
             processedActual[index] = lodash.omit(JSON.parse(JSON.stringify(actualStruct)), untestedProps);
             processedActualString[index] = stringifyStruct(actualStruct, processedActual[index]);
-            const expectedStruct = expected[index];
+            const expectedStruct = expectedTarget[index];
             if (expectedStruct === undefined) {
                 continue;
             }
@@ -95,13 +225,13 @@ const chaiStructAssertion = (chaiInstance, utils) => {
                 }
             }
         }
-        for (const [index, expectedStruct] of Object.entries(expected)) {
+        for (const [index, expectedStruct] of Object.entries(expectedTarget)) {
             processedExpected[index] = lodash.omit(JSON.parse(JSON.stringify(expectedStruct)), untestedProps);
             processedExpectedString[index] = stringifyStruct(expectedStruct, processedExpected[index]);
         }
         return new ProcessedAssertion(processedActual, processedExpected, processedActualString, processedExpectedString);
     }
-    method('structs', function (expected, untestedProps) {
+    function validateStructs(expected, untestedProps) {
         const have = utils.flag(this, 'have') || false;
         const include = utils.flag(this, 'include') || false;
         const negate = utils.flag(this, 'negate') || false;
@@ -131,7 +261,12 @@ const chaiStructAssertion = (chaiInstance, utils) => {
                 this.assert(lodash.some(processed.actual, (actualStruct) => lodash.isEqual(actualStruct, struct)), `Expected struct \n ${structName} ${structStringified} to be includeed in ${actualStringified}`, `Expected struct \n ${structName} ${structStringified} to not be includeed in ${actualStringified}`, struct, processed.actualReadable.join(''));
             }
         }
-    });
+    }
+    method('events', validateStructs);
+    method('structs', validateStructs);
+    method('messages', validateStructs);
+    method('commands', validateStructs);
+    method('state', validateStructs);
     property('have', function () {
         utils.flag(this, 'have', true);
         return this;
@@ -140,6 +275,9 @@ const chaiStructAssertion = (chaiInstance, utils) => {
         utils.flag(this, 'include', true);
         return this;
     });
+    chai__namespace.assert.haveState = function (actual, expected, untestedProps, message) {
+        return new chai__namespace.Assertion(actual, message).to.have.state(expected, untestedProps);
+    };
     chai__namespace.assert.haveArrayOfStructs = function (actual, expected, untestedProps, message) {
         return new chai__namespace.Assertion(actual, message).to.have.structs(expected, untestedProps);
     };
@@ -152,15 +290,49 @@ const chaiStructAssertion = (chaiInstance, utils) => {
     chai__namespace.assert.notIncludeArrayOfStructs = function (actual, expected, untestedProps, message) {
         return new chai__namespace.Assertion(actual, message).to.not.include.structs(expected, untestedProps);
     };
+    chai__namespace.assert.haveArrayOfMessages = function (actual, expected, untestedProps, message) {
+        return new chai__namespace.Assertion(actual, message).to.have.messages(expected, untestedProps);
+    };
+    chai__namespace.assert.notHaveArrayOfMessages = function (actual, expected, untestedProps, message) {
+        return new chai__namespace.Assertion(actual, message).to.not.have.messages(expected, untestedProps);
+    };
+    chai__namespace.assert.includeArrayOfMessages = function (actual, expected, untestedProps, message) {
+        return new chai__namespace.Assertion(actual, message).to.include.messages(expected, untestedProps);
+    };
+    chai__namespace.assert.notIncludeArrayOfMessages = function (actual, expected, untestedProps, message) {
+        return new chai__namespace.Assertion(actual, message).to.not.include.messages(expected, untestedProps);
+    };
+    chai__namespace.assert.haveArrayOfCommands = function (actual, expected, untestedProps, message) {
+        return new chai__namespace.Assertion(actual, message).to.have.commands(expected, untestedProps);
+    };
+    chai__namespace.assert.notHaveArrayOfCommands = function (actual, expected, untestedProps, message) {
+        return new chai__namespace.Assertion(actual, message).to.not.have.commands(expected, untestedProps);
+    };
+    chai__namespace.assert.includeArrayOfCommands = function (actual, expected, untestedProps, message) {
+        return new chai__namespace.Assertion(actual, message).to.include.commands(expected, untestedProps);
+    };
+    chai__namespace.assert.notIncludeArrayOfCommands = function (actual, expected, untestedProps, message) {
+        return new chai__namespace.Assertion(actual, message).to.not.include.commands(expected, untestedProps);
+    };
+    chai__namespace.assert.haveArrayOfEvents = function (actual, expected, untestedProps, message) {
+        return new chai__namespace.Assertion(actual, message).to.have.events(expected, untestedProps);
+    };
+    chai__namespace.assert.notHaveArrayOfEvents = function (actual, expected, untestedProps, message) {
+        return new chai__namespace.Assertion(actual, message).to.not.have.events(expected, untestedProps);
+    };
+    chai__namespace.assert.includeArrayOfEvents = function (actual, expected, untestedProps, message) {
+        return new chai__namespace.Assertion(actual, message).to.include.events(expected, untestedProps);
+    };
+    chai__namespace.assert.notIncludeArrayOfEvents = function (actual, expected, untestedProps, message) {
+        return new chai__namespace.Assertion(actual, message).to.not.include.events(expected, untestedProps);
+    };
 };
 
-chai.use(chaiStructAssertion);
+chai.use(evebleChai);
 chai.use(chaiAsPromised);
 class EventSourceableBDDAsserter {
-    constructor(sut, app, config) {
-        this.sut = sut;
-        this.app = app;
-        this.config = config;
+    constructor(scenario) {
+        this.scenario = scenario;
         this.queue = [];
         this.actual = {
             events: [],
@@ -174,14 +346,8 @@ class EventSourceableBDDAsserter {
         };
         this.overrideExtendableErrorFillErrorPropsMethod();
     }
-    getSUT() {
-        return this.sut;
-    }
-    getApp() {
-        return this.app;
-    }
-    getConfig() {
-        return this.config;
+    getScenario() {
+        return this.scenario;
     }
     getQueue() {
         return this.queue;
@@ -226,7 +392,9 @@ class EventSourceableBDDAsserter {
             const eventSourceableId = events[0].sourceId;
             const version = events[0].version !== undefined ? events[0].version : 1;
             const commit = await this.createCommit(eventSourceableId, version, events);
-            const commitStore = await this.app.injector.getAsync(eveble.BINDINGS.CommitStore);
+            const commitStore = await this.scenario
+                .getApp()
+                .injector.getAsync(eveble.BINDINGS.CommitStore);
             await commitStore.save(commit);
         }
         if (commands.length > 0) {
@@ -238,26 +406,6 @@ class EventSourceableBDDAsserter {
         this.queue = this.queue.concat(messages);
         return this;
     }
-    async expect(expectedEvents = []) {
-        await this.assertIsValid(expectedEvents, 'have');
-    }
-    async expectToInclude(expectedEvents = []) {
-        await this.assertIsValid(expectedEvents, 'include');
-    }
-    async expectToFailWith(error, errorMessage) {
-        this.test = async () => {
-            if (errorMessage === undefined) {
-                await chai.expect(this.sendMessagesThroughApp()).to.eventually.be.rejectedWith(error);
-            }
-            else {
-                await chai.expect(this.sendMessagesThroughApp()).to.eventually.be.rejectedWith(error, errorMessage);
-            }
-        };
-        await this.run();
-    }
-    async throws(error, errorMessage) {
-        await this.expectToFailWith(error, errorMessage);
-    }
     async schedules(commands = []) {
         const normalizedCommands = Array.isArray(commands) ? commands : [commands];
         for (const command of normalizedCommands) {
@@ -265,13 +413,15 @@ class EventSourceableBDDAsserter {
                 assignmentId: command.targetId,
                 deliverAt: new Date(),
                 assignerId: command.targetId,
-                assignerType: this.sut.getTypeName(),
+                assignerType: this.scenario.getSUT().getTypeName(),
             });
             command.schedule(assignment);
         }
         this.expected.scheduledCommands =
             this.expected.scheduledCommands.concat(normalizedCommands);
-        const commandBus = await this.app.injector.getAsync(eveble.BINDINGS.CommandBus);
+        const commandBus = await this.scenario
+            .getApp()
+            .injector.getAsync(eveble.BINDINGS.CommandBus);
         const boundHandler = this.onScheduleCommandSend.bind(this);
         boundHandler.original = this.onScheduleCommandSend;
         commandBus.onSend('on-scheduled-command', boundHandler, true);
@@ -282,54 +432,47 @@ class EventSourceableBDDAsserter {
         for (const command of normalizedCommands) {
             this.expected.unscheduledCommands.push(command);
         }
-        const commandBus = await this.app.injector.getAsync(eveble.BINDINGS.CommandBus);
+        const commandBus = await this.scenario
+            .getApp()
+            .injector.getAsync(eveble.BINDINGS.CommandBus);
         const boundHandler = this.onUnscheduleCommandSend.bind(this);
         boundHandler.original = this.onUnscheduleCommandSend;
         commandBus.onSend('on-unschedule-command', boundHandler, true);
         return this;
     }
-    expectState(expectedState) {
-        this.expected.state = expectedState;
-        return this;
-    }
-    async assertIsValid(expectedEvents, assertionType) {
-        if (lodash.isFunction(expectedEvents)) {
-            this.expected.events = expectedEvents();
-        }
-        else {
-            this.expected.events = expectedEvents;
-        }
+    async execute() {
+        var _a;
         this.test = async () => {
             await this.sendMessagesThroughApp();
             if (this.hasExpectedScheduledCommands()) {
-                const commandScheduler = await this.app.injector.getAsync(eveble.BINDINGS.CommandScheduler);
+                const commandScheduler = await this.scenario
+                    .getApp()
+                    .injector.getAsync(eveble.BINDINGS.CommandScheduler);
                 const interval = commandScheduler.getInterval();
                 await this.delay(interval * 2 + 500);
             }
-            const untestedProps = this.config.get('untestedProperties');
-            let asserter;
-            if (assertionType === 'have') {
-                asserter = chai.assert.haveArrayOfStructs;
-            }
-            else {
-                asserter = chai.assert.includeArrayOfStructs;
-            }
-            asserter(this.actual.events, this.expected.events, untestedProps, 'List of actual published events does not match the expected ones');
-            asserter(this.actual.unscheduledCommands, this.expected.unscheduledCommands, untestedProps, 'List of actual unscheduled commands does not match the expected ones');
-            const actualEventTypeNames = this.getEventTypeNameList(this.actual.events);
-            const expectedEventTypeNames = this.getEventTypeNameList(this.expected.events);
-            const chaiAssertionMethodNameForArray = assertionType === 'include' ? 'contain' : 'have';
-            chai.expect(actualEventTypeNames).to[chaiAssertionMethodNameForArray].members(expectedEventTypeNames, 'Actual list of published event type names does not match expected one');
-            if (this.expected.state !== undefined) {
-                const repository = this.app.injector.get(eveble.BINDINGS.EventSourceableRepository);
-                const sutInstance = await repository.find(this.getSUT(), this.expected.state.id);
-                if (sutInstance !== undefined) {
-                    this.removeDependencies(sutInstance);
-                }
-                chai.assert.haveArrayOfStructs([sutInstance], [this.expected.state], untestedProps, 'Actual state does not match expected one ');
-            }
         };
         await this.run();
+        const result = {
+            events: this.actual.events,
+            scheduled: this.actual.scheduledCommands,
+            unscheduled: this.actual.unscheduledCommands,
+        };
+        if (((_a = this.scenario.options) === null || _a === void 0 ? void 0 : _a.targetId) !== undefined) {
+            result.target = await this.resolveActualTargetState(this.scenario.options.targetId);
+        }
+        return result;
+    }
+    async resolveActualTargetState(id) {
+        const repository = this.scenario
+            .getApp()
+            .injector.get(eveble.BINDINGS.EventSourceableRepository);
+        const foundInstance = await repository.find(this.scenario.getSUT(), id.toString());
+        if (foundInstance !== undefined) {
+            this.removeDependencies(foundInstance);
+            return foundInstance;
+        }
+        return undefined;
     }
     getEventTypeNameList(events) {
         const list = [];
@@ -393,7 +536,7 @@ class EventSourceableBDDAsserter {
         };
     }
     async createCommit(eventSourceableId, version, events) {
-        const appId = this.app.config.get('appId');
+        const appId = this.scenario.getApp().config.get('appId');
         const versionedEvents = [];
         for (const event of events) {
             versionedEvents.push(new event.constructor({ ...event, version }));
@@ -407,14 +550,16 @@ class EventSourceableBDDAsserter {
             id: new eveble.Guid().toString(),
             sourceId: eventSourceableId.toString(),
             version,
-            eventSourceableType: this.sut.getTypeName(),
+            eventSourceableType: this.scenario.getSUT().getTypeName(),
             commands: [],
             events: versionedEvents,
             insertedAt: new Date(),
             sentBy: appId,
             receivers: [commitReceiver],
         };
-        const commitStore = await this.app.injector.getAsync(eveble.BINDINGS.CommitStore);
+        const commitStore = await this.scenario
+            .getApp()
+            .injector.getAsync(eveble.BINDINGS.CommitStore);
         const commitId = await commitStore.generateId();
         if (commitId !== undefined) {
             props.id = commitId.toString();
@@ -426,7 +571,9 @@ class EventSourceableBDDAsserter {
     }
     async run() {
         try {
-            const eventBus = await this.app.injector.getAsync(eveble.BINDINGS.EventBus);
+            const eventBus = await this.scenario
+                .getApp()
+                .injector.getAsync(eveble.BINDINGS.EventBus);
             const boundHandler = this.onPublishedEvent.bind(this);
             boundHandler.original = this.onPublishedEvent;
             eventBus.onPublish('on-publishing-events', boundHandler, true);
@@ -445,207 +592,207 @@ class EventSourceableBDDAsserter {
     async sendMessagesThroughApp() {
         for (const message of this.queue) {
             if (message instanceof eveble.Command) {
-                await this.app.send(message);
+                await this.scenario.getApp().send(message);
             }
             else {
                 this.ignoreNextEvent = true;
-                await this.app.publish(message);
+                await this.scenario.getApp().publish(message);
             }
         }
     }
     isSameMessage(actualMessage, expectedMessage) {
-        const untestedProps = this.config.get('untestedProperties');
+        const untestedProps = this.scenario.getConfig().get('untestedProperties');
         const processedActual = lodash.omit(JSON.parse(JSON.stringify(actualMessage)), untestedProps);
         const processedExpected = lodash.omit(JSON.parse(JSON.stringify(expectedMessage)), untestedProps);
         return lodash.isEqual(processedActual, processedExpected);
     }
 }
 
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-
-function __decorate(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-function __metadata(metadataKey, metadataValue) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
-}
-
-exports.TestConfig = class TestConfig extends eveble.Config {
-    constructor(props) {
-        super();
-        this.untestedProperties = [
-            'timestamp',
-            'version',
-            'metadata',
-            'schemaVersion',
-        ];
-        if (props)
-            Object.assign(this, this.processProps(props));
+class Feature {
+    constructor(name, EventSourceableClass) {
+        this.name = name;
+        this.EventSourceableClass = EventSourceableClass;
     }
-};
-exports.TestConfig = __decorate([
-    eveble.define()({ kind: 19, name: "TestConfig", properties: { "untestedProperties": { kind: 18, initializer: () => [
-                    'timestamp',
-                    'version',
-                    'metadata',
-                    'schemaVersion',
-                ], type: Array, arguments: [{ kind: 2 }] } }, extends: { kind: 18, type: eveble.Config, arguments: [] } }),
-    __metadata("design:paramtypes", [Object])
-], exports.TestConfig);
+    static create(EventSourceableClass) {
+        function feature(description, optionsOrCallback, callback) {
+            let cb;
+            let options = {};
+            if (typeof optionsOrCallback === 'function') {
+                cb = optionsOrCallback;
+            }
+            else {
+                cb = callback;
+                options = optionsOrCallback;
+            }
+            const instance = new Feature(description, EventSourceableClass);
+            instance.setOptions(options);
+            const eventSourceableName = EventSourceableClass.name;
+            if (Feature.features.has(eventSourceableName) === false) {
+                Feature.features.set(eventSourceableName, new Map());
+            }
+            const esFeatures = Feature.features.get(eventSourceableName);
+            if (esFeatures === undefined) {
+                throw new EventSourceableFeatureMappingsNotFoundError(eventSourceableName);
+            }
+            esFeatures.set(new eveble.Guid().toString(), instance);
+            instance.execute(description, cb);
+        }
+        return { feature };
+    }
+    setScenario(scenario) {
+        this.scenario = scenario;
+    }
+    setOptions(options) {
+        this.options = options;
+    }
+    execute(description, callback) {
+        it(description, async () => {
+            await callback(this.generateApi());
+        });
+    }
+    generateApi() {
+        return {
+            scenario: this.scenario,
+        };
+    }
+}
+Feature.features = new Map();
 
 class Scenario {
-    constructor(app, options = {}) {
+    constructor(EventSourceableClass, app, config, asserter) {
+        if (EventSourceableClass === undefined ||
+            EventSourceableClass.prototype === undefined ||
+            !(EventSourceableClass.prototype instanceof eveble.EventSourceable)) {
+            throw new InvalidEventSourceableError(eveble.kernel.describer.describe(EventSourceableClass));
+        }
+        this.EventSourceableClass = EventSourceableClass;
         if (app === undefined) {
             throw new InvalidAppError();
         }
         this.app = app;
-        this.asserter = options.asserter || EventSourceableBDDAsserter;
-        this.config = options.config || new exports.TestConfig();
-        this.givenMessages = [];
-        this.whenMessages = [];
-        this.expected = {};
+        this.config = config || new exports.TestConfig();
+        this.asserter = asserter || EventSourceableBDDAsserter;
+    }
+    static create(props) {
+        const eventSourceableName = props.EventSourceable.name;
+        const esFeatures = Feature.features.get(eventSourceableName);
+        if (esFeatures === undefined) {
+            throw new EventSourceableFeatureMappingsNotFoundError(eventSourceableName);
+        }
+        const scenario = new Scenario(props.EventSourceable, props.app, props.config);
+        for (const feature of esFeatures.values()) {
+            feature.setScenario(scenario);
+        }
+        return { scenario };
+    }
+    getEventSourceable() {
+        return this.EventSourceableClass;
     }
     getApp() {
         return this.app;
     }
+    getSUT() {
+        return this.EventSourceableClass;
+    }
     getAsserter() {
         return this.asserter;
     }
-    getSUT() {
-        return this.sut;
+    getConfig() {
+        return this.config;
     }
-    test(sut) {
-        if (sut === undefined ||
-            sut.prototype === undefined ||
-            !(sut.prototype instanceof eveble.EventSourceable)) {
-            throw new InvalidSUTError(eveble.kernel.describer.describe(sut));
-        }
-        this.sut = sut;
-        return this;
+    setRuntimeOptions(options) {
+        this.options = options;
     }
-    given(messages = []) {
-        this.givenMessages = this.givenMessages.concat(messages);
-        return this;
+    getRuntimeOptions() {
+        return this.options;
     }
-    when(messages = []) {
-        this.whenMessages = this.whenMessages.concat(messages);
-        return this;
+    hasRuntimeOptions() {
+        return this.options !== undefined;
     }
-    expect(events = []) {
-        if (!lodash.isEmpty(this.expected.includedEvents) ||
-            this.expected.error !== undefined) {
-            throw new InvalidExpectationError();
-        }
-        if (this.expected.events === undefined)
-            this.expected.events = [];
-        this.expected.events = this.expected.events.concat(events);
-        return this;
+    given(_description, givenFn) {
+        this.givenFn = givenFn;
+        return new GivenWhenChain(this);
     }
-    expectToInclude(includedEvents = []) {
-        if (!lodash.isEmpty(this.expected.events) || this.expected.error !== undefined) {
-            throw new InvalidExpectationError();
-        }
-        if (this.expected.includedEvents === undefined)
-            this.expected.includedEvents = [];
-        this.expected.includedEvents =
-            this.expected.includedEvents.concat(includedEvents);
-        return this;
+    when(_description, whenFn) {
+        this.whenFn = whenFn;
+        return new WhenThenChain(this);
     }
-    expectToFailWith(error, errorMessage) {
-        if (!lodash.isEmpty(this.expected.includedEvents) ||
-            !lodash.isEmpty(this.expected.events)) {
-            throw new InvalidExpectationError();
-        }
-        this.expected.error = error;
-        if (errorMessage)
-            this.expected.errorMessage = errorMessage;
-        return this;
-    }
-    throws(error, errorMessage) {
-        return this.expectToFailWith(error, errorMessage);
-    }
-    schedules(commands = []) {
-        if (this.expected.scheduledCommands === undefined)
-            this.expected.scheduledCommands = [];
-        this.expected.scheduledCommands =
-            this.expected.scheduledCommands.concat(commands);
-        return this;
-    }
-    unschedules(commands = []) {
-        if (this.expected.unscheduledCommands === undefined)
-            this.expected.unscheduledCommands = [];
-        this.expected.unscheduledCommands =
-            this.expected.unscheduledCommands.concat(commands);
-        return this;
-    }
-    async verify(expectedState) {
-        if (this.sut === undefined) {
-            throw new InvalidSUTError(eveble.kernel.describer.describe(this.sut));
+    async verify() {
+        if (this.isValidScenario() === false) {
+            throw new InvalidScenarioError();
         }
         if (this.app.isInState(eveble.App.STATES.constructed)) {
             await this.app.initialize();
         }
-        await this.app.reset();
-        if (!this.app.isInState(eveble.App.STATES.running)) {
+        if (this.app.isInState(eveble.App.STATES.running) === false) {
             await this.app.start();
         }
-        const asserter = new this.asserter(this.sut, this.app, this.config);
-        await asserter.given(this.givenMessages);
-        await asserter.when(this.whenMessages);
-        if (this.expected.scheduledCommands) {
-            await asserter.schedules(this.expected.scheduledCommands);
+        const asserter = new this.asserter(this);
+        try {
+            if (this.givenFn !== undefined) {
+                await asserter.given(await this.givenFn());
+            }
+            if (this.whenFn !== undefined) {
+                await asserter.when(await this.whenFn());
+            }
+            if (this.scheduledFn !== undefined) {
+                await asserter.schedules(await this.scheduledFn());
+            }
+            if (this.unscheduledFn !== undefined) {
+                await asserter.unschedules(await this.unscheduledFn());
+            }
+            const result = await asserter.execute();
+            if (this.thenFn !== undefined) {
+                await this.thenFn(result);
+            }
         }
-        if (this.expected.unscheduledCommands) {
-            await asserter.unschedules(this.expected.unscheduledCommands);
+        catch (e) {
+            if (this.throwsFn !== undefined) {
+                await this.throwsFn(e);
+            }
+            else {
+                throw e;
+            }
         }
-        if (this.expected.error) {
-            await asserter.expectToFailWith(this.expected.error, this.expected.errorMessage);
-            return false;
+        finally {
+            await this.reset();
         }
-        if (expectedState !== undefined) {
-            asserter.expectState(expectedState);
-        }
-        if (this.expected.includedEvents !== undefined &&
-            !lodash.isEmpty(this.expected.includedEvents)) {
-            await asserter.expectToInclude(this.expected.includedEvents);
-        }
-        else if (this.expected.events !== undefined) {
-            await asserter.expect(this.expected.events);
-        }
-        else {
-            throw new InvalidExpectationError();
-        }
-        return true;
+    }
+    isValidScenario() {
+        return ((this.givenFn !== undefined &&
+            this.whenFn !== undefined &&
+            this.thenFn !== undefined) ||
+            (this.givenFn !== undefined &&
+                this.whenFn !== undefined &&
+                this.throwsFn !== undefined) ||
+            (this.whenFn !== undefined && this.throwsFn !== undefined) ||
+            (this.whenFn !== undefined && this.thenFn !== undefined) ||
+            (this.whenFn !== undefined && this.throwsFn !== undefined));
+    }
+    async reset() {
+        this.givenFn = undefined;
+        this.whenFn = undefined;
+        this.thenFn = undefined;
+        this.throwsFn = undefined;
+        this.scheduledFn = undefined;
+        this.unscheduledFn = undefined;
+        this.options = undefined;
     }
 }
 
-function on(app, options) {
-    return new Scenario(app, options);
-}
-
+exports.BaseChain = BaseChain;
+exports.BaseThenChain = BaseThenChain;
 exports.EventSourceableBDDAsserter = EventSourceableBDDAsserter;
+exports.EventSourceableFeatureMappingsNotFoundError = EventSourceableFeatureMappingsNotFoundError;
+exports.Feature = Feature;
+exports.GivenWhenChain = GivenWhenChain;
+exports.GivenWhenThenChain = GivenWhenThenChain;
 exports.InvalidAppError = InvalidAppError;
+exports.InvalidEventSourceableError = InvalidEventSourceableError;
 exports.InvalidExpectationError = InvalidExpectationError;
 exports.InvalidMessageError = InvalidMessageError;
-exports.InvalidSUTError = InvalidSUTError;
+exports.InvalidScenarioError = InvalidScenarioError;
 exports.Scenario = Scenario;
 exports.TestError = TestError;
-exports.chaiStructAssertion = chaiStructAssertion;
-exports.on = on;
+exports.WhenThenChain = WhenThenChain;
+exports.evebleChai = evebleChai;
