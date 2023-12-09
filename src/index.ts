@@ -25,6 +25,7 @@ export {
   InvalidEventSourceableError,
   InvalidMessageError,
   InvalidExpectationError,
+  InvalidScenarioError,
 } from './errors';
 // Environment
 export { TestConfig } from './test-config';

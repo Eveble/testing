@@ -84,6 +84,14 @@ describe(`exports`, () => {
         InvalidExpectationErrorExported
       );
     });
+    it('InvalidScenarioError', () => {
+      expect(InvalidScenarioError).to.be.equal(InvalidScenarioErrorExported);
+    });
+    it('EventSourceableFeatureMappingsNotFoundError', () => {
+      expect(EventSourceableFeatureMappingsNotFoundError).to.be.equal(
+        EventSourceableFeatureMappingsNotFoundErrorExported
+      );
+    });
   });
   describe('api', () => {
     it('Scenario', () => {
