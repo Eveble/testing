@@ -929,13 +929,6 @@
   resolved "https://registry.npmjs.org/@parisholley/inversify-async/-/inversify-async-1.1.7.tgz#f7a3e50bc7ff5d9851c55351e968217206a3ad83"
   integrity sha512-0+uQBOA9UxZtJqadNCroRsVg3lQO7dvH8sM6a70K+8nTPnzZ4tHV2VXYrajSLVb23LAnQeNdMwC9cha71bR04A==
 
-"@pinojs/json-colorizer@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.npmjs.org/@pinojs/json-colorizer/-/json-colorizer-4.0.0.tgz#a597a85a49cb395718540069cbfe325273c29d9b"
-  integrity sha512-TSQ3Dl9Icw/tfrDNmOoVRofU70yXFtvc5PjYFCOC+94su6HPv+4RkP/KfnolxcglfNUvhF1xI/0PkcpfaNAbzw==
-  dependencies:
-    colorette "^2.0.16"
-
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
   resolved "https://registry.npmjs.org/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
@@ -2609,7 +2602,7 @@ color@^3.1.3:
     color-convert "^1.9.3"
     color-string "^1.6.0"
 
-colorette@^2.0.16, colorette@^2.0.20:
+colorette@^2.0.20:
   version "2.0.20"
   resolved "https://registry.npmjs.org/colorette/-/colorette-2.0.20.tgz#9eb793e6833067f7235902fcd3b09917a000a95a"
   integrity sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w==
