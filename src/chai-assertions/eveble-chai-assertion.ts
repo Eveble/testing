@@ -4,6 +4,7 @@ import { isFunction, isEqual, omit, some, has } from 'lodash';
 import { inspect } from 'util';
 import { Struct, validate, Event, EvebleTypes, Command } from '@eveble/eveble';
 import { getTypeName } from '@eveble/helpers';
+import colorize from '@pinojs/json-colorizer';
 
 export class ProcessedAssertion {
   actual: Record<string, any>[];
@@ -184,14 +185,15 @@ export const evebleChai = (
 
     const actual: any = this._obj;
     const processed = processAssertion(actual, expected, untestedProps);
-    const actualStringified = inspect(actual, {
-      colors: true,
-      depth: 10,
-    });
-    const expectedStringified = inspect(expected, {
-      colors: true,
-      depth: 10,
-    });
+    const colorizeOptions = { pretty: true };
+    const actualStringified = colorize(
+      JSON.stringify(actual, null, 2),
+      colorizeOptions
+    );
+    const expectedStringified = colorize(
+      JSON.stringify(expected, null, 2),
+      colorizeOptions
+    );
 
     if (have) {
       if (negate) {
