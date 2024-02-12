@@ -202,6 +202,21 @@ const evebleChai = (chaiInstance, utils) => {
             depth: 10,
         })}\n`;
     }
+    function removeUnwantedProps(obj, untestedProps) {
+        for (const key in obj) {
+            if (untestedProps.includes(key)) {
+                delete obj[key];
+            }
+            else if (typeof obj[key] === 'object') {
+                removeUnwantedProps(obj[key], untestedProps);
+            }
+            else if (Array.isArray(obj[key])) {
+                obj[key].forEach((item) => {
+                    removeUnwantedProps(item, untestedProps);
+                });
+            }
+        }
+    }
     function processAssertion(actual, expected, untestedProps = [
         'timestamp',
         'version',
@@ -225,6 +240,7 @@ const evebleChai = (chaiInstance, utils) => {
         }
         for (const [index, actualStruct] of Object.entries(actualTarget)) {
             processedActual[index] = lodash.omit(JSON.parse(JSON.stringify(actualStruct)), untestedProps);
+            removeUnwantedProps(processedActual, untestedProps);
             processedActualString[index] = stringifyStruct(actualStruct, processedActual[index]);
             const expectedStruct = expectedTarget[index];
             if (expectedStruct === undefined) {
@@ -234,15 +250,11 @@ const evebleChai = (chaiInstance, utils) => {
                 if (lodash.isFunction(expectedStruct[key])) {
                     eveble.validate(actualStruct[key], expectedStruct[key]);
                 }
-                untestedProps.forEach((untestedPropName) => {
-                    if (lodash.has(actualStruct, `${key}.${untestedPropName}`) === true) {
-                        delete processedActual[key][untestedPropName];
-                    }
-                });
             }
         }
         for (const [index, expectedStruct] of Object.entries(expectedTarget)) {
             processedExpected[index] = lodash.omit(JSON.parse(JSON.stringify(expectedStruct)), untestedProps);
+            removeUnwantedProps(processedExpected, untestedProps);
             processedExpectedString[index] = stringifyStruct(expectedStruct, processedExpected[index]);
         }
         return new ProcessedAssertion(processedActual, processedExpected, processedActualString, processedExpectedString);

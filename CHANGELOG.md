@@ -1,3 +1,11 @@
+## [3.1.1](https://github.com/eveble/testing/compare/v3.1.0...v3.1.1) (2024-02-12)
+
+
+### Bug Fixes
+
+* implement quicker solution for removing untested props from actual/expected structs ([b7f4137](https://github.com/eveble/testing/commit/b7f4137af02752a6c00c7e06d36a6664829d26fb))
+* remove unused import ([29a247d](https://github.com/eveble/testing/commit/29a247d4092641df5466598c76d55010d8c47d28))
+
 # [3.1.0](https://github.com/eveble/testing/compare/v3.0.0...v3.1.0) (2024-02-12)
 
 
