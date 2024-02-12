@@ -1,3 +1,10 @@
+## [3.1.2](https://github.com/eveble/testing/compare/v3.1.1...v3.1.2) (2024-02-12)
+
+
+### Bug Fixes
+
+* revert to inspect instead of json colorization ([d2f40ea](https://github.com/eveble/testing/commit/d2f40eae52e8fe4a33ed3ddd217566fdcf116f8c))
+
 ## [3.1.1](https://github.com/eveble/testing/compare/v3.1.0...v3.1.1) (2024-02-12)
 
 

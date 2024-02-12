@@ -8,7 +8,6 @@ var chaiAsPromised = require('chai-as-promised');
 var inversifyAsync = require('@parisholley/inversify-async');
 var util = require('util');
 var helpers = require('@eveble/helpers');
-var colorize = require('@pinojs/json-colorizer');
 
 function _interopNamespaceDefault(e) {
   var n = Object.create(null);
@@ -265,9 +264,9 @@ const evebleChai = (chaiInstance, utils) => {
         const negate = utils.flag(this, 'negate') || false;
         const actual = this._obj;
         const processed = processAssertion(actual, expected, untestedProps);
-        const colorizeOptions = { pretty: true };
-        const actualStringified = colorize(JSON.stringify(actual, null, 2), colorizeOptions);
-        const expectedStringified = colorize(JSON.stringify(expected, null, 2), colorizeOptions);
+        const inspectOptions = { depth: 10, colors: true };
+        const actualStringified = util.inspect(actual, inspectOptions);
+        const expectedStringified = util.inspect(expected, inspectOptions);
         if (have) {
             if (negate) {
                 return this.assert(lodash.isEqual(processed.actual, processed.expected), null, `expected ${actualStringified} to not have ${expectedStringified}`, processed.actualReadable.join(''), processed.expectedReadable.join(''), true);
@@ -276,12 +275,9 @@ const evebleChai = (chaiInstance, utils) => {
         }
         if (include) {
             for (const [index, struct] of Object.entries(processed.expected)) {
-                const structStringified = util.inspect(struct, {
-                    colors: true,
-                    depth: 10,
-                });
+                const structStringified = util.inspect(struct, inspectOptions);
                 const structName = helpers.getTypeName(expected[index]);
-                this.assert(lodash.some(processed.actual, (actualStruct) => lodash.isEqual(actualStruct, struct)), `Expected struct \n ${structName} ${structStringified} to be includeed in ${actualStringified}`, `Expected struct \n ${structName} ${structStringified} to not be includeed in ${actualStringified}`, struct, processed.actualReadable.join(''));
+                this.assert(lodash.some(processed.actual, (actualStruct) => lodash.isEqual(actualStruct, struct)), `Expected struct \n ${structName} ${structStringified} to be included in ${actualStringified}`, `Expected struct \n ${structName} ${structStringified} to not be included in ${actualStringified}`, struct, processed.actualReadable.join(''));
             }
         }
     }
