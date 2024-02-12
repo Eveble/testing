@@ -62,7 +62,7 @@
     "chai": "^4.3.7",
     "chai-as-promised": "^7.1.1",
     "mongodb": "^3.5.9",
-    "@pinojs/json-colorizer": "^6.0.0"
+    "@pinojs/json-colorizer": "^4.0.0"
   },
   "devDependencies": {
     "@types/chai-as-promised": "^7.1.5",

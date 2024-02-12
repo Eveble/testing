@@ -929,7 +929,7 @@
   resolved "https://registry.npmjs.org/@parisholley/inversify-async/-/inversify-async-1.1.7.tgz#f7a3e50bc7ff5d9851c55351e968217206a3ad83"
   integrity sha512-0+uQBOA9UxZtJqadNCroRsVg3lQO7dvH8sM6a70K+8nTPnzZ4tHV2VXYrajSLVb23LAnQeNdMwC9cha71bR04A==
 
-"@pinojs/json-colorizer@^6.0.0":
+"@pinojs/json-colorizer@^4.0.0":
   version "4.0.0"
   resolved "https://registry.npmjs.org/@pinojs/json-colorizer/-/json-colorizer-4.0.0.tgz#a597a85a49cb395718540069cbfe325273c29d9b"
   integrity sha512-TSQ3Dl9Icw/tfrDNmOoVRofU70yXFtvc5PjYFCOC+94su6HPv+4RkP/KfnolxcglfNUvhF1xI/0PkcpfaNAbzw==
