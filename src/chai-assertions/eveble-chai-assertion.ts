@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import * as chai from 'chai';
-import { isFunction, isEqual, omit, some } from 'lodash';
+import { isFunction, isEqual, omit, some, has } from 'lodash';
 import { inspect } from 'util';
 import { Struct, validate, Event, EvebleTypes, Command } from '@eveble/eveble';
 import { getTypeName } from '@eveble/helpers';
@@ -110,6 +110,9 @@ export const evebleChai = (
       'version',
       'metadata',
       'schemaVersion',
+      'createdAt',
+      'updatedAt',
+      'deletedAt',
     ]
   ): ProcessedAssertion {
     const processedActual: Record<string, any>[] = [];
@@ -146,6 +149,11 @@ export const evebleChai = (
           // Check that the actual value is of the expected type
           validate(actualStruct[key], expectedStruct[key]);
         }
+        untestedProps.forEach((untestedPropName) => {
+          if (has(actualStruct, `${key}.${untestedPropName}`) === true) {
+            delete processedActual[key][untestedPropName];
+          }
+        });
       }
     }
 
