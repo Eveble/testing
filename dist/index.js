@@ -8,6 +8,7 @@ var chaiAsPromised = require('chai-as-promised');
 var inversifyAsync = require('@parisholley/inversify-async');
 var util = require('util');
 var helpers = require('@eveble/helpers');
+var colorize = require('@pinojs/json-colorizer');
 
 function _interopNamespaceDefault(e) {
   var n = Object.create(null);
@@ -119,7 +120,7 @@ class GivenWhenChain extends BaseChain {
     }
 }
 
-/*! *****************************************************************************
+/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -133,6 +134,8 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
+/* global Reflect, Promise, SuppressedError, Symbol */
+
 
 function __decorate(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -144,6 +147,11 @@ function __decorate(decorators, target, key, desc) {
 function __metadata(metadataKey, metadataValue) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
 }
+
+typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
+    var e = new Error(message);
+    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
+};
 
 exports.TestConfig = class TestConfig extends eveble.Config {
     constructor(props) {
@@ -199,6 +207,9 @@ const evebleChai = (chaiInstance, utils) => {
         'version',
         'metadata',
         'schemaVersion',
+        'createdAt',
+        'updatedAt',
+        'deletedAt',
     ]) {
         const processedActual = [];
         const processedExpected = [];
@@ -223,6 +234,11 @@ const evebleChai = (chaiInstance, utils) => {
                 if (lodash.isFunction(expectedStruct[key])) {
                     eveble.validate(actualStruct[key], expectedStruct[key]);
                 }
+                untestedProps.forEach((untestedPropName) => {
+                    if (lodash.has(actualStruct, `${key}.${untestedPropName}`) === true) {
+                        delete processedActual[key][untestedPropName];
+                    }
+                });
             }
         }
         for (const [index, expectedStruct] of Object.entries(expectedTarget)) {
@@ -237,14 +253,9 @@ const evebleChai = (chaiInstance, utils) => {
         const negate = utils.flag(this, 'negate') || false;
         const actual = this._obj;
         const processed = processAssertion(actual, expected, untestedProps);
-        const actualStringified = util.inspect(actual, {
-            colors: true,
-            depth: 10,
-        });
-        const expectedStringified = util.inspect(expected, {
-            colors: true,
-            depth: 10,
-        });
+        const colorizeOptions = { pretty: true };
+        const actualStringified = colorize(JSON.stringify(actual, null, 2), colorizeOptions);
+        const expectedStringified = colorize(JSON.stringify(expected, null, 2), colorizeOptions);
         if (have) {
             if (negate) {
                 return this.assert(lodash.isEqual(processed.actual, processed.expected), null, `expected ${actualStringified} to not have ${expectedStringified}`, processed.actualReadable.join(''), processed.expectedReadable.join(''), true);

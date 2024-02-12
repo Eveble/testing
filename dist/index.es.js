@@ -1,5 +1,5 @@
 import { ExtendableError, Type, Config, validate, Command, Event, kernel, BINDINGS, Assignment, ScheduleCommand, UnscheduleCommand, CommitReceiver, Guid, Commit, EventSourceable, App } from '@eveble/eveble';
-import { isEqual, some, omit, isFunction } from 'lodash';
+import { isEqual, some, omit, isFunction, has } from 'lodash';
 import delay from 'delay';
 import * as chai from 'chai';
 import chai__default from 'chai';
@@ -7,6 +7,7 @@ import chaiAsPromised from 'chai-as-promised';
 import { METADATA_KEY } from '@parisholley/inversify-async';
 import { inspect } from 'util';
 import { getTypeName } from '@eveble/helpers';
+import colorize from '@pinojs/json-colorizer';
 
 class TestError extends ExtendableError {
 }
@@ -99,7 +100,7 @@ class GivenWhenChain extends BaseChain {
     }
 }
 
-/*! *****************************************************************************
+/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -113,6 +114,8 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
+/* global Reflect, Promise, SuppressedError, Symbol */
+
 
 function __decorate(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -124,6 +127,11 @@ function __decorate(decorators, target, key, desc) {
 function __metadata(metadataKey, metadataValue) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
 }
+
+typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
+    var e = new Error(message);
+    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
+};
 
 let TestConfig = class TestConfig extends Config {
     constructor(props) {
@@ -179,6 +187,9 @@ const evebleChai = (chaiInstance, utils) => {
         'version',
         'metadata',
         'schemaVersion',
+        'createdAt',
+        'updatedAt',
+        'deletedAt',
     ]) {
         const processedActual = [];
         const processedExpected = [];
@@ -203,6 +214,11 @@ const evebleChai = (chaiInstance, utils) => {
                 if (isFunction(expectedStruct[key])) {
                     validate(actualStruct[key], expectedStruct[key]);
                 }
+                untestedProps.forEach((untestedPropName) => {
+                    if (has(actualStruct, `${key}.${untestedPropName}`) === true) {
+                        delete processedActual[key][untestedPropName];
+                    }
+                });
             }
         }
         for (const [index, expectedStruct] of Object.entries(expectedTarget)) {
@@ -217,14 +233,9 @@ const evebleChai = (chaiInstance, utils) => {
         const negate = utils.flag(this, 'negate') || false;
         const actual = this._obj;
         const processed = processAssertion(actual, expected, untestedProps);
-        const actualStringified = inspect(actual, {
-            colors: true,
-            depth: 10,
-        });
-        const expectedStringified = inspect(expected, {
-            colors: true,
-            depth: 10,
-        });
+        const colorizeOptions = { pretty: true };
+        const actualStringified = colorize(JSON.stringify(actual, null, 2), colorizeOptions);
+        const expectedStringified = colorize(JSON.stringify(expected, null, 2), colorizeOptions);
         if (have) {
             if (negate) {
                 return this.assert(isEqual(processed.actual, processed.expected), null, `expected ${actualStringified} to not have ${expectedStringified}`, processed.actualReadable.join(''), processed.expectedReadable.join(''), true);

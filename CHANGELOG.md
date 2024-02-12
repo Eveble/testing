@@ -1,3 +1,11 @@
+# [3.1.0](https://github.com/eveble/testing/compare/v3.0.0...v3.1.0) (2024-02-12)
+
+
+### Features
+
+* add better json colorization ([0aca36f](https://github.com/eveble/testing/commit/0aca36f1645d652af1cf963be389dc28177d3d6f))
+* add support for nestedUntestedProps ([95c2481](https://github.com/eveble/testing/commit/95c24817136aee5553c52ad8cd45339acf6765dc))
+
 # [3.0.0](https://github.com/eveble/testing/compare/v2.1.3...v3.0.0) (2023-12-09)
 
 
