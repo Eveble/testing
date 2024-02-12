@@ -97,6 +97,25 @@ export const evebleChai = (
   }
 
   /**
+   * Removes unwanted props from object.
+   * @param obj - Object to remove unwanted props from.
+   * @param untestedProps - Properties that will not be tested(like `metadata`, `timestamp` etc...)
+   */
+  function removeUnwantedProps(obj: any, untestedProps: string[]): void {
+    for (const key in obj) {
+      if (untestedProps.includes(key)) {
+        delete obj[key];
+      } else if (typeof obj[key] === 'object') {
+        removeUnwantedProps(obj[key], untestedProps);
+      } else if (Array.isArray(obj[key])) {
+        obj[key].forEach((item: any) => {
+          removeUnwantedProps(item, untestedProps);
+        });
+      }
+    }
+  }
+
+  /**
    *
    * @param actual - Actual provided data to assertion(the content of `expect(...).to`)
    * @param expected - Expected values provided in `...structs(...)`
@@ -135,6 +154,7 @@ export const evebleChai = (
         JSON.parse(JSON.stringify(actualStruct)),
         untestedProps
       );
+      removeUnwantedProps(processedActual, untestedProps);
       processedActualString[index] = stringifyStruct(
         actualStruct,
         processedActual[index]
@@ -150,11 +170,6 @@ export const evebleChai = (
           // Check that the actual value is of the expected type
           validate(actualStruct[key], expectedStruct[key]);
         }
-        untestedProps.forEach((untestedPropName) => {
-          if (has(actualStruct, `${key}.${untestedPropName}`) === true) {
-            delete processedActual[key][untestedPropName];
-          }
-        });
       }
     }
 
@@ -163,6 +178,7 @@ export const evebleChai = (
         JSON.parse(JSON.stringify(expectedStruct)),
         untestedProps
       );
+      removeUnwantedProps(processedExpected, untestedProps);
 
       processedExpectedString[index] = stringifyStruct(
         expectedStruct,
