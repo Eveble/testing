@@ -88,7 +88,7 @@ export namespace types {
   }
 
   export interface EventSourceableBDDAsserterType<EventSourceable> {
-    new(
+    new (
       sut: EvebleTypes.EventSourceableType,
       app: EvebleTypes.App,
       config: TestConfig

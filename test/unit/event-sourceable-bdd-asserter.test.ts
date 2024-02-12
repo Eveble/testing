@@ -32,13 +32,13 @@ chai.use(chaiAsPromised);
 
 describe(`EventSourceableBDDAsserter`, () => {
   @Type('EventSourceableBDDAsserter.MyCommand')
-  class MyCommand extends Command<MyCommand> { }
+  class MyCommand extends Command<MyCommand> {}
   @Type('EventSourceableBDDAsserter.MyOtherCommand')
-  class MyOtherCommand extends Command<MyOtherCommand> { }
+  class MyOtherCommand extends Command<MyOtherCommand> {}
   @Type('EventSourceableBDDAsserter.MyEvent')
-  class MyEvent extends Event<MyEvent> { }
+  class MyEvent extends Event<MyEvent> {}
   @Type('EventSourceableBDDAsserter.MyOtherEvent')
-  class MyOtherEvent extends Event<MyOtherEvent> { }
+  class MyOtherEvent extends Event<MyOtherEvent> {}
 
   // @Type('EventSourceableBDDAsserter.MyDomainError')
   // class MyDomainError extends DomainError {
@@ -48,9 +48,9 @@ describe(`EventSourceableBDDAsserter`, () => {
   // }
 
   @Type('EventSourceableBDDAsserter.MyEventSourceable')
-  class MyEventSourceable extends EventSourceable { }
+  class MyEventSourceable extends EventSourceable {}
 
-  class MyApp extends App { }
+  class MyApp extends App {}
 
   // Props
   let now: Date;
@@ -248,7 +248,7 @@ describe(`EventSourceableBDDAsserter`, () => {
 
   describe(`given`, () => {
     it('throws InvalidMessageError if provided message(s) are not instances of Command or Event', async () => {
-      class MyInvalidMessage { }
+      class MyInvalidMessage {}
 
       await expect(
         asserter.given([new MyInvalidMessage() as any])

@@ -1,6 +1,6 @@
 import { ExtendableError } from '@eveble/eveble';
 
-export class TestError extends ExtendableError { }
+export class TestError extends ExtendableError {}
 
 export class InvalidScenarioError extends TestError {
   constructor() {

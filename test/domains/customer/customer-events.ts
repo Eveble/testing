@@ -30,4 +30,4 @@ export class WelcomeEmailSent extends Event<WelcomeEmailSent> {
 }
 
 @Type('Customer.CustomerRegistrationCompleted')
-export class CustomerRegistrationCompleted extends Event<CustomerRegistrationCompleted> { }
+export class CustomerRegistrationCompleted extends Event<CustomerRegistrationCompleted> {}

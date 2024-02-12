@@ -58,7 +58,7 @@ describe(`Feature`, () => {
 
     it('ensures that feature test is stored on Feature.features mapping for easier testing', async () => {
       @Type('OtherAggregate')
-      class OtherAggregate extends Aggregate { }
+      class OtherAggregate extends Aggregate {}
 
       const callback = sinon.stub();
 

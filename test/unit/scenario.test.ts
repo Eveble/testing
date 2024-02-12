@@ -81,7 +81,7 @@ describe(`Scenario`, () => {
     });
 
     it('should throw InvalidEventSourceableError if EventSourceableClass is invalid', () => {
-      class MyClass { }
+      class MyClass {}
       expect(() => new Scenario(MyClass as any, app)).to.throw(
         InvalidEventSourceableError,
         `System Under Test(SUT) must be a valid subclass(constructor type) of EventSourceable like Aggregate or Process, got MyClass`
@@ -130,7 +130,7 @@ describe(`Scenario`, () => {
     });
     it('throws EventSourceableFeatureMappingsNotFoundError if there are no features present for EventSourceable', () => {
       @Type('NonFeaturedAggregated')
-      class NonFeaturedAggregated extends Aggregate { }
+      class NonFeaturedAggregated extends Aggregate {}
 
       expect(() =>
         Scenario.create({
