@@ -4,7 +4,6 @@ import { isFunction, isEqual, omit, some } from 'lodash';
 import { inspect } from 'util';
 import { Struct, validate, Event, EvebleTypes, Command } from '@eveble/eveble';
 import { getTypeName } from '@eveble/helpers';
-import colorize from '@pinojs/json-colorizer';
 
 export class ProcessedAssertion {
   actual: Record<string, any>[];
@@ -201,15 +200,10 @@ export const evebleChai = (
 
     const actual: any = this._obj;
     const processed = processAssertion(actual, expected, untestedProps);
-    const colorizeOptions = { pretty: true };
-    const actualStringified = colorize(
-      JSON.stringify(actual, null, 2),
-      colorizeOptions
-    );
-    const expectedStringified = colorize(
-      JSON.stringify(expected, null, 2),
-      colorizeOptions
-    );
+    const inspectOptions = { depth: 10, colors: true };
+
+    const actualStringified = inspect(actual, inspectOptions);
+    const expectedStringified = inspect(expected, inspectOptions);
 
     if (have) {
       if (negate) {
@@ -234,17 +228,14 @@ export const evebleChai = (
 
     if (include) {
       for (const [index, struct] of Object.entries(processed.expected)) {
-        const structStringified = inspect(struct, {
-          colors: true,
-          depth: 10,
-        });
+        const structStringified = inspect(struct, inspectOptions);
         const structName = getTypeName(expected[index]);
         this.assert(
           some(processed.actual, (actualStruct: Struct) =>
             isEqual(actualStruct, struct)
           ),
-          `Expected struct \n ${structName} ${structStringified} to be includeed in ${actualStringified}`,
-          `Expected struct \n ${structName} ${structStringified} to not be includeed in ${actualStringified}`,
+          `Expected struct \n ${structName} ${structStringified} to be included in ${actualStringified}`,
+          `Expected struct \n ${structName} ${structStringified} to not be included in ${actualStringified}`,
           struct,
           processed.actualReadable.join('')
         );
@@ -462,7 +453,6 @@ export const evebleChai = (
       untestedProps
     );
   };
-
   (chai.assert as any).includeArrayOfEvents = function (
     actual: Event<any>[],
     expected: Event<any>[],
