@@ -1,10 +1,9 @@
-import { ExtendableError, Type, Config, validate, Command, Event, kernel, BINDINGS, Assignment, ScheduleCommand, UnscheduleCommand, CommitReceiver, Guid, Commit, EventSourceable, App } from '@eveble/eveble';
+import { ExtendableError, Type, Config, validate, Command, Event, kernel, BINDINGS, Assignment, getInjectedPropertyNames, ScheduleCommand, UnscheduleCommand, CommitReceiver, Guid, Commit, EventSourceable, App } from '@eveble/eveble';
 import { isEqual, some, omit, isFunction } from 'lodash';
 import delay from 'delay';
 import * as chai from 'chai';
 import chai__default from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { METADATA_KEY } from '@parisholley/inversify-async';
 import { inspect } from 'util';
 import { getTypeName } from '@eveble/helpers';
 
@@ -151,7 +150,7 @@ TestConfig = __decorate([
                     'version',
                     'metadata',
                     'schemaVersion',
-                ], type: Array, arguments: [{ kind: 2 }] } }, extends: { kind: 18, type: Config, arguments: [] } }),
+                ], modifiers: 1, type: Array, arguments: [{ kind: 2 }] } }, constructors: [{ modifiers: 0, parameters: [{ name: "props", modifiers: 0, type: { kind: 17, types: [{ kind: 12 }, { kind: 15, name: "__type", properties: { "untestedProperties": { kind: 999, modifiers: 0 }, "isConfigurable": { kind: 999, modifiers: 0 }, "getPropTypes": { kind: 999, modifiers: 0 }, "has": { kind: 999, modifiers: 0 }, "get": { kind: 999, modifiers: 0 }, "getExact": { kind: 999, modifiers: 0 }, "getDefault": { kind: 999, modifiers: 0 }, "hasDefault": { kind: 999, modifiers: 0 }, "set": { kind: 999, modifiers: 0 }, "assign": { kind: 999, modifiers: 0 }, "include": { kind: 999, modifiers: 0 }, "merge": { kind: 999, modifiers: 0 }, "__@CONFIG_INCLUDED_KEY@250": { kind: 999, modifiers: 0 }, "__@CONFIG_MERGED_KEY@252": { kind: 999, modifiers: 0 }, "schemaVersion": { kind: 999, modifiers: 0 }, "in": { kind: 999, modifiers: 0 }, "typeName": { kind: 999, modifiers: 0 }, "getTypeName": { kind: 999, modifiers: 0 }, "toString": { kind: 999, modifiers: 0 }, "toJSONValue": { kind: 999, modifiers: 0 }, "transformLegacyProps": { kind: 999, modifiers: 0 }, "getCurrentSchemaVersion": { kind: 999, modifiers: 0 }, "isLegacySchemaVersion": { kind: 999, modifiers: 0 }, "calculateNextSchemaVersion": { kind: 999, modifiers: 0 }, "registerLegacyTransformer": { kind: 999, modifiers: 0 }, "overrideLegacyTransformer": { kind: 999, modifiers: 0 }, "hasLegacyTransformer": { kind: 999, modifiers: 0 }, "getLegacyTransformers": { kind: 999, modifiers: 0 }, "getLegacyTransformer": { kind: 999, modifiers: 0 }, "getSchemaVersion": { kind: 999, modifiers: 0 }, "getPropertyInitializers": { kind: 999, modifiers: 0 }, "getInstanceInitializers": { kind: 999, modifiers: 0 }, "getParentInitializers": { kind: 999, modifiers: 0 }, "toPlainObject": { kind: 999, modifiers: 0 }, "validateProps": { kind: 999, modifiers: 0 }, "equals": { kind: 999, modifiers: 0 }, "hasSameValues": { kind: 999, modifiers: 0 }, "registerHook": { kind: 999, modifiers: 0 }, "overrideHook": { kind: 999, modifiers: 0 }, "getHook": { kind: 999, modifiers: 0 }, "getHookOrThrow": { kind: 999, modifiers: 0 }, "getHooks": { kind: 999, modifiers: 0 }, "getActions": { kind: 999, modifiers: 0 }, "hasHook": { kind: 999, modifiers: 0 }, "hasAction": { kind: 999, modifiers: 0 }, "removeHook": { kind: 999, modifiers: 0 } } }] } }] }], extends: { kind: 18, type: Config, arguments: [] } }),
     __metadata("design:paramtypes", [Object])
 ], TestConfig);
 
@@ -481,14 +480,10 @@ class EventSourceableBDDAsserter {
         return list;
     }
     removeDependencies(sutInstance) {
-        const mappings = Reflect.getMetadata(METADATA_KEY.TAGGED_PROP, sutInstance.constructor);
+        const mappings = getInjectedPropertyNames(sutInstance.constructor);
         if (mappings) {
-            for (const [key, metadatas] of Object.entries(mappings)) {
-                for (const metadata of metadatas) {
-                    if (metadata.key === 'inject') {
-                        delete sutInstance[key];
-                    }
-                }
+            for (const [name] of Object.entries(mappings)) {
+                delete sutInstance[name];
             }
         }
     }

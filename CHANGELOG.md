@@ -1,3 +1,10 @@
+## [3.1.3](https://github.com/eveble/testing/compare/v3.1.2...v3.1.3) (2025-10-10)
+
+
+### Bug Fixes
+
+* upgrade to @eveble/eveble at v4.3.4 ([af54a41](https://github.com/eveble/testing/commit/af54a4154c996203ced880a96351f6b86a5f64cd))
+
 ## [3.1.2](https://github.com/eveble/testing/compare/v3.1.1...v3.1.2) (2024-02-12)
 
 

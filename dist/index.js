@@ -5,7 +5,6 @@ var lodash = require('lodash');
 var delay = require('delay');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
-var inversifyAsync = require('@parisholley/inversify-async');
 var util = require('util');
 var helpers = require('@eveble/helpers');
 
@@ -171,7 +170,7 @@ exports.TestConfig = __decorate([
                     'version',
                     'metadata',
                     'schemaVersion',
-                ], type: Array, arguments: [{ kind: 2 }] } }, extends: { kind: 18, type: eveble.Config, arguments: [] } }),
+                ], modifiers: 1, type: Array, arguments: [{ kind: 2 }] } }, constructors: [{ modifiers: 0, parameters: [{ name: "props", modifiers: 0, type: { kind: 17, types: [{ kind: 12 }, { kind: 15, name: "__type", properties: { "untestedProperties": { kind: 999, modifiers: 0 }, "isConfigurable": { kind: 999, modifiers: 0 }, "getPropTypes": { kind: 999, modifiers: 0 }, "has": { kind: 999, modifiers: 0 }, "get": { kind: 999, modifiers: 0 }, "getExact": { kind: 999, modifiers: 0 }, "getDefault": { kind: 999, modifiers: 0 }, "hasDefault": { kind: 999, modifiers: 0 }, "set": { kind: 999, modifiers: 0 }, "assign": { kind: 999, modifiers: 0 }, "include": { kind: 999, modifiers: 0 }, "merge": { kind: 999, modifiers: 0 }, "__@CONFIG_INCLUDED_KEY@250": { kind: 999, modifiers: 0 }, "__@CONFIG_MERGED_KEY@252": { kind: 999, modifiers: 0 }, "schemaVersion": { kind: 999, modifiers: 0 }, "in": { kind: 999, modifiers: 0 }, "typeName": { kind: 999, modifiers: 0 }, "getTypeName": { kind: 999, modifiers: 0 }, "toString": { kind: 999, modifiers: 0 }, "toJSONValue": { kind: 999, modifiers: 0 }, "transformLegacyProps": { kind: 999, modifiers: 0 }, "getCurrentSchemaVersion": { kind: 999, modifiers: 0 }, "isLegacySchemaVersion": { kind: 999, modifiers: 0 }, "calculateNextSchemaVersion": { kind: 999, modifiers: 0 }, "registerLegacyTransformer": { kind: 999, modifiers: 0 }, "overrideLegacyTransformer": { kind: 999, modifiers: 0 }, "hasLegacyTransformer": { kind: 999, modifiers: 0 }, "getLegacyTransformers": { kind: 999, modifiers: 0 }, "getLegacyTransformer": { kind: 999, modifiers: 0 }, "getSchemaVersion": { kind: 999, modifiers: 0 }, "getPropertyInitializers": { kind: 999, modifiers: 0 }, "getInstanceInitializers": { kind: 999, modifiers: 0 }, "getParentInitializers": { kind: 999, modifiers: 0 }, "toPlainObject": { kind: 999, modifiers: 0 }, "validateProps": { kind: 999, modifiers: 0 }, "equals": { kind: 999, modifiers: 0 }, "hasSameValues": { kind: 999, modifiers: 0 }, "registerHook": { kind: 999, modifiers: 0 }, "overrideHook": { kind: 999, modifiers: 0 }, "getHook": { kind: 999, modifiers: 0 }, "getHookOrThrow": { kind: 999, modifiers: 0 }, "getHooks": { kind: 999, modifiers: 0 }, "getActions": { kind: 999, modifiers: 0 }, "hasHook": { kind: 999, modifiers: 0 }, "hasAction": { kind: 999, modifiers: 0 }, "removeHook": { kind: 999, modifiers: 0 } } }] } }] }], extends: { kind: 18, type: eveble.Config, arguments: [] } }),
     __metadata("design:paramtypes", [Object])
 ], exports.TestConfig);
 
@@ -501,14 +500,10 @@ class EventSourceableBDDAsserter {
         return list;
     }
     removeDependencies(sutInstance) {
-        const mappings = Reflect.getMetadata(inversifyAsync.METADATA_KEY.TAGGED_PROP, sutInstance.constructor);
+        const mappings = eveble.getInjectedPropertyNames(sutInstance.constructor);
         if (mappings) {
-            for (const [key, metadatas] of Object.entries(mappings)) {
-                for (const metadata of metadatas) {
-                    if (metadata.key === 'inject') {
-                        delete sutInstance[key];
-                    }
-                }
+            for (const [name] of Object.entries(mappings)) {
+                delete sutInstance[name];
             }
         }
     }
