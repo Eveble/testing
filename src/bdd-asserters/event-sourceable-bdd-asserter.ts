@@ -13,19 +13,14 @@ import {
   BINDINGS,
   Assignment,
   Guid,
+  getInjectedPropertyNames,
 } from '@eveble/eveble';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {
-  METADATA_KEY,
-  interfaces as inversifyTypes,
-} from '@parisholley/inversify-async';
 import { types } from '../types';
 import { InvalidMessageError } from '../errors';
 import { evebleChai } from '../chai-assertions/eveble-chai-assertion';
 import { Scenario } from '../components/scenario';
-
-type Mappings = Record<keyof any, inversifyTypes.Metadata[]>;
 
 chai.use(evebleChai);
 chai.use(chaiAsPromised);
@@ -340,17 +335,12 @@ export class EventSourceableBDDAsserter<EventSourceable>
    * @param sutInstance - Instance of `EventSourceable`.
    */
   protected removeDependencies(sutInstance: EvebleTypes.EventSourceable): void {
-    const mappings: Mappings = Reflect.getMetadata(
-      METADATA_KEY.TAGGED_PROP,
+    const mappings: string[] = getInjectedPropertyNames(
       sutInstance.constructor
     );
     if (mappings) {
-      for (const [key, metadatas] of Object.entries(mappings)) {
-        for (const metadata of metadatas) {
-          if (metadata.key === 'inject') {
-            delete sutInstance[key];
-          }
-        }
+      for (const [name] of Object.entries(mappings)) {
+        delete sutInstance[name];
       }
     }
   }

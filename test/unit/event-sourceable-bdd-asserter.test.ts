@@ -122,21 +122,21 @@ describe(`EventSourceableBDDAsserter`, () => {
 
     // Buses
     injector
-      .rebind<EvebleTypes.CommandBus>(BINDINGS.CommandBus)
+      .rebindSync<EvebleTypes.CommandBus>(BINDINGS.CommandBus)
       .toConstantValue(commandBus);
     injector
-      .rebind<EvebleTypes.EventBus>(BINDINGS.EventBus)
+      .rebindSync<EvebleTypes.EventBus>(BINDINGS.EventBus)
       .toConstantValue(eventBus);
     // Commit
     injector
-      .rebind<EvebleTypes.CommitStore>(BINDINGS.CommitStore)
+      .rebindSync<EvebleTypes.CommitStore>(BINDINGS.CommitStore)
       .toConstantValue(commitStore);
     injector
-      .rebind<EvebleTypes.CommitObserver>(BINDINGS.CommitObserver)
+      .rebindSync<EvebleTypes.CommitObserver>(BINDINGS.CommitObserver)
       .toConstantValue(commitObserver);
     // Scheduler
     injector
-      .rebind<EvebleTypes.CommandScheduler>(BINDINGS.CommandScheduler)
+      .rebindSync<EvebleTypes.CommandScheduler>(BINDINGS.CommandScheduler)
       .toConstantValue(commandScheduler);
   };
 

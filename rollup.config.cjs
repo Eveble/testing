@@ -2,7 +2,6 @@ const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
 const tsPlugin = require('rollup-plugin-typescript2');
 const json = require('@rollup/plugin-json');
-const ttypescript = require('ttypescript');
 const fs = require('fs');
 const path = require('path');
 const { move } = require("fs-extra");
@@ -10,7 +9,6 @@ const { move } = require("fs-extra");
 const env = process.env.NODE_ENV;
 const pkg = require('./package.json');
 let isMVCalled = false;
-
 
 function moveFile(source, destination) {
   fs.rename(source, destination, err => {
@@ -86,12 +84,23 @@ module.exports = {
     ...Object.keys(pkg.peerDependencies || {}),
   ],
   plugins: [
-    nodeResolve({ preferBuiltins: true }),
+    nodeResolve({preferBuiltins: true}),
     nodeResolve(),
     json(),
     commonjs(),
     tsPlugin({
-      typescript: ttypescript,
+      typescript: require('ts-patch/compiler'),
+      tsconfigOverride: {
+        compilerOptions: {
+          experimentalDecorators: true,
+          plugins: [
+            {
+              transform: "tsruntime/dist/transform/transformer.js",
+              type: "program"
+            }
+          ]
+        }
+      }
     }),
     mv("./dist/src/", "./dist/", {
       once: true,
